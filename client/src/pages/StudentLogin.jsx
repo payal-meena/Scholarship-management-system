@@ -4,7 +4,7 @@ export default function StudentLogin() {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-xl p-8 w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Student Login</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Student Login Page</h2>
 
         <form className="space-y-4">
           <input
