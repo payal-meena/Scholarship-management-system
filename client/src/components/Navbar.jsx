@@ -1,31 +1,60 @@
-import React from 'react'
-const role = "student";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 const Navbar = () => {
   return (
-    <nav className='bg-blue-600 text-white px-4 py-4 flex justify-between items-center shadow'>
-        <h1 className='text-xl font-bold'>Scholarship Management</h1>
-        <ul className='flex gap-6'>
-            <li className='hover:underline cursor-pointer'>Home</li>
+    <nav className="bg-blue-600 text-white shadow-md fixed w-full z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          <div className="flex-shrink-0 text-2xl font-bold">
+            <Link to="/">Scholarship System</Link>
+          </div>
 
-            {role === "student" && (
-                    <>
-                    <li className="hover:underline cursor-pointer">My Applications</li>
-                    <li className="hover:underline cursor-pointer">Apply</li>
-                    </>
-            )}
+          <div className="hidden md:flex space-x-6">
+            <ScrollLink
+              to="home"
+              smooth={true}
+              duration={500}
+              spy={true}
+              offset={-80}
+              className="cursor-pointer hover:text-gray-200"
+            >
+              Home
+            </ScrollLink>
+            <ScrollLink
+              to="about"
+              smooth={true}
+              duration={500}
+              spy={true}
+              offset={-80}
+              className="cursor-pointer hover:text-gray-200"
+            >
+              About
+            </ScrollLink>
+            <ScrollLink
+              to="contact"
+              smooth={true}
+              duration={500}
+              spy={true}
+              offset={-80}
+              className="cursor-pointer hover:text-gray-200"
+            >
+              Contact
+            </ScrollLink>{" "}
+          </div>
 
-            {role === "admin" && (
-                <>
-                <li className="hover:underline cursor-pointer">Dashboard</li>
-                <li className="hover:underline cursor-pointer">Manage Users</li>
-                </>
-            )}
-            
-            <li className='hover:underline cursor-pointer'>Profile</li>
-            <li className='hover:underline cursor-pointer'>Logout</li>
-        </ul>
+          <div>
+            <Link
+              to="/login-page"
+              className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
