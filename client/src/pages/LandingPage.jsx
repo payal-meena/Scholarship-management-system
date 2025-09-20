@@ -6,8 +6,8 @@ const LandingPage = () => {
     <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-200'>
 
     <div className='text-center mb-12'>
-        <h1 className='text-4xl font-extrabold text-gray-800'>Welcome to Scholarship Management System</h1>
-        <p className='mt-3 text-lg text-gray-600'>A portal to manage scholarships for Students & Admins</p>
+        <h1 className='text-4xl font-extrabold text-gray-800'>Welcome to login Page</h1>
+        {/* <p className='mt-3 text-lg text-gray-600'></p> */}
     </div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl px-6'>
