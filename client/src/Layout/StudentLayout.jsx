@@ -5,14 +5,15 @@ import { Outlet } from 'react-router-dom'
 
 
 const StudentLayout = () => {
+  const [active, setActive] = useState("apply");
   return (
     <div className='flex flex-col h-screen'>
-            <DashboardNavbar role='student' user="payal" />
-            <div className='flex flex-1'>
-                <StudentSidebar />
-                <div className='flex-1 p-6 bg-gray-100 overflow-y-auto'>
+            <DashboardNavbar role='student' />
+            <div className='flex flex-1 relative'>
+                <StudentSidebar  active={active} setActive={setActive}/>
+                <main className='flex-1 p-6 bg-gray-100 overflow-y-auto'>
                     <Outlet />
-                </div>
+                </main>
             </div>
     </div>
   )
