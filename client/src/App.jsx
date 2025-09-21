@@ -15,22 +15,15 @@ const App = () => {
       <Route path='/student-signup' element={<StudentSignupPage />} />
       <Route path="/admin-login" element={<AdminLogin />}/>
       <Route path='/login-page' element={<LandingPage />}/>
-      <Route path='/student-dashboard' element={<StudentDashboard />} />
     
+      <Route path ="/student/*" element={<StudentDashboard />}>
+        <Route path='apply' element={<h2>Apply Scholarship </h2>} />
+        <Route path='my-applications' element={<h2>My Applications</h2>}/>
+        <Route path='profile' element={<h2>Profile</h2>}/>
+      </Route>
+
 
     </Routes>
-    // <div className='flex flex-col h-screen'>
-    //   <Navbar />
-
-    //   <div className='flex flex-1'>
-    //   <SideBar />
-
-    //   <main className='flex-1 p-6 bg-gray-50'>
-    //     <h1 className='text-2xl font-bold mb-4'>Welcome to Scholarship Management System</h1>
-    //     <p>Select an option from the sidebar.</p>
-    //   </main>
-    //   </div>
-    // </div>
   )
 }
 
