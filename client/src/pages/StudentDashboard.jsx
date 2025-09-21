@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DashboardNavbar from "../components/DashboardNavbar";
+import DashboardNavbar from "../components/StudentNavbar";
 import SideBar from "../components/SideBar";
 
 const StudentDashboard = () => {
