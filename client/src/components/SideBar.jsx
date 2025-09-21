@@ -1,32 +1,48 @@
 import React from "react";
 
-const role = "student";
-const SideBar = () => {
+const SideBar = ({ role = "student", active, setActive }) => {
+  const studentMenu = [
+    { key: "apply", label: "Apply Scholarship" },
+    { key: "my-applications", label: "My Applications" },
+    { key: "profile", label: "Profile" },
+  ];
+
+  const adminMenu = [
+    { key: "manage-students", label: "Manage Students" },
+    { key: "manage-scholarships", label: "Manage Scholarships" },
+    { key: "manage-applications", label: "Manage Appllications" },
+    { key: "profile", label: "Admin Profile" },
+  ];
+
+  const menu = role === "admin" ? adminMenu : studentMenu;
   return (
-    <div className="w-64 h-screen bg-gray-100 shadow p-4">
-      <h2 className="text-lg font-semibold mb-6">Dashboard</h2>
+    <aside className="w-64 bg-blue-600 text-white">
+      <div className="p-6 font-bold text-lg border-b border-blue-500">
+        {role === "admin" ? "Admin Dashboard" : "Student Dashboard"}
+      </div>
 
-      {role === "student" && (
-        <ul className="spce-y-4">
-          <li className="hover:text-blue-600 cursor-pointer">My Applications</li>
-          <li className="hover:text-blue-600 cursor-pointer">Apply Scholarship</li>
-          <li className="hover:text-blue-600 cursor-pointer">Settings</li>
-        </ul>
-      )}
+      <nav className="px-4 py-6 space-y-4">
+        {menu.map((item) => (
+          <button
+            key={item.key}
+            onClick={() => setActive(item.key)}
+            className={`block w-full text-left px-4 py-2 rounded hover:bg-blue-500 transition ${
+              active === item.key ? "bg-blue-500 font-semibold" : ""
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
 
-      {role === "admin" && (
-        <ul className="space-y-4">
-          <li className="hover:text-blue-600 cursor-pointer">Overview</li>
-          <li className="hover:text-blue-600 cursor-pointer">
-            Create Scholarship
-          </li>
-          <li className="hover:text-blue-600 cursor-pointer">
-            All Applications
-          </li>
-          <li className="hover:text-blue-600 cursor-pointer">Manage Users</li>
-        </ul>
-      )}
-    </div>
+        <div className="absolute bottom-6 left-0 w-64 px-4">
+          <button
+            className="block w-full text-left px-4 py-2 rounded bg-red-600 hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
+    </aside>
   );
 };
 

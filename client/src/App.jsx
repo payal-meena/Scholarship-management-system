@@ -5,6 +5,7 @@ import StudentLogin from './pages/StudentLogin'
 import StudentSignupPage from './pages/StudentSignupPage'
 import AdminLogin from './pages/AdminLogin'
 import Home from './pages/Home'
+import StudentDashboard from './pages/StudentDashboard'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path='/student-signup' element={<StudentSignupPage />} />
       <Route path="/admin-login" element={<AdminLogin />}/>
       <Route path='/login-page' element={<LandingPage />}/>
+      <Route path='/student-dashboard' element={<StudentDashboard />} />
     
 
     </Routes>
