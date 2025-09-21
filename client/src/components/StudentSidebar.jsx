@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 const StudentSidebar = () => {
   return (
-    <div className='w-64 bg-gray-800 text-white min-h-screen p-6 space-y-4'> 
+    <div className='w-64 bg-gray-800 text-white p-6 space-y-4'> 
     <h2 className='text-lg font-bold'>Student Dashboard</h2>
         <ul className='space-y-3'>
             <li><Link to="/student/apply">Apply Scholarship</Link> </li>
