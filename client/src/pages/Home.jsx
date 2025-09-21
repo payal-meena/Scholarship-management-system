@@ -17,7 +17,7 @@ function Home() {
           administrators to manage applications efficiently.
         </p>
         <a
-          href="/login-options"
+          href="/login-page"
           className="bg-blue-600 text-white px-8 py-3 rounded-lg shadow hover:bg-blue-700 transition"
         >
           Get Started
