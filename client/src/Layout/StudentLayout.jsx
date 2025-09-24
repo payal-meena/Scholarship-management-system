@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardNavbar from '../components/DashboardNavbar'
 import StudentSidebar from '../components/StudentSidebar'
 import { Outlet } from 'react-router-dom'
+
 
 
 const StudentLayout = () => {
