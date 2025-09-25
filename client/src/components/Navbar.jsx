@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { Menu, X } from "lucide-react"; // npm i lucide-react
-
+import { Menu, X } from "lucide-react"; 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,12 +9,10 @@ const Navbar = () => {
     <nav className="bg-blue-600 text-white shadow-md fixed w-full z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
           <div className="flex-shrink-0 text-2xl font-bold">
             <Link to="/">Scholarship System</Link>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
             <ScrollLink
               to="home"
@@ -49,7 +46,6 @@ const Navbar = () => {
             </ScrollLink>
           </div>
 
-          {/* Login Button (Desktop) */}
           <div className="hidden md:block">
             <Link
               to="/login-page"
@@ -59,7 +55,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Hamburger (Mobile) */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -68,7 +63,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-blue-700">
           <div className="px-4 py-3 space-y-2">
