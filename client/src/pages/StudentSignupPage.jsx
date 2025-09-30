@@ -97,7 +97,7 @@ const StudentSignupPage = () => {
         <p className="mt-6 text-sm text-center text-gray-600">
           Already registered?{" "}
           <Link
-            href="/student-login"
+            to="/student-login"
             className="text-blue-600 font-medium hover:underline"
           >
             Login here
