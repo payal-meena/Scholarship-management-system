@@ -1,30 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import {toast} from "react-toastify";
+
+
 const StudentSignupPage = () => {
+    const[name , setName ] = useState("");
+    const[email,setEmail] = useState("");
+    const[password,setPassword] = useState("");
+    const[confirmPassword,setConfirmPassword] = useState("");
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if(!name || !email || !password || !confirmPassword){
+        toast.error("Please fill all fields ");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if(!emailRegex.test(email)){
+        toast.error("Please enter a valid email address");
+        return;
+      }
+
+      if(password !== confirmPassword){
+        toast.error("Passwords do not match");
+        return;
+      }
+
+      try {
+        const res = await axios.post("http://localhost:4000/api/students/signup", {
+          name,
+          email,
+          password,
+        });
+        if(res.data.success){
+          toast.success("Account created successfully");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          
+        } 
+        }
+      catch(error) {
+        toast.error(error.response?.data?.message || "Signup failed");
+        }
+      };
+    
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-xl p-8 w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Student Signup</h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Full Name"
+            value={name}
+            onChange={(e)=> setName(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           />
           <input
             type="email"
             placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-3 border rounded-xl fpcus:outline-none focus:ring-2 focus:ring-blue-400 tranisiton"
           />
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e)=> setPassword(e.target.value)}
             className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           />
           <input
             type="password"
             placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e)=> setConfirmPassword(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -38,12 +96,12 @@ const StudentSignupPage = () => {
 
         <p className="mt-6 text-sm text-center text-gray-600">
           Already registered?{" "}
-          <a
+          <Link
             href="/student-login"
             className="text-blue-600 font-medium hover:underline"
           >
             Login here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

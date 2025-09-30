@@ -24,7 +24,7 @@ function Home() {
             for administrators to manage applications efficiently.
           </p>
           <Link
-            to="/login"
+            to="/login-page"
             className="bg-blue-600 text-white px-8 py-3 rounded-lg shadow hover:bg-blue-700 transition"
           >
             Get Started
