@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/mongoDB.js";
+import studentRoutes from "./src/routes/studentRoutes.js";
 
 
 dotenv.config();
@@ -20,7 +21,6 @@ app.get("/" , (Req,res) => {
     res.send("API is running...");
 });
 
-import studentRoutes from "./src/routes/studentRoutes.js";
 app.use("/api/students" , studentRoutes);
 
 const PORT = process.env.PORT || 4000;

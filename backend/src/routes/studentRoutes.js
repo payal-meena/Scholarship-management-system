@@ -1,24 +1,47 @@
 import express from "express";
-import bcrypt from "bcryptjs";
 import Student from "../models/Student.js";
+import jwt from "jsonwebtoken";
 
 const studentRouter = express.Router();
 
+//signup route
 studentRouter.post("/signup", async (req,res) => {
-    try {
         const {name , email , password} = req.body;
 
-        const existing = await Student .findOne({email});
-        if(existing) return res.status(400).json({success: false, message: "Email already exists"});
+        try {
+        const studentExists = await Student .findOne({email});
+        if(studentExists) return res.status(400).json({success: false, message: "Email already exists"});
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const student = await Student.create({name,email,password});
+        const token = jwt.sign({id: student._id}, process.env.JWT_SECRET, {expiresIn: "7d"});
 
-        const newStudent = new Student({name, email, password: hashedPassword});
-        await newStudent.save();
-
-        res.json({success: true, message: "Student registered successfully"});
+        res.status(201).json({success: true , token , message: "Student registered successfully"});
     } catch (error) {
         res.status(500).json({success: false , message: `Server error ${error}`});
+    }
+});
+
+// login route
+studentRouter.post("/login", async(req,res) => {
+    const {email , password} = req.body;
+
+    try {
+        const student = await Student.findOne({email});
+        if(!student) {
+            return res.status(400).json({success: false , message: "Invalid email or password"});
+        }
+
+        const isMatch = await student.matchPassword(password);
+        if(!isMatch) {
+            return res.status(400).json({success: false, message: "Invalid email or password"});
+        }
+
+        const token = jwt.sign({id: student._id}, process.env.JWT_SECRET, {expiresIn: "7d"});
+        res.status(200).json({success: true , token , message: "Login successful"});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success: false , message: `Server error`});
+        
     }
 });
 

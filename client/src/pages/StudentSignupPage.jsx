@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from "react-toastify";
 
 
 const StudentSignupPage = () => {
+
+    const navigate = useNavigate();
     const[name , setName ] = useState("");
     const[email,setEmail] = useState("");
     const[password,setPassword] = useState("");
     const[confirmPassword,setConfirmPassword] = useState("");
+    const[loading,setLoading] = useState(false);
     
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -19,7 +22,6 @@ const StudentSignupPage = () => {
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
       if(!emailRegex.test(email)){
         toast.error("Please enter a valid email address");
         return;
@@ -31,22 +33,25 @@ const StudentSignupPage = () => {
       }
 
       try {
+        setLoading(true);
         const res = await axios.post("http://localhost:4000/api/students/signup", {
           name,
           email,
           password,
         });
+
         if(res.data.success){
           toast.success("Account created successfully");
-          setName("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          
-        } 
+          localStorage.setItem("studentToken", res.data.token);
+          navigate("/student-dashboard");
+        }  else {
+          toast.error(res.data.message || "Signup failed");
         }
-      catch(error) {
-        toast.error(error.response?.data?.message || "Signup failed");
+        } catch(error) {
+          console.log(error);
+        toast.error(error.response?.data?.message || "Server Error ");
+        } finally {
+          setLoading(false);
         }
       };
     
@@ -88,9 +93,10 @@ const StudentSignupPage = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
           >
-            Create Account
+            {loading ? "Signing up..." : "Create Account"}
           </button>
         </form>
 
