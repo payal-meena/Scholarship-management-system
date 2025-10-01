@@ -39,7 +39,7 @@ const App = () => {
           <Route path="profile" element={<h2>Profile</h2>} />
         </Route>
 
-        <Route path="/admin/*" element={<AdminLayout />}>
+        <Route path="/admin-dashboard/*" element={<AdminLayout />}>
           <Route
             path="manage-scholarships"
             element={<h2>Manage Scholarships</h2>}
