@@ -61,8 +61,8 @@ function Home() {
       <main>
         {currentView === 'login-page' ? (
             <>
-                  <section
-        id="home" onViewChange={handleViewChange}
+        <section
+        id="home"  
         className="relative bg-cover bg-center min-h-screen flex items-center justify-center text-center"
         style={{
           backgroundImage: `url(${welcome_image})`,
@@ -78,12 +78,12 @@ function Home() {
             A centralized platform for students to apply for scholarships and
             for administrators to manage applications efficiently.
           </p>
-          <Link
-            to="/login-page"
-            className="bg-indigo-600 text-white font-semibold text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-indigo-700 transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-500"
+          <button
+            onClick={() => handleViewChange('auth')}
+            className="bg-indigo-600 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-indigo-700 transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-500"
           >
             Get Started
-          </Link>
+          </button>
         </div>
       </section>
       <section id="about" className="py-24 bg-gray-50">
@@ -150,7 +150,7 @@ function Home() {
                 ></textarea>
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition duration-200"
+                  className="w-full px-4 py-3 cursor-pointer border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition duration-200"
                 >
                   Submit Inquiry
                 </button>

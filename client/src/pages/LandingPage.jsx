@@ -9,7 +9,7 @@ const LandingPage = ({onViewChange}) => {
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 p-4'>
     <div className='text-center w-full max-w-4xl mx-auto'>
-        <h1 className='text-4xl font-extrabold text-gray-800 mb-12'>Welcome to the Login Portal</h1>
+        <h1 className='text-4xl font-extrabold text-gray-800 my-12 pt-5'>Welcome to the Login Portal</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-full px-6'>
 
@@ -37,9 +37,9 @@ const LandingPage = ({onViewChange}) => {
             </div>
         </div>
             <div className="mt-8 text-center">
-                <Link to="/"  className="text-sm text-indigo-600 hover:text-indigo-800 transition">
+                <button onClick={()=> onViewChange("login-page")}  className="cursor-pointer text-sm text-indigo-600 hover:text-indigo-800 transition">
                     ← Back to Home Page
-                </Link>
+                </button>
             </div>
         </div>
     </div>

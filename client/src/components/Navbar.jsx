@@ -26,7 +26,8 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
 
-          <div onClick={() => onViewChange("login-page")} className="flex-shrink-0 flex items-center">
+          <div onClick={() => onViewChange("login-page")} 
+          className="flex-shrink-0 flex items-center">
             <Award className="h-7 w-7 text-indigo-600 mr-2" />
             <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
               ScholarshipPortal
@@ -59,7 +60,7 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
             >
               {currentView === 'login-page' ? (
                 <>
-                <LogIn className="h-5 w-5 mr-1" />
+                <LogIn className="h-5 w-5" />
               <span>Login / Register</span>
                 </>
               ) : (
@@ -71,7 +72,7 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
             </button> 
 
               {currentView === 'login-page' && (
-                <div className="flex md:hidden ml02">
+                <div className="flex md:hidden ml-2">
                     <button
                     onClick={toggleMenu}
                     className="inline-flex items-center justify-center p-2 rounded-full text-gray-400 hover:text-indigo-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
