@@ -18,12 +18,12 @@ const LandingPage = ({onViewChange}) => {
                 <h2 className='text-2xl font-bold text-indigo-700 mb-4'>Student</h2>
                 <p className='text-gray-600 mb-6'>Login or Signup to discover and apply for scholarships.</p>
                 <div className='space-y-4'>
-                    <Link to="/student-login" className='block w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition'>
+                    <button  onClick={() => onViewChange('student-login')} className='cursor-pointer block w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition'>
                     Student Login
-                    </Link>
-                    <Link to="/student-signup" className='block w-full bg-indigo-100 text-indigo-700 py-3 rounded-xl font-semibold hover:bg-indigo-200 transition'>
+                    </button>
+                    <button onClick={() => onViewChange('student-signup')} className='cursor-pointer block w-full bg-indigo-100 text-indigo-700 py-3 rounded-xl font-semibold hover:bg-indigo-200 transition'>
                     Student Signup
-                    </Link>
+                    </button>
                 </div>
             </div>
 
@@ -31,9 +31,9 @@ const LandingPage = ({onViewChange}) => {
                 <Landmark className='h-10 w-10 text-green-700 mx-auto mb-4'/>
                 <h2 className='text-2xl font-bold text-green-700 mb-4'>Admin</h2>
                 <p className='text-gray-600 mb-6'>Login to manage scholarships and students</p>
-                <Link to="/admin-login" className='block w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition'>
+                <button onClick={() => onViewChange('admin-login')} className='cursor-pointer block w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition'>
                 Admin Login
-                </Link>
+                </button>
             </div>
         </div>
             <div className="mt-8 text-center">

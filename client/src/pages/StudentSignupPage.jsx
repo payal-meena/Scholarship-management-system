@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from "react-toastify";
+import { ChevronLeft } from "lucide-react";
 
 
 const StudentSignupPage = () => {
@@ -47,7 +48,7 @@ const StudentSignupPage = () => {
         }  else {
           toast.error(res.data.message || "Signup failed");
         }
-        } catch(error) {
+        } catch(error) { 
           console.log(error);
         toast.error(error.response?.data?.message || "Server Error ");
         } finally {
@@ -58,8 +59,8 @@ const StudentSignupPage = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Student Signup</h2>
+      <div className="w-96 bg-white shadow-xl rounded-2xl p-8 text-center border-t-4 border-indigo-500">
+        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700">Student Signup</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
@@ -100,7 +101,7 @@ const StudentSignupPage = () => {
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-center text-gray-600">
+        <p className="my-6 text-sm text-center text-gray-600">
           Already registered?{" "}
           <Link
             to="/student-login"
@@ -109,6 +110,10 @@ const StudentSignupPage = () => {
             Login here
           </Link>
         </p>
+              <Link to="/login-page" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
+                <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
+            </Link>
+
       </div>
     </div>
   );

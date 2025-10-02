@@ -2,8 +2,9 @@ import { Link , useNavigate} from "react-router-dom";
 import React , {useState} from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ChevronLeft } from "lucide-react";
 
-export default function StudentLogin() {
+export default function StudentLogin({onViewChange}) {
     const navigate = useNavigate();
 
     const[email,setEmail] = useState("");
@@ -49,8 +50,8 @@ export default function StudentLogin() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Student Login</h2>
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-96 border-t-4 border-indigo-500">
+        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700">Student Login</h2>
 
         <form className="space-y-4" onSubmit={handleLogin}>
           <input
@@ -79,8 +80,11 @@ export default function StudentLogin() {
 
         <p className="mt-4 text-sm text-center">
            Back to <Link to="/" className="text-indigo-600">Home</Link> |{" "}
-          <Link to="/student-signup" className="text-indigo-600">Signup</Link>
+          <button type="button" onClick={() => onViewChange('student-signup')} className="text-indigo-600">Signup</button>
         </p>
+        <button type="button" onClick={() => onViewChange('auth')} className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
+                <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
+            </button>
       </div>
     </div>
   );

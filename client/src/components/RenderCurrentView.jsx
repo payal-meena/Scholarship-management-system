@@ -1,0 +1,188 @@
+import React from 'react'
+import welcome_image from "../assets/welcome_page_img.jpg";
+import {
+  Menu,
+  X,
+  LogIn,
+  Award,
+  Mail,
+  Phone,
+  MapPin,
+  Search,
+  BarChart,
+  Lock,
+  TrendingUp,
+  Zap,
+  Shield,
+} from "lucide-react";
+import LandingPage from '../pages/LandingPage';
+import StudentLogin from '../pages/StudentLogin';
+import StudentSignupPage from '../pages/StudentSignupPage';
+import AdminLogin from '../pages/AdminLogin';
+
+
+
+
+const RenderCurrentView = ({currentView,handleViewChange}) => {
+
+      const FeatureCard = ({ title, description, icon }) => (
+    <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 transition duration-300 hover:shadow-xl hover:translate-y-[-2px]">
+      <div className="p-3 rounded-lg inline-flex items-center justify-center bg-indigo-100 text-indigo-600 mb-4">
+        {icon}
+      </div>
+      <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 text-sm">{description}</p>
+    </div>
+  );
+
+  const ContactDetail = ({ icon, title, detail }) => (
+    <div className="flex items-start space-x-4">
+      <div className="flex-shrink-0 p-2 bg-indigo-800 rounded-full">{icon}</div>
+      <div>
+        <h4 className="text-lg font-semibold">{title}</h4>
+        <p className="text-indigo-200">{detail}</p>
+      </div>
+    </div>
+  );
+
+
+
+ switch (currentView) {
+      case 'login-page': 
+        return (<>
+         <section
+        id="home"  
+        className="relative bg-cover bg-center min-h-screen flex items-center justify-center text-center"
+        style={{
+          backgroundImage: `url(${welcome_image})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70"></div>
+
+        <div className="relative  text-white px-4 py-20 max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight drop-shadow-lg">
+            Welcome to Scholarship Management System
+          </h1>
+          <p className="text-lg md:text-xl mb-10 max-w-4xl mx-auto font-light drop-shadow">
+            A centralized platform for students to apply for scholarships and
+            for administrators to manage applications efficiently.
+          </p>
+          <button
+            onClick={() => handleViewChange('auth')}
+            className="bg-indigo-600 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-indigo-700 transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-500"
+          >
+            Get Started
+          </button>
+        </div>
+      </section>
+      <section id="about" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-base font-semibold text-indigo-600 uppercase tracking-wider mb-2">
+            Core Features
+          </p>
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-6">
+            Simplifying Funding for Faculty and Students
+          </h2>
+          <p className="text-xl text-gray-600 mb-16 max-w-3xl mx-auto">
+            Providing essential tools for teachers to manage applications and an
+            intuitive process for students to apply successfully.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={<Zap className="h-6 w-6" />}
+              title="Simple Application Process"
+              description="Students can quickly find eligible college scholarships and submit all necessary documentation though a single, intuitive interface."
+            />
+            <FeatureCard
+              icon={<BarChart className="h-6 w-6" />}
+              title="Efficient Review Dashboard"
+              description="Faculty gain access to centralized tools for collaborative scoring, setting review deadlines, and making final decisions swiftly."
+            />
+            <FeatureCard
+              icon={<Lock className="h-6 w-6" />}
+              title="Secure Data & Easy Access"
+              description="Robust security protects student academic records and personal data. Faculty and students can log in easily and securely manage their profiles."
+            />
+          </div>
+        </div>
+      </section>
+      <section id="contact" className="pt-20 pb-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
+            Have Questions? We're Here to Help.
+          </h2>
+          <div className="flex flex-col lg:flex-row lg:space-x-12">
+            <div className="lg:w-2/3 bg-gray-50 p-8 rounded-xl shadow-lg mb-8 lg:mb-0">
+              <p className="text-lg font-medium text-gray-700 mb-6">
+                Send us a detailed message, and our support team will respond
+                within one business day.
+              </p>
+              <form className="space-y-6">
+                <input
+                  type="text"
+                  placeholder="Your Full Name"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Work or Academic Email"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                />
+                <textarea
+                  rows="4"
+                  placeholder="How can we assist you today? (e.g., Partnership inquiry, Technical support)"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                ></textarea>
+                <button
+                  type="submit"
+                  className="w-full px-4 py-3 cursor-pointer border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition duration-200"
+                >
+                  Submit Inquiry
+                </button>
+              </form>
+            </div>
+
+            <div className="lg:w-1/3 space-y-8 p-6 bg-indigo-700 text-white rounded-xl shadow-xl">
+              <ContactDetail
+                icon={<Mail className="h-6 w-6 text-indigo-300" />}
+                title="General Support"
+                detail="support@scholarshipportal.com"
+              />
+              <ContactDetail
+                icon={<Phone className="h-6 w-6 text-indigo-300" />}
+                title="Partnership Line"
+                detail="+1 (555) 789-0123"
+              />
+              <ContactDetail
+                icon={<MapPin className="h-6 w-6 text-indigo-300" />}
+                title="Organization"
+                detail="Sant Singaji Institute of Science & Management (SSISM) Sandalpur , Mp India"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+        </>
+        );
+
+      case  'auth': 
+        return <LandingPage onViewChange={handleViewChange}/>
+
+      case 'student-login':
+        return <StudentLogin onViewChange={handleViewChange}/>
+
+      case 'student-signup':
+        return <StudentSignupPage onViewChange={handleViewChange}/>
+
+      case 'admin-login':
+        return <AdminLogin onViewChange={handleViewChange}/>
+
+      default:
+        return null;
+    }
+  }
+export default RenderCurrentView
