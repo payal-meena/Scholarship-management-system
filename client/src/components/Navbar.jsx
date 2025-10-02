@@ -1,114 +1,126 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { Menu, X } from "lucide-react"; 
-const Navbar = () => {
+import { Menu, X , LogIn , Award} from "lucide-react"; 
+
+const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navItems = [
+    {name: 'Home', href: '#home'},
+    {name: 'About', href: '#about'},
+    {name: 'Contact', href: '#contact'},
+  ];
+
+  const toggleMenu = ()=> {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLinkClick = (e, href) => {
+    e.preventDefault(); 
+    onNavLinkClick(href); 
+    setIsOpen(false);
+  };
 
   return (
-    <nav className="bg-blue-600 text-white shadow-md fixed w-full z-10">
+    <nav className="bg-white shadow-xl fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0 text-2xl font-bold">
-            <Link to="/">Scholarship System</Link>
+
+          <div onClick={() => onViewChange("login-page")} className="flex-shrink-0 flex items-center">
+            <Award className="h-7 w-7 text-indigo-600 mr-2" />
+            <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
+              ScholarshipPortal
+            </span>
           </div>
 
-          <div className="hidden md:flex space-x-6">
-            <ScrollLink
-              to="home"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="cursor-pointer hover:text-gray-200"
-            >
-              Home
-            </ScrollLink>
-            <ScrollLink
-              to="about"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="cursor-pointer hover:text-gray-200"
-            >
-              About
-            </ScrollLink>
-            <ScrollLink
-              to="contact"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="cursor-pointer hover:text-gray-200"
-            >
-              Contact
-            </ScrollLink>
-          </div>
+          {currentView === "login-page" && (
+            <div className="hidden md:flex md:space-x-8 items-center">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={(e) => handleLinkClick(e, item.href)}
+                className="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-lg text-sm font-medium transition duration-150 ease-in-out"
+              >
+                {item.name}
+              </a>
+            ))}
+            </div>
+          )}
 
-          <div className="hidden md:block">
-            <Link
-              to="/login-page"
-              className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100"
+          <div className="flex items-center">
+            <button
+            onClick={()=> onViewChange(currentView === 'login-page' ? 'auth' : 'login-page')}
+              className={`group flex items-center justify-center space-x-2 px-4 py-2 cursor-pointer border border-transparent text-sm font-medium rounded-full shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
+                currentView === "login-page" 
+                ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'
+                : 'text-indigo-600 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-300'
+              }`}
             >
-              Login
-            </Link>
-          </div>
+              {currentView === 'login-page' ? (
+                <>
+                <LogIn className="h-5 w-5 mr-1" />
+              <span>Login / Register</span>
+                </>
+              ) : (
+                <>
+                <X className="h-5 w-5 " />
+                <span>Close</span>
+                </>
+              )}
+            </button> 
 
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+              {currentView === 'login-page' && (
+                <div className="flex md:hidden ml02">
+                    <button
+                    onClick={toggleMenu}
+                    className="inline-flex items-center justify-center p-2 rounded-full text-gray-400 hover:text-indigo-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                    aria-expanded={isOpen}
+                    >
+                    <span className="sr-only">Open main menu</span>
+                    {isOpen? (
+                      <X className="block h-6 w-6" aria-hidden="true" />
+                    ) : (
+                      <Menu className="block h-6 w-6" aria-hidden="true" />
+                    )}
+                    </button>
+                </div>
+              )}
           </div>
-        </div>
-      </div>
+          </div>
+          </div>
+              
+                {currentView === 'login-page' && (
+                  <div 
+                    className={`md:hidden transition-all duration-300 ease-in-out ${
+                      isOpen ? 'max-h-96 opacity-100 py-2' : 'max-h-0 opacity-0 overflow-hidden'
+                      }`}
+                  >
+                    <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        {navItems.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            onClick={(e)=> handleLinkClick(e, item.href)}
+                            className="text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium transition duration-150"
+                          >
+                            {item.name}
+                          </a>
+                        ))}
 
-      {isOpen && (
-        <div className="md:hidden bg-blue-700">
-          <div className="px-4 py-3 space-y-2">
-            <ScrollLink
-              to="home"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="block cursor-pointer hover:text-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              Home
-            </ScrollLink>
-            <ScrollLink
-              to="about"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="block cursor-pointer hover:text-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              About
-            </ScrollLink>
-            <ScrollLink
-              to="contact"
-              smooth={true}
-              duration={500}
-              spy={true}
-              offset={-80}
-              className="block cursor-pointer hover:text-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </ScrollLink>
-            <Link
-              to="/login-page"
-              className="block bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </Link>
-          </div>
-        </div>
-      )}
+                        <button
+                        onClick={()=> {
+                          onViewChange('auth');
+                          toggleMenu();
+                        }}
+                        className="w-full flex items-center justify-center mt-2 px-3 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150"
+                        >
+                          <LogIn className="h-5 w-5 mr-2"/>
+                          Login / Register
+                        </button>
+                      </div>
+                   </div>
+                )}
     </nav>
   );
 };

@@ -67,34 +67,34 @@ const StudentSignupPage = () => {
             placeholder="Full Name"
             value={name}
             onChange={(e)=> setName(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
           />
           <input
             type="email"
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl fpcus:outline-none focus:ring-2 focus:ring-blue-400 tranisiton"
+            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 tranisiton"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e)=> setPassword(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
           />
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e)=> setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
           >
             {loading ? "Signing up..." : "Create Account"}
           </button>
@@ -104,7 +104,7 @@ const StudentSignupPage = () => {
           Already registered?{" "}
           <Link
             to="/student-login"
-            className="text-blue-600 font-medium hover:underline"
+            className="text-indigo-600 font-medium hover:underline"
           >
             Login here
           </Link>

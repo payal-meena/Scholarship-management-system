@@ -1,13 +1,68 @@
 import Navbar from "../components/Navbar";
 import welcome_image from "../assets/welcome_page_img.jpg";
+import { useState } from "react";
+import {
+  Menu,
+  X,
+  LogIn,
+  Award,
+  Mail,
+  Phone,
+  MapPin,
+  Search,
+  BarChart,
+  Lock,
+  TrendingUp,
+  Zap,
+  Shield,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-function Home() {
-  return (
-    <div className="scroll-smooth">
-      <Navbar />
+import LandingPage from "./LandingPage";
 
-      <section
-        id="home"
+function Home() {
+  const [currentView, setCurrentView] = useState('login-page');
+
+  const FeatureCard = ({ title, description, icon }) => (
+    <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 transition duration-300 hover:shadow-xl hover:translate-y-[-2px]">
+      <div className="p-3 rounded-lg inline-flex items-center justify-center bg-indigo-100 text-indigo-600 mb-4">
+        {icon}
+      </div>
+      <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 text-sm">{description}</p>
+    </div>
+  );
+
+  const ContactDetail = ({ icon, title, detail }) => (
+    <div className="flex items-start space-x-4">
+      <div className="flex-shrink-0 p-2 bg-indigo-800 rounded-full">{icon}</div>
+      <div>
+        <h4 className="text-lg font-semibold">{title}</h4>
+        <p className="text-indigo-200">{detail}</p>
+      </div>
+    </div>
+  );
+
+  const handleScroll = (id) => {
+        const element = document.getElementById(id.substring(1));
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+  const handleViewChange = (view) => {
+        setCurrentView(view);
+        if (view === 'auth') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
+  return (
+    <div className="scroll-smooth ">
+      <Navbar onNavLinkClick={handleScroll} onViewChange={handleViewChange} currentView={currentView}/>
+      <main>
+        {currentView === 'login-page' ? (
+            <>
+                  <section
+        id="home" onViewChange={handleViewChange}
         className="relative bg-cover bg-center min-h-screen flex items-center justify-center text-center"
         style={{
           backgroundImage: `url(${welcome_image})`,
@@ -15,57 +70,126 @@ function Home() {
       >
         <div className="absolute inset-0 bg-black/70"></div>
 
-        <div className="relative  text-white px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+        <div className="relative  text-white px-4 py-20 max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight drop-shadow-lg">
             Welcome to Scholarship Management System
           </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl mb-10 max-w-4xl mx-auto font-light drop-shadow">
             A centralized platform for students to apply for scholarships and
             for administrators to manage applications efficiently.
           </p>
           <Link
             to="/login-page"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+            className="bg-indigo-600 text-white font-semibold text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-indigo-700 transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-500"
           >
             Get Started
           </Link>
         </div>
       </section>
+      <section id="about" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-base font-semibold text-indigo-600 uppercase tracking-wider mb-2">
+            Core Features
+          </p>
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-6">
+            Simplifying Funding for Faculty and Students
+          </h2>
+          <p className="text-xl text-gray-600 mb-16 max-w-3xl mx-auto">
+            Providing essential tools for teachers to manage applications and an
+            intuitive process for students to apply successfully.
+          </p>
 
-      <section id="about" className="py-24 bg-white text-center px-6 md:px-16">
-        <h2 className="text-3xl md:text-4xl font-semibold text-blue-700 mb-8">
-          About Us
-        </h2>
-        <p className="max-w-3xl mx-auto text-gray-600 text-lg md:text-xl leading-relaxed">
-          The Scholarship Management System is designed to streamline the
-          process of applying for and managing scholarships. Students can apply
-          online, upload necessary documents, and track their application
-          status. Admins can review, approve, or reject applications with ease.
-        </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={<Zap className="h-6 w-6" />}
+              title="Simple Application Process"
+              description="Students can quickly find eligible college scholarships and submit all necessary documentation though a single, intuitive interface."
+            />
+            <FeatureCard
+              icon={<BarChart className="h-6 w-6" />}
+              title="Efficient Review Dashboard"
+              description="Faculty gain access to centralized tools for collaborative scoring, setting review deadlines, and making final decisions swiftly."
+            />
+            <FeatureCard
+              icon={<Lock className="h-6 w-6" />}
+              title="Secure Data & Easy Access"
+              description="Robust security protects student academic records and personal data. Faculty and students can log in easily and securely manage their profiles."
+            />
+          </div>
+        </div>
+      </section>
+      <section id="contact" className="pt-20 pb-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
+            Have Questions? We're Here to Help.
+          </h2>
+          <div className="flex flex-col lg:flex-row lg:space-x-12">
+            <div className="lg:w-2/3 bg-gray-50 p-8 rounded-xl shadow-lg mb-8 lg:mb-0">
+              <p className="text-lg font-medium text-gray-700 mb-6">
+                Send us a detailed message, and our support team will respond
+                within one business day.
+              </p>
+              <form className="space-y-6">
+                <input
+                  type="text"
+                  placeholder="Your Full Name"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Work or Academic Email"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                />
+                <textarea
+                  rows="4"
+                  placeholder="How can we assist you today? (e.g., Partnership inquiry, Technical support)"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                  required
+                ></textarea>
+                <button
+                  type="submit"
+                  className="w-full px-4 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition duration-200"
+                >
+                  Submit Inquiry
+                </button>
+              </form>
+            </div>
+
+            <div className="lg:w-1/3 space-y-8 p-6 bg-indigo-700 text-white rounded-xl shadow-xl">
+              <ContactDetail
+                icon={<Mail className="h-6 w-6 text-indigo-300" />}
+                title="General Support"
+                detail="support@scholarshipportal.com"
+              />
+              <ContactDetail
+                icon={<Phone className="h-6 w-6 text-indigo-300" />}
+                title="Partnership Line"
+                detail="+1 (555) 789-0123"
+              />
+              <ContactDetail
+                icon={<MapPin className="h-6 w-6 text-indigo-300" />}
+                title="Organization"
+                detail="Sant Singaji Institute of Science & Management (SSISM) Sandalpur , Mp India"
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section
-        id="contact"
-        className="py-24 bg-gray-100 text-center px-6 md:px-16"
-      >
-        <h2 className="text-3xl md:text-4xl font-semibold text-blue-700 mb-8">
-          Contact Us
-        </h2>
-        <p className="text-gray-600 mb-4 text-lg md:text-xl">
-          Have questions? Reach out to us at:
-        </p>
-        <p className="font-medium text-lg md:text-xl mb-2">
-          📧 support@scholarship.com
-        </p>
-        <p className="font-medium text-lg md:text-xl">📞 +91 98765 43210</p>
-      </section>
-
-      <footer className="bg-blue-600 text-white py-6 text-center">
-        <p>
-          © {new Date().getFullYear()} Scholarship Management System. All rights
-          reserved.
-        </p>
-      </footer>
+            </>
+        ) : (
+            <LandingPage onViewChange={handleViewChange} />
+        )}
+      </main>
+     
+      <footer className="bg-gray-800 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
+          &copy; {new Date().getFullYear()} ScholarshipPortal. Empowering
+          Futures.
+        </div>
+      </footer>{" "}
     </div>
   );
 }
