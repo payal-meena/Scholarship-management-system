@@ -71,7 +71,7 @@ export default function StudentLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+            className="w-full bg-indigo-600 cursor-pointer text-white py-2 rounded-lg hover:bg-indigo-700"
           >
            {loading ? "Logging in..." : "Login"}
           </button>

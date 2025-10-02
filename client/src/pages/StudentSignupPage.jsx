@@ -94,7 +94,7 @@ const StudentSignupPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+            className="w-full cursor-pointer bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
           >
             {loading ? "Signing up..." : "Create Account"}
           </button>
