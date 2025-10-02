@@ -28,10 +28,10 @@ const App = () => {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/student-login" element={<StudentLogin />} />
+        {/* <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/student-signup" element={<StudentSignupPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/login-page" element={<LandingPage />} />
+        <Route path="/login-page" element={<LandingPage />} /> */}
 
         <Route path="/student-dashboard/*" element={<StudentLayout />}>
           <Route path="apply" element={<h2>Apply Scholarship </h2>} />
