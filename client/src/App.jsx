@@ -1,9 +1,5 @@
 import React from "react";
-import LandingPage from "./pages/LandingPage";
 import { Routes, Route } from "react-router-dom";
-import StudentLogin from "./pages/StudentLogin";
-import StudentSignupPage from "./pages/StudentSignupPage";
-import AdminLogin from "./pages/AdminLogin";
 import Home from "./pages/Home";
 import StudentLayout from "./Layout/StudentLayout";
 import AdminLayout from "./Layout/AdminLayout";
