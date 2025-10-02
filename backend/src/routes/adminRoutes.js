@@ -26,6 +26,10 @@ adminRouter.post("/login",async(req,res)=> {
     try {
         const {email , password} = req.body;
 
+        if(!email || !password) {
+            return res.status(400).json({message: "Please fill all fields"});
+        }
+        
         const admin = await Admin.findOne({email});
         if(!admin) return res.status(400).json({message: "Invalid email"});
 
