@@ -61,7 +61,8 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
               {currentView === 'login-page' ? (
                 <>
                 <LogIn className="h-5 w-5" />
-              <span>Login / Register</span>
+              <span className="hidden md:inline">Login / Register</span>
+              <span className="md:hidden">Login</span>
                 </>
               ) : (
                 <>
