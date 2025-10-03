@@ -1,4 +1,4 @@
-import welcome_image from "../assets/Screenshot (257).png"
+import welcome_image from "../assets/welcome.jpg"
 import {
   Mail, Phone, MapPin , BarChart, Lock,Zap } from "lucide-react";
 import { Link } from "react-router-dom"; 
