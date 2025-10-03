@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
 import { Menu, X , LogIn , Award} from "lucide-react"; 
 
-const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
+const Navbar = ({onNavLinkClick , currentView}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navItems = [
     {name: 'Home', href: '#home'},
@@ -21,20 +20,22 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
     setIsOpen(false);
   };
 
+  const isHomePage = currentView === 'login-page';
+
   return (
     <nav className="bg-white shadow-xl fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
 
-          <div onClick={() => onViewChange("login-page")} 
+          <Link to="/" 
           className="flex-shrink-0 flex items-center">
             <Award className="h-7 w-7 text-indigo-600 mr-2" />
             <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
               ScholarshipPortal
             </span>
-          </div>
+          </Link>
 
-          {currentView === "login-page" && (
+          {isHomePage && (
             <div className="hidden md:flex md:space-x-8 items-center">
             {navItems.map((item) => (
               <a
@@ -50,15 +51,15 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
           )}
 
           <div className="flex items-center">
-            <button
-            onClick={()=> onViewChange(currentView === 'login-page' ? 'auth' : 'login-page')}
+            <Link
+              to={isHomePage ? '/auth' : '/'}
               className={`group flex items-center justify-center space-x-2 px-4 py-2 cursor-pointer border border-transparent text-sm font-medium rounded-full shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-                currentView === "login-page" 
+                isHomePage 
                 ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'
                 : 'text-indigo-600 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-300'
               }`}
             >
-              {currentView === 'login-page' ? (
+              {isHomePage ? (
                 <>
                 <LogIn className="h-5 w-5" />
               <span className="hidden md:inline">Login / Register</span>
@@ -70,9 +71,9 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
                 <span>Close</span>
                 </>
               )}
-            </button> 
+            </Link> 
 
-              {currentView === 'login-page' && (
+              {isHomePage && (
                 <div className="flex md:hidden ml-2">
                     <button
                     onClick={toggleMenu}
@@ -92,7 +93,7 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
           </div>
           </div>
               
-                {currentView === 'login-page' && (
+                {isHomePage && (
                   <div 
                     className={`md:hidden transition-all duration-300 ease-in-out ${
                       isOpen ? 'max-h-96 opacity-100 py-2' : 'max-h-0 opacity-0 overflow-hidden'
@@ -110,16 +111,14 @@ const Navbar = ({onNavLinkClick , onViewChange , currentView}) => {
                           </a>
                         ))}
 
-                        <button
-                        onClick={()=> {
-                          onViewChange('auth');
-                          toggleMenu();
-                        }}
+                        <Link
+                        to="/auth"
+                        onClick={toggleMenu}
                         className="w-full flex items-center justify-center mt-2 px-3 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150"
                         >
                           <LogIn className="h-5 w-5 mr-2"/>
                           Login / Register
-                        </button>
+                        </Link>
                       </div>
                    </div>
                 )}

@@ -110,9 +110,9 @@ const StudentSignupPage = () => {
             Login here
           </Link>
         </p>
-              <Link to="/login-page" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
-                <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
-            </Link>
+              <Link to="/auth" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
+                    <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
+                </Link>
 
       </div>
     </div>

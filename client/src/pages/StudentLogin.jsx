@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { ChevronLeft } from "lucide-react";
 
-export default function StudentLogin({onViewChange}) {
+export default function StudentLogin() {
     const navigate = useNavigate();
 
     const[email,setEmail] = useState("");
@@ -79,12 +79,12 @@ export default function StudentLogin({onViewChange}) {
         </form>
 
         <p className="mt-4 text-sm text-center">
-           Back to <Link to="/" className="text-indigo-600">Home</Link> |{" "}
-          <button type="button" onClick={() => onViewChange('student-signup')} className="text-indigo-600">Signup</button>
+           Back to <Link to="/" className=" text-indigo-600">Home</Link> |{" "}
+          <Link to="/student-signup" className="text-indigo-600">Signup</Link>
         </p>
-        <button type="button" onClick={() => onViewChange('auth')} className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
+        <Link to="/auth" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
                 <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
-            </button>
+            </Link>
       </div>
     </div>
   );
