@@ -33,7 +33,7 @@ studentRouter.post("/login", async(req,res) => {
 
         const isMatch = await student.matchPassword(password);
         if(!isMatch) {
-            return res.status(400).json({success: false, message: "Invalid email or password"});
+            return res.status(400).json({success: false, message: "Invalid password"});
         }
 
         const token = jwt.sign({id: student._id}, process.env.JWT_SECRET, {expiresIn: "7d"});

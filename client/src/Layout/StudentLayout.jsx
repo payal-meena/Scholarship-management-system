@@ -1,28 +1,40 @@
 import React, { useState } from "react";
 import DashboardNavbar from "../components/DashboardNavbar";
 import StudentSidebar from "../components/StudentSidebar";
-import { Outlet } from "react-router-dom";
+import {toast} from "react-toastify";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const StudentLayout = () => {
-  const [active, setActive] = useState("apply");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen,setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const pathParts = location.pathname.split('/');
+  const activeLink = pathParts[pathParts.length-1] || 'dashboard';
+
+  const handleLogout = () => {
+    localStorage.removeItem("studentToken");
+    toast.success("Logged out successfully");
+    navigate("/");
+  };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <DashboardNavbar
-        role="student"
-        toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        role="Student"
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        onLogout={handleLogout}
       />
 
-      <div className="flex flex-1 relative">
+      <div className="flex flex-1 pt-16 min-h-screen">
         <StudentSidebar
-          active={active}
-          setActive={setActive}
-          open={sidebarOpen}
-          setOpen={setSidebarOpen}
+          active={activeLink}
+          open={isSidebarOpen}
+          setOpen={setIsSidebarOpen}
+          onLogout={handleLogout}
         />
 
-        <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 md:ml-64 overflow-y-auto">
           <Outlet />
         </main>
       </div>

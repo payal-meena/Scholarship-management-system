@@ -26,6 +26,9 @@ const App = () => {
   const location = useLocation();
   const currentView = getCurrentView(location.pathname);
 
+  const isDashboardRoute = 
+    location.pathname.includes('-dashboard') ;
+
   const handleScroll = (id)=> {
     if(currentView === 'login-page') {
       const element = document.getElementById(id.substring(1));
@@ -50,7 +53,9 @@ const App = () => {
         theme="light"
       />
 
+      {!isDashboardRoute && (
       <Navbar onNavLinkClick={handleScroll} currentView={currentView} />
+       )}
 
       <Routes>
         <Route path="/" element={<Home />} />
