@@ -1,19 +1,31 @@
 import React, { useState } from "react";
 import DashboardNavbar from "../components/DashboardNavbar";
 import AdminSidebar from "../components/AdminSidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const pathParts = location.pathname.split("/");
+  const activeLink = pathParts[pathParts.length - 1] || "dashboard";
+
+  const handleLogout = ()=> {
+    localStorage.removeItem("adminToekn");
+    toast.success("Logged out successfully");
+    navigate("/");
+  }
 
   return (
-    <div className="flex flex-col h-screen">
-      <DashboardNavbar role="admin" toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <DashboardNavbar role="Admin" name="" toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onLogout={handleLogout} />
 
-      <div className="flex flex-1 relative">
-        <AdminSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <div className="flex flex-1 pt-16 min-h-screen">
+        <AdminSidebar active={activeLink} open={isSidebarOpen} setOpen={setIsSidebarOpen} onLogout={handleLogout} />
 
-        <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 md:ml-64 overflow-y-auto">
           <Outlet />
         </main>
       </div>

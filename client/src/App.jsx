@@ -76,15 +76,10 @@ const App = () => {
         </Route>
 
         <Route path="/admin-dashboard/*" element={<AdminLayout />}>
-          <Route
-            path="manage-scholarships"
-            element={<h2>Manage Scholarships</h2>}
-          />
+          <Route index element={<h2>Admin Dashboard Home</h2>} />
+          <Route path="manage-scholarships" element={<h2>Manage Scholarships</h2>}/>
           <Route path="manage-students" element={<h2>Manage Students</h2>} />
-          <Route
-            path="view-applications"
-            element={<h2>View Applications</h2>}
-          />
+          <Route path="manage-applications" element={<h2>Manage Applications</h2>}/>
           <Route path="profile" element={<h2> Profile</h2>} />
         </Route>
       </Routes>
