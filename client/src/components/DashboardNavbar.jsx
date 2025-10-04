@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, Bell, LogOut } from "lucide-react"; 
 
-const DashboardNavbar = ({ role , toggleSidebar , onLogout }) => {
+const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
   const profileImageurl = "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"
 
   return (
@@ -29,7 +29,7 @@ const DashboardNavbar = ({ role , toggleSidebar , onLogout }) => {
           className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-300" />
        
           <div className="hidden sm:block">
-              {/* <span></span> */}
+               <span className="font-medium text-gray-800 text-sm">{name || 'User'}</span>
               <span className="block text-xs font-medium text-indigo-600">({role})</span>
           </div>
         </div>

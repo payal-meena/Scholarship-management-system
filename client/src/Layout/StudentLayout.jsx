@@ -24,6 +24,7 @@ const StudentLayout = () => {
         role="Student"
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         onLogout={handleLogout}
+        name="Payal"
       />
 
       <div className="flex flex-1 pt-16 min-h-screen">

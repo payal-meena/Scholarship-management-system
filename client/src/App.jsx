@@ -11,6 +11,9 @@ import LandingPage from "./pages/LandingPage";
 import StudentLogin from "./pages/StudentLogin";
 import StudentSignupPage from "./pages/StudentSignupPage";
 import AdminLogin from "./pages/AdminLogin";
+import ApplyScholarshipPage from "./pages/student/ApplyScholarshipPage";
+import MyApplicationsPage from "./pages/student/MyApplicationsPage";
+import ProfilePage from "./pages/student/ProfilePage";
 
 const getCurrentView = (pathname) => {
   if(pathname === '/') {
@@ -66,9 +69,10 @@ const App = () => {
         <Route path="/admin-login" element={<AdminLogin />} />
 
         <Route path="/student-dashboard/*" element={<StudentLayout />}>
-          <Route path="apply" element={<h2>Apply Scholarship </h2>} />
-          <Route path="my-applications" element={<h2>My Applications</h2>} />
-          <Route path="profile" element={<h2>Profile</h2>} />
+          <Route path="apply" element={<ApplyScholarshipPage />} />
+          <Route path="my-applications" element={<MyApplicationsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route index element={<ApplyScholarshipPage />} />
         </Route>
 
         <Route path="/admin-dashboard/*" element={<AdminLayout />}>
