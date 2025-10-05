@@ -35,7 +35,7 @@ const StudentLayout = () => {
           onLogout={handleLogout}
         />
 
-        <main className="flex-1 p-4 md:p-8 md:ml-64 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 md:mx-24 overflow-y-auto">
           <Outlet />
         </main>
       </div>
