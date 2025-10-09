@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Users } from "lucide-react";
+import ApplicationDetailModal from "./ApplicationDetailModal";
 
 const initialApplications = [
   {
@@ -58,6 +59,8 @@ const ManageApplicationsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
+  const [selectedApplication, setSelectedApplication] = useState(null);
+
   const filteredApplications = applications.filter((app) => {
     const matchesSearch =
       app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -66,8 +69,18 @@ const ManageApplicationsPage = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const handleAction = (appId, action) => {
-    alert(`Action: ${action} on Application ID: ${appId}`);
+  const handleUpdateStatus = (appId, newStatus, feedback) => {
+      setApplications(prevApps => 
+        prevApps.map(app => 
+          app.id === appId 
+          ? {
+            ...app, 
+            status: newStatus,
+             documents: feedback || app.documents,  }
+             : app
+        )
+      );
+      console.log(`Succesfully updated ID ${appId} to ${newStatus}. Feedback: ${feedback}`);
   };
 
   return (
@@ -125,7 +138,7 @@ const ManageApplicationsPage = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredApplications.length > 0 ? (
+            {filteredApplications.length > 0 &&  
               filteredApplications.map((app) => (
                 <tr key={app.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -151,24 +164,24 @@ const ManageApplicationsPage = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
-                      onClick={() => handleAction(app.id, "View Documents")}
+                      onClick={() => setSelectedApplication(app)}
                       className="text-indigo-600 hover:text-indigo-900 text-xs font-bold"
                     >
                       View Details
                     </button>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
-                  No applications found matching your criteria.
-                </td>
-              </tr>
-            )}
+              ))}
           </tbody>
         </table>
       </div>
+              {selectedApplication && (
+                <ApplicationDetailModal 
+                    application={selectedApplication}
+                    onClose={() => setSelectedApplication(null)}
+                    onUpdateStatus={handleUpdateStatus}
+                />
+            )}
     </div>
   );
 };
