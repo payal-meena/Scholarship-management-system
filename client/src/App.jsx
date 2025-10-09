@@ -14,6 +14,11 @@ import AdminLogin from "./pages/AdminLogin";
 import ApplyScholarshipPage from "./pages/student/ApplyScholarshipPage";
 import MyApplicationsPage from "./pages/student/MyApplicationsPage";
 import ProfilePage from "./pages/student/ProfilePage";
+import AdminDashboardHome from "./pages/admin/AdminDashboardHome";
+import ManageScholarshipSchemes from "./pages/admin/ManageScholarshipSchemes";
+import AdminProfilePage from "./pages/admin/AdminProfilePage";
+import ManageApplicationsPage from "./pages/admin/ManageApplicationsPage";
+import ManageStudentsPage from "./pages/admin/ManageStudentsPage";
 
 const getCurrentView = (pathname) => {
   if(pathname === '/') {
@@ -76,11 +81,11 @@ const App = () => {
         </Route>
 
         <Route path="/admin-dashboard/*" element={<AdminLayout />}>
-          <Route index element={<h2>Admin Dashboard Home</h2>} />
-          <Route path="manage-scholarships" element={<h2>Manage Scholarships</h2>}/>
-          <Route path="manage-students" element={<h2>Manage Students</h2>} />
-          <Route path="manage-applications" element={<h2>Manage Applications</h2>}/>
-          <Route path="profile" element={<h2> Profile</h2>} />
+          <Route index element={<AdminDashboardHome />} />
+          <Route path="manage-applications" element={<ManageApplicationsPage />}/>
+          <Route path="manage-scholarships" element={<ManageScholarshipSchemes />}/>
+          <Route path="manage-students" element={<ManageStudentsPage />} />
+          <Route path="profile" element={<AdminProfilePage />} />
         </Route>
       </Routes>
     </>

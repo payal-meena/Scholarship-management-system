@@ -15,7 +15,7 @@ const NavLink = ({ item, active, onClick}) => {
 
   return (
     <li key={item.key}>
-      <Link 
+      <Link  
       to={item.path}
       onClick={onClick}
       className={`flex items-center space-x-3 p-3 rounded-lg transition--colors duration-150 ${
