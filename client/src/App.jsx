@@ -19,6 +19,7 @@ import ManageScholarshipSchemes from "./pages/admin/ManageScholarshipSchemes";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import ManageApplicationsPage from "./pages/admin/ManageApplicationsPage";
 import ManageStudentsPage from "./pages/admin/ManageStudentsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const getCurrentView = (pathname) => {
   if(pathname === '/') {
@@ -73,20 +74,25 @@ const App = () => {
         <Route path="/student-signup" element={<StudentSignupPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
 
-        <Route path="/student-dashboard/*" element={<StudentLayout />}>
-          <Route path="apply" element={<ApplyScholarshipPage />} />
-          <Route path="my-applications" element={<MyApplicationsPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route index element={<ApplyScholarshipPage />} />
+        <Route element={<ProtectedRoute role="student" /> }>
+          <Route path="/student-dashboard/*" element={<StudentLayout />}>
+            <Route path="apply" element={<ApplyScholarshipPage />} />
+            <Route path="my-applications" element={<MyApplicationsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route index element={<ApplyScholarshipPage />} />
+          </Route>
         </Route>
 
-        <Route path="/admin-dashboard/*" element={<AdminLayout />}>
-          <Route index element={<AdminDashboardHome />} />
-          <Route path="manage-applications" element={<ManageApplicationsPage />}/>
-          <Route path="manage-scholarships" element={<ManageScholarshipSchemes />}/>
-          <Route path="manage-students" element={<ManageStudentsPage />} />
-          <Route path="profile" element={<AdminProfilePage />} />
+        <Route element={<ProtectedRoute role="admin" />}>
+            <Route path="/admin-dashboard/*" element={<AdminLayout />}>
+              <Route index element={<AdminDashboardHome />} />
+              <Route path="manage-applications" element={<ManageApplicationsPage />}/>
+              <Route path="manage-scholarships" element={<ManageScholarshipSchemes />}/>
+              <Route path="manage-students" element={<ManageStudentsPage />} />
+              <Route path="profile" element={<AdminProfilePage />} />
+          </Route>
         </Route>
+        
       </Routes>
     </>
   );

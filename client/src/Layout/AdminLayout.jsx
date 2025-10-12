@@ -13,7 +13,7 @@ const AdminLayout = () => {
   const activeLink = pathParts[pathParts.length - 1] || "dashboard";
 
   const handleLogout = ()=> {
-    localStorage.removeItem("adminToekn");
+    localStorage.removeItem("adminToken");
     toast.success("Logged out successfully");
     navigate("/");
   }

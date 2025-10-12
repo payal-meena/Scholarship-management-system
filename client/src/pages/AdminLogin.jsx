@@ -2,27 +2,41 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Lock } from "lucide-react";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if(!email || !password){
+      toast.error("Please fill all fields.");
+      return;
+    }
+    
     try {
+      setLoading(true);
+
       const res = await axios.post("http://localhost:4000/api/admin/login", {
         email,
         password,
       });
+
+      if(res.data.token){
       toast.success("Login Successful!");
       localStorage.setItem("adminToken", res.data.token);
-
       navigate("/admin-dashboard");
+      } else {
+        toast.error(res.data.message || "Login Failed. Check email/password.");
+      }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login Failed");
+      console.error("admin Login Error:", error);
+      toast.error(error.response?.data?.message || "Login Failed. Server or Network Error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,9 +65,10 @@ const AdminLogin = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-green-600 cursor-pointer text-white py-2 rounded-lg hover:bg-green-700"
           >
-            Login
+           {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 

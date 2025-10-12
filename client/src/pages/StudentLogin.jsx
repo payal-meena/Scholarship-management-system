@@ -34,7 +34,7 @@ export default function StudentLogin() {
 
         if(res.data.success) {
           toast.success("Login successful");
-          localStorage.setItem("stuentToken", res.data.token);
+          localStorage.setItem("studentToken", res.data.token);
           navigate("/student-dashboard");
         } else {
           toast.error(res.data.message || "Login failed");
