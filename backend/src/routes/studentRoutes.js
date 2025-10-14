@@ -7,7 +7,6 @@ const studentRouter = express.Router();
 //signup route
 studentRouter.post("/signup", async (req,res) => {
         const {name , email , password} = req.body;
-
         try {
         const studentExists = await Student .findOne({email});
         if(studentExists) return res.status(400).json({success: false, message: "Email already exists"});
