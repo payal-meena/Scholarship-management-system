@@ -1,6 +1,8 @@
 import express from "express";
 import Student from "../models/Student.js";
 import jwt from "jsonwebtoken";
+import { protect } from "../middleware/authMiddleware.js";
+
 
 const studentRouter = express.Router();
 
@@ -43,5 +45,24 @@ studentRouter.post("/login", async(req,res) => {
         
     }
 });
+
+    studentRouter.get('/me', protect, async (req,res)=> {
+        try {
+            const student = await Student.findById(req.user.id).select('-password');
+
+            if(student) {
+                res.json({
+                    success: true,
+                    name: student.name,
+                    email: student.email,
+                    studentId: student._id,
+                });
+            } else {
+                res.status(404).json({ message: 'Student record not found.'});
+            }
+        } catch (error){
+                res.status(500).json({ message: 'Server error while fetching profile.'})
+        }
+    })
 
 export default studentRouter;
