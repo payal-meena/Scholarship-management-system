@@ -3,7 +3,7 @@ import { PlusCircle, Edit, Trash2, Clock, CheckCircle } from 'lucide-react'
 import SchemeModal from './SchemeModal';
 
 const initialSchemes = [
-    {id: 1, name: 'Centreal Sector Scholarship', deadline: "2025-31-10", fundAmount: "12,000", isActive: true, criteria: { minPercentage: 80, maxIncome: 250000, minStudyYear: '1st Year'} },
+    {id: 1, name: 'Central Sector Scholarship', deadline: "2025-31-10", fundAmount: "12,000", isActive: true, criteria: { minPercentage: 80, maxIncome: 250000, minStudyYear: '1st Year'} },
     {id: 2, name: 'Post Metric Scholarship', deadline: "2025-31-12", fundAmount: "16,000", isActive: true,  criteria: { minPercentage: 50, maxIncome: 800000, minStudyYear: '2nd Year' } },
     {id: 3, name: 'Gav Ki Beti Scholarship', deadline: "2025-31-11",fundAmount: "5,000", isActive: false, criteria: { minPercentage: 60, maxIncome: 100000, minStudyYear: '1st Year' } },
 ];
