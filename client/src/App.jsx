@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route , useLocation} from "react-router-dom";
+import { Routes, Route , useLocation, Navigate} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,6 +20,7 @@ import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import ManageApplicationsPage from "./pages/admin/ManageApplicationsPage";
 import ManageStudentsPage from "./pages/admin/ManageStudentsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UnifiedLogin from "./pages/UnifiedLogin";
 
 const getCurrentView = (pathname) => {
   if(pathname === '/') {
@@ -69,10 +70,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/auth" element={<LandingPage />} />
-        <Route path="/student-login" element={<StudentLogin />} />
+        <Route path="/auth" element={<Navigate to="/student-login" replace />} />
+        <Route path="/student-login" element={<UnifiedLogin />} />
         <Route path="/student-signup" element={<StudentSignupPage />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-login" element={<UnifiedLogin />} />
 
         <Route element={<ProtectedRoute role="student" /> }>
           <Route path="/student-dashboard/*" element={<StudentLayout />}>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { LogOut, User, List, Users, Briefcase, LayoutDashboard} from "lucide-react"
 
 const navItems = [
-  {name: 'Dashboard', path: '/admin-dashboard', icon: LayoutDashboard, key: 'dashboard'},
+  {name: 'Dashboard', path: '/admin-dashboard', icon: LayoutDashboard, key: 'admin-dashboard'},
   {name: 'Manage Applications', path: '/admin-dashboard/manage-applications', icon: List, key: 'manage-applications'},
   {name: 'Manage Scholarships', path: '/admin-dashboard/manage-scholarships', icon: Briefcase, key: 'manage-scholarships'},
   {name: 'Manage Students', path: '/admin-dashboard/manage-students', icon: Users, key: 'manage-students'},
@@ -20,8 +20,8 @@ const NavLink = ({ item, active, onClick}) => {
       onClick={onClick}
       className={`flex items-center space-x-3 p-3 rounded-lg transition--colors duration-150 ${
         isActive 
-        ? 'bg-blue-600 text-white shadow-md'
-        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+        ? 'bg-indigo-600 text-white shadow-md'
+        : 'text-gray-300 hover:bg-indigo-500 hover:text-white'
       }`}
     >
       <item.icon className="w-5 h-5" />
@@ -35,8 +35,8 @@ const AdminSidebar = ({ open, setOpen, active, onLogout }) => {
     const closeSidebar = ()=> setOpen(false);
   return (
     <>
-    <div className="hidden md:flex flex-col w-64 bg-gray-800 text-white space-y-4 p-4 min-h-full">
-      <h2 className="text-xl font-extrabold text-blue-400 mt-2 mb-4 tracking-wider">Admin Menu</h2>
+    <div className="hidden md:flex flex-col w-64 bg-indigo-900 text-white space-y-4 p-4 min-h-full">
+      <h2 className="text-xl font-extrabold text-white-400 mt-2 mb-4 tracking-wider">Admin Menu</h2>
       <ul className="space-y-2 flex-1">
         {navItems.map(item => (
           <NavLink key={item.key} item={item} active={active} />
@@ -45,7 +45,7 @@ const AdminSidebar = ({ open, setOpen, active, onLogout }) => {
 
       <button
       onClick={onLogout}
-      className="flex items-center space-x-3 p-3 mt-4 text-gray-300 bg-gray-700 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150 cursor-pointer"
+      className="flex items-center space-x-3 p-3 mt-4 text-gray-300 bg-red-700 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150 cursor-pointer"
       >
         <LogOut className="w-5 h-5" />
         <span>Logout</span>
@@ -58,8 +58,8 @@ const AdminSidebar = ({ open, setOpen, active, onLogout }) => {
           onClick={closeSidebar}
           ></div>
 
-          <div className="relative w-64 bg-gray-800 text-white p-4 space-y-4 z-50 flex flex-col">
-              <h2 className="text-xl font-extrabold text-blue-400 mt-2 mb-4 tracking-wider">Admin Menu</h2>
+          <div className="relative w-64 bg-indigo-900 text-white p-4 space-y-4 z-50 flex flex-col">
+              <h2 className="text-xl font-extrabold text-white-400 mt-2 mb-4 tracking-wider">Admin Menu</h2>
               <ul className="space-y-2 flex-1">
                   {navItems.map(item => (
                     <NavLink key={item.key} item={item} active={active} onClick={closeSidebar} />
@@ -67,7 +67,7 @@ const AdminSidebar = ({ open, setOpen, active, onLogout }) => {
               </ul>
               <button
                 onClick={()=> {onLogout(); closeSidebar(); }}
-                className="flex items-center space-x-3 p-3 mt-4 text-gray-300 bg-gray-700 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150 cursor-pointer"
+                className="flex items-center space-x-3 p-3 mt-4 text-gray-300 bg-red-700 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150 cursor-pointer"
               >
                   <LogOut className="w-5 h-5" />
                   <span>Logout</span>

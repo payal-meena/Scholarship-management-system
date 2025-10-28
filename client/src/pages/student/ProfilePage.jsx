@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { User, Lock, Mail, Phone, Hash } from 'lucide-react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ProfilePage = () => {
 
@@ -15,7 +16,7 @@ const ProfilePage = () => {
             throw new Error('No authentication token found.');
           }
 
-          const response = await axios.get('http://localhost:4000/api/students/me', {
+          const response = await axios.get('http://localhost:4000/api/auth/me', {
             headers: {
               Authorization: `Bearer ${token}`,
             },

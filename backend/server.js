@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/mongoDB.js";
-import studentRoutes from "./src/routes/studentRoutes.js";
-import adminRoutes from "./src/routes/adminRoutes.js";
+import authRouter from "./src/routes/authRoutes.js";
 
 
 dotenv.config();
@@ -18,12 +17,11 @@ app.use(express.json());
 connectDB();
 
 //Routes
-app.get("/" , (Req,res) => {
+app.get("/" , (req,res) => {
     res.send("API is running...");
 });
 
-app.use("/api/students" , studentRoutes);
-app.use("/api/admin",adminRoutes);
+app.use("/api/auth" , authRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`));

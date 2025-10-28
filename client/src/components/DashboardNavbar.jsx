@@ -34,11 +34,11 @@ const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
           </div>
         </div>
 
-        <button onClick={onLogout}
+        {/* <button onClick={onLogout}
         className="hidden cursor-pointer sm:flex items-center space-x-2 text-red-600 hover:text-white hover:bg-red-600 border border-red-600 transition-colors duration-200 px-3 py-1 rounded-md">
           <LogOut className="w-4 h-4"/>
           <span className="text-sm font-semibold">Logout</span>
-        </button>
+        </button> */}
 
       </div>
     </nav>
