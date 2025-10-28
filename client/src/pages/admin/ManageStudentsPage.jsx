@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Search, Users, Eye } from 'lucide-react';
 
 const initialStudents = [
-    { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
-    { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002", applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
-    { id: 105, name: "Suresh Kumar", email: "suresh@example.com", studentId: "S2024005", applicationStatus: "Not Started", scheme: "N/A" },
-    { id: 106, name: "Anjali Verma", email: "anjali@example.com", studentId: "S2024006", applicationStatus: "Not Started", scheme: "N/A" },
-    { id: 103, name: "Mohan Das", email: "mohan@example.com", studentId: "S2024003", applicationStatus: "Reverted for Correction", scheme: "Merit Grant" },
-    { id: 104, name: "Vikram Reddy", email: "vikram@example.com", studentId: "S2024004", applicationStatus: "Application Complete", scheme: "Govt. Scheme A" },
+    { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
+    { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002",currentStudyYear: "1st Year", applicationStatus: "Application Complete", scheme: "Govt. Scheme B" }, // Add currentStudyYear property here" applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
+    { id: 105, name: "Suresh Kumar", email: "suresh@example.com", studentId: "S2024005",currentStudyYear: "3rd Year", applicationStatus: "Not Started", scheme: "N/A" },
+    { id: 106, name: "Anjali Verma", email: "anjali@example.com", studentId: "S2024006",currentStudyYear: "2nd Year", applicationStatus: "Not Started", scheme: "N/A" },
+    { id: 103, name: "Mohan Das", email: "mohan@example.com", studentId: "S2024003",currentStudyYear: "3rd Year", applicationStatus: "Reverted for Correction", scheme: "Merit Grant" },
+    { id: 104, name: "Vikram Reddy", email: "vikram@example.com", studentId: "S2024004",currentStudyYear: "4th year", applicationStatus: "Application Complete", scheme: "Govt. Scheme A" },
 ];
 
 const getStatusClasses = (status) => {
@@ -24,12 +24,14 @@ const ManageStudentsPage = () => {
     const [students, setStudents] = useState(initialStudents);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
+    const [yearFilter,setYearFilter] = useState("All");
 
     const filteredStudents = students.filter(student => {
         const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                               student.studentId.includes(searchTerm);
         const matchesStatus = statusFilter === 'All' || student.applicationStatus === statusFilter;
-        return matchesSearch && matchesStatus;
+        const matchesYear = yearFilter === 'All' || student.currentStudyYear === yearFilter;
+        return matchesSearch && matchesStatus && matchesYear;
     });
 
     const handleViewDetails = (studentId) => {
@@ -60,19 +62,33 @@ const ManageStudentsPage = () => {
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
-                    <option value="All">Filter by Status (All)</option>
+                    <option value="All">All</option>
                     <option value="Application Complete">Application Complete</option>
                     <option value="Documents Missing">Documents Missing</option>
                     <option value="Not Started">Application Not Started</option>
                     <option value="Reverted for Correction">Reverted for Correction</option>
                 </select>
+
+                <select
+                    className="md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                    value={yearFilter}
+                    onChange={(e) => setYearFilter(e.target.value)}
+                >
+                    <option value="All">All Years</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                </select>
+
             </div>
 
             <div className="overflow-x-auto bg-gray-50 rounded-lg border">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-200">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name & Email</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name & ID</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Year of Study</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Application Status</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Scheme Applied</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
@@ -84,7 +100,10 @@ const ManageStudentsPage = () => {
                                 <tr key={student.id}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {student.name} <br/>
-                                        <span className="text-gray-500 text-xs">{student.email}</span>
+                                        <span className="text-gray-500 text-xs">{student.studentId}</span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
+                                        {student.currentStudyYear || 'N/A'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
@@ -104,7 +123,7 @@ const ManageStudentsPage = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
+                                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
                                     No student records found matching your criteria.
                                 </td>
                             </tr>
@@ -112,6 +131,10 @@ const ManageStudentsPage = () => {
                     </tbody>
                 </table>
             </div>
+
+            <p className="mt-6 text-sm text-gray-700 border-t pt-3">
+                This table allows the manager to quickly filter for specific **"Year of Study"** and **"Status"** to generate university reports.
+            </p>
         </div>
     );
 };
