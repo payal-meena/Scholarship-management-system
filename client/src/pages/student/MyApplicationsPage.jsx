@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { Clock, CheckCircle, AlertTriangle, FileText, XCircle } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const userApplications = [
   {
@@ -43,6 +45,9 @@ const getStatusDetails = (status) => {
 
 const MyApplicationsPage = () => {
   const [applications, setApplications] = useState(userApplications);
+  const [loading, setLoading] = useState(true);
+
+  
   return (
     <div className='bg-white p-6 rounded-lg shadow-md mx-auto space-y-8'>
         <h2 className='text-3xl font-extrabold text-gray-800 border-b pb-3 flex items-center'>
