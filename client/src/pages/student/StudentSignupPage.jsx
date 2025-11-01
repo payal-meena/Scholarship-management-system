@@ -60,7 +60,7 @@ const StudentSignupPage = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="w-96 bg-white shadow-xl rounded-2xl p-8 text-center border-t-4 border-indigo-500">
-        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700">Student Signup</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700">Signup</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
@@ -104,14 +104,14 @@ const StudentSignupPage = () => {
         <p className="my-6 text-sm text-center text-gray-600">
           Already registered?{" "}
           <Link
-            to="/student-login"
+            to="/unified-login"
             className="text-indigo-600 font-medium hover:underline"
           >
             Login here
           </Link>
         </p>
-              <Link to="/auth" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
-                    <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Role Selection
+              <Link to="/" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-4">
+                    <ChevronLeft className='inline h-4 w-4 mr-1' /> Back to Home
                 </Link>
 
       </div>

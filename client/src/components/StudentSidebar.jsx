@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { LogOut, User, FileText, LayoutDashboard } from "lucide-react";
 
 const navItems = [
-  {name: 'Dashboard', path: '/student-dashboard', icon:LayoutDashboard , key: 'dashboard'},
+  {name: 'Dashboard', path: '/student-dashboard', icon:LayoutDashboard , key: 'student-dashboard'},
   {name: 'Apply Scholarship', path: '/student-dashboard/apply', icon:FileText , key: 'apply'},
   {name: 'My Applications', path: '/student-dashboard/my-applications', icon:FileText, key:'my-applications'},
-  {name: 'Profile', path:'/student-dashboard/profile', icon:User , key: 'profile'},
+  // {name: 'Profile', path:'/student-dashboard/profile', icon:User , key: 'profile'},
 ];
 
 const NavLink = ({ item , active , onClick }) => {

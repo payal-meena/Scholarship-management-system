@@ -1,9 +1,10 @@
 import React from "react";
 import { Menu, Bell, LogOut } from "lucide-react"; 
+import { useNavigate } from "react-router-dom";
 
 const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
   const profileImageurl = "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"
-
+  const navigate = useNavigate();
   return (
     <nav className="bg-white shadow px-4 sm:px-6 py-3 flex justify-between items-center fixed w-full z-30 border-b border-indigo-100">
         <div className="flex items-center space-x-4">
@@ -24,10 +25,16 @@ const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
           <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 rounded-full animate-pulse">3</span>
         </button>
 
-        <div className="flex items-center space-x-3 cursor-pointer group"> 
+        <div className="flex items-center space-x-3 group"> 
           <img src={profileImageurl} alt="profile"
-          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-300" />
-       
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-300 cursor-pointer" 
+          onClick={() => {
+              role === 'Student'
+                ? navigate('/student-dashboard/profile')
+                : navigate('/admin-dashboard/profile');
+            }}
+            />
+
           <div className="hidden sm:block">
                <span className="font-medium text-gray-800 text-sm">{name || 'User'}</span>
               <span className="block text-xs font-medium text-indigo-600">({role})</span>

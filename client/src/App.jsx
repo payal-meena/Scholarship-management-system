@@ -7,10 +7,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import StudentLayout from "./Layout/StudentLayout";
 import AdminLayout from "./Layout/AdminLayout";
-import LandingPage from "./pages/LandingPage";
-import StudentLogin from "./pages/student/StudentLogin";
 import StudentSignupPage from "./pages/student/StudentSignupPage";
-import AdminLogin from "./pages/admin/AdminLogin";
 import ApplyScholarshipPage from "./pages/student/ApplyScholarshipPage";
 import MyApplicationsPage from "./pages/student/MyApplicationsPage";
 import ProfilePage from "./pages/student/ProfilePage";
@@ -21,6 +18,7 @@ import ManageApplicationsPage from "./pages/admin/ManageApplicationsPage";
 import ManageStudentsPage from "./pages/admin/ManageStudentsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UnifiedLogin from "./pages/UnifiedLogin";
+import StudentDashboardHome from "./pages/student/StudentDashboardHome";
 
 const getCurrentView = (pathname) => {
   if(pathname === '/') {
@@ -70,13 +68,14 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/auth" element={<Navigate to="/student-login" replace />} />
-        <Route path="/student-login" element={<UnifiedLogin />} />
+        <Route path="/auth" element={<Navigate to="/unified-login" replace />} />
+        <Route path="/unified-login" element={<UnifiedLogin />} />
         <Route path="/student-signup" element={<StudentSignupPage />} />
-        <Route path="/admin-login" element={<UnifiedLogin />} />
+        {/* <Route path="/admin-login" element={<UnifiedLogin />} /> */}
 
         <Route element={<ProtectedRoute role="student" /> }>
           <Route path="/student-dashboard/*" element={<StudentLayout />}>
+            <Route index element={<StudentDashboardHome />} />
             <Route path="apply" element={<ApplyScholarshipPage />} />
             <Route path="my-applications" element={<MyApplicationsPage />} />
             <Route path="profile" element={<ProfilePage />} />

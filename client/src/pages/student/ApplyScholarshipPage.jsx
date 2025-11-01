@@ -67,7 +67,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
     e.preventDefault();
 
     const requiredFields = [
-      "fullname",
+      "fullName",
       "dob",
       "contactNo",
       "currentCourse",
@@ -101,15 +101,32 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
     }
 
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    
+    const formPayload = new FormData();
+    Object.keys(formData).forEach(key => {
+      if(formData[key] !== null && formData[key] !== undefined) {
+        formPayload.append(key, formData[key]);
+      }
+    });
+    formPayload.append("schemeId", scheme.id);
 
-    onFormSubmit(scheme.id, formData);
+    try{
+      const token = localStorage.getItem('studentToken');
+      const res = await Axis3DIcon.post("http://localhost:4000/api/students/apply", formPayload, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
-    setIsLoading(false);
-    toast.success(
-      "Application submitted successfully! Status is 'Pending Review'."
-    );
-  };
+      if(res.status === 201) {
+        onFormSubmit(scheme.id, res.data.application);
+      }
+    } catch (error) {
+      console.error("Application Submission Error:", error);
+      toast.error(error.response?.data?.message || "Submission failed. Server error.");
+    } finally {
+      setIsLoading(false);
+    }
 
   const FileStatus = ({ file }) => (
     <span
@@ -187,7 +204,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
               </label>
               <input
                 type="tel"
-                name="contactno"
+                name="contactNo"
                 value={formData.contactNo}
                 onChange={handleChange}
                 required
@@ -385,5 +402,6 @@ const ApplyScholarshipPage = () => {
     </div>
   );
 };
+}
 
 export default ApplyScholarshipPage;

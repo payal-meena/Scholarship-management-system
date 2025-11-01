@@ -3,10 +3,10 @@ import { User, Lock, Mail} from 'lucide-react'
 
 const AdminProfilePage = () => {
   return (
-    <div className='p-6 bg-white rounded-xl shadow-lg max-w-2xl mx-auto'>
+    <div className='p-6 bg-white rounded-xl shadow-lg mx-auto'>
         <h1 className='text-3xl font-extrabold text-gray-800 mb-6 border-b pb-2'>Admin Profile Settigs</h1>
 
-        <div className='space-y-6'>
+        <div className='space-y-6'> 
             <div className='p-4 border border-gray-200 rounded-lg'>
                 <h2 className='text-xl font-semibold mb-3 flex items-center space-x-2 text-indigo-600'>
                     <User className='w-5 h-5'/> <span>Personal Details</span>

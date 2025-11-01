@@ -7,7 +7,7 @@ const navItems = [
   {name: 'Manage Applications', path: '/admin-dashboard/manage-applications', icon: List, key: 'manage-applications'},
   {name: 'Manage Scholarships', path: '/admin-dashboard/manage-scholarships', icon: Briefcase, key: 'manage-scholarships'},
   {name: 'Manage Students', path: '/admin-dashboard/manage-students', icon: Users, key: 'manage-students'},
-  {name: 'Profile', path: '/admin-dashboard/profile', icon: User, key: 'profile'},
+  // {name: 'Profile', path: '/admin-dashboard/profile', icon: User, key: 'profile'},
 ];
 
 const NavLink = ({ item, active, onClick}) => {

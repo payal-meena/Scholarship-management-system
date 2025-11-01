@@ -35,7 +35,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
             </span>
           </Link>
 
-          {isHomePage && (
+          {/* {isHomePage && (
             <div className="hidden md:flex md:space-x-8 items-center">
             {navItems.map((item) => (
               <a
@@ -48,7 +48,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
               </a>
             ))}
             </div>
-          )}
+          )} */}
 
           <div className="flex items-center">
             <Link
@@ -93,7 +93,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
           </div>
           </div>
               
-                {isHomePage && (
+                {/* {isHomePage && (
                   <div 
                     className={`md:hidden transition-all duration-300 ease-in-out ${
                       isOpen ? 'max-h-96 opacity-100 py-2' : 'max-h-0 opacity-0 overflow-hidden'
@@ -122,6 +122,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
                       </div>
                    </div>
                 )}
+           */}
     </nav>
   );
 };

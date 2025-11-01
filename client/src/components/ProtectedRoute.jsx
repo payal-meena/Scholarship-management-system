@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 const ProtectedRoute = ({ role }) => {
     const tokenKey = role === 'admin' ? 'adminToken' : 'studentToken';
-    const loginPath = role === 'admin' ? '/admin-login' : '/student-login';
+    const loginPath = role === 'admin' ? '/unified-login' : '/unified-login';
 
     const token = localStorage.getItem(tokenKey);
 
