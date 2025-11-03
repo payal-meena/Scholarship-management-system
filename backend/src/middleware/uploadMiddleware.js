@@ -1,12 +1,12 @@
 import multer from 'multer';
 import path from 'path';
-import fd from 'fs';
+import fs  from 'fs';
 import { application } from 'express';
 
 const uploadDir = path.resolve('uploads');
 
-if(!fstat.existSync(uploadDir)) {
-    fstat.mkdirSync(uploadDir, { recursive: true });
+if(!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({

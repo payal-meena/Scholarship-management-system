@@ -1,11 +1,12 @@
 import React , {useState} from "react";
 import { toast } from "react-toastify";
 import { User, BookOpen, DollarSign, UploadCloud, Send } from "lucide-react";
+import axios from "axios";
 
 const availableSchemes = [
-  { id: 1, name: "Central Sector 2025-26", deadline: "2025-10-31" },
-  { id: 2, name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
-  { id: 3, name: "Gav Ki Beti Scholarship 2025-26", deadline: "2026-01-31" },
+  { id: '654a8b79f3d9d3002f2329e1', name: "Central Sector 2025-26", deadline: "2025-10-31" },
+  { id: '654a8b79f3d9d3002f2329e2', name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
+  { id: '654a8b79f3d9d3002f2329e3', name: "Gav Ki Beti Scholarship 2025-26", deadline: "2026-01-31" },
 ];
 
 const getCurrentAcademicYear = () => {
@@ -103,6 +104,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
     setIsLoading(true);
     
     const formPayload = new FormData();
+
     Object.keys(formData).forEach(key => {
       if(formData[key] !== null && formData[key] !== undefined) {
         formPayload.append(key, formData[key]);
@@ -112,13 +114,14 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
 
     try{
       const token = localStorage.getItem('studentToken');
-      const res = await Axis3DIcon.post("http://localhost:4000/api/students/apply", formPayload, {
+      const res = await axios.post("http://localhost:4000/api/students/apply", formPayload, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
 
       if(res.status === 201) {
+        toast.success("Application submitted successfully! Status: Pending Review.");
         onFormSubmit(scheme.id, res.data.application);
       }
     } catch (error) {
@@ -127,7 +130,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
     } finally {
       setIsLoading(false);
     }
-
+  };
   const FileStatus = ({ file }) => (
     <span
       className={`text-xs font-semibod px-2 py-1 rounded-full ${
@@ -252,7 +255,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700">12th percentage *</label>
-                    <input type="number" name="twelve_perc" value={formData.twelve_perc} onChange={handleChange} rquired step="0.01" max="100"
+                    <input type="number" name="twelve_perc" value={formData.twelve_perc} onChange={handleChange} required step="0.01" max="100"
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
                 </div>
                 <div className="col-span-2 sm:col-span-1">
@@ -316,7 +319,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
                   { label: "Passport Size Photo (JPG/PNG only) *", name: "photoFile", accept: ".jpg,.jpeg,.png" },
                   { label: "Aadhaar Card *", name: "aadharFile", accept: ".pdf" },
                   { label: "Bank Passbook (First Page) *", name: "bankPassbookFile", accept: ".pdf" },
-                  { label: "Latest Annual Income Proof *", name: "incomeProofFile", accept: ".pdf" },
+                  { label: "Latest Annual Income Proof *", name: "incomeCertificateFile", accept: ".pdf" },
               ].map((item) => (
                   <div key={item.name} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border rounded-md bg-white">
                       <label className="text-sm font-medium text-gray-700">{item.label}</label>
@@ -327,8 +330,8 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
               ))}
               
               {[
-                  { label: "Caste Certificate *", name: "casteCertFile", accept: ".pdf" },
-                  { label: "Domicile Certificate (Niwasi Praman Patra) *", name: "domicileCertFile", accept: ".pdf" },
+                  { label: "Caste Certificate *", name: "casteCertificateFile", accept: ".pdf" },
+                  { label: "Domicile Certificate (Niwasi Praman Patra) *", name: "domicileCertificateFile", accept: ".pdf" },
               ].map((item) => (
                   <div key={item.name} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border rounded-md bg-white">
                       <label className="text-sm font-medium text-gray-700">{item.label}</label>
@@ -339,7 +342,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
               ))}
 
               {[
-                  { label: "10th Marksheet *", name: "tenMarksheetFile", accept: ".pdf" },
+                  { label: "10th Marksheet *", name: "tenthMarksheetFile", accept: ".pdf" },
                   { label: "12th Marksheet *", name: "twelveMarksheetFile", accept: ".pdf" },
                   { label: "Last Year's Marksheet (Current Course) *", name: "lastYearMarksheetFile", accept: ".pdf" },
               ].map((item) => (
@@ -402,6 +405,6 @@ const ApplyScholarshipPage = () => {
     </div>
   );
 };
-}
+
 
 export default ApplyScholarshipPage;
