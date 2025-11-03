@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Users, Eye } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
 
 // const initialStudents = [
 //     { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
@@ -54,18 +53,23 @@ const ManageStudentsPage = () => {
     }, []);
 
     const filteredStudents = students.filter(student => {
+
+        const name = student.name || '';
+        const id = student.studentId || '';
+
         const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                               student.studentId.includes(searchTerm);
         const matchesStatus = statusFilter === 'All' || student.applicationStatus === statusFilter;
         const matchesYear = yearFilter === 'All' || student.currentStudyYear === yearFilter;
+       
         return matchesSearch && matchesStatus && matchesYear;
     });
 
     if(loading) {
-        return <div className='p-8 text-center'>Loading student data...</div>
+        return <div className='p-8 text-center'>Loading student records fro tracking...</div>;
     }
     const handleViewDetails = (studentId) => {
-        alert(`Viewing complete details for Student ID: ${studentId}`);
+        alert(`Viewing complete record for Student ID: ${studentId}.`);
     };
 
     return (
@@ -129,15 +133,15 @@ const ManageStudentsPage = () => {
                             filteredStudents.map((student) => (
                                 <tr key={student.id}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {student.name} <br/>
-                                        <span className="text-gray-500 text-xs">{student.studentId}</span>
+                                        {student.name || 'N/A'} <br/>
+                                        <span className="text-gray-500 text-xs">{student.email || 'N/A'}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
                                         {student.currentStudyYear || 'N/A'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
-                                            {student.applicationStatus}
+                                            {student.applicationStatus || 'N/A'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.scheme || 'N/A'}</td>
@@ -163,8 +167,7 @@ const ManageStudentsPage = () => {
             </div>
 
             <p className="mt-6 text-sm text-gray-700 border-t pt-3">
-                This table allows the manager to quickly filter for specific **"Year of Study"** and **"Status"** to generate university reports.
-            </p>
+                    This table now fetches live data and filters by status and year for university reporting.               </p>
         </div>
     );
 };

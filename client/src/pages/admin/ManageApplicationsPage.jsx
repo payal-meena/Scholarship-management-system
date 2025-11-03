@@ -76,6 +76,7 @@ const ManageApplicationsPage = () => {
           },
         });
         setApplications(response.data);
+
        } catch (error) {
         console.error("Error fetching applications:", error);
         toast.error(error.response?.data?.message || "Failed to load application data.");
@@ -86,13 +87,18 @@ const ManageApplicationsPage = () => {
       fetchApplications();
     }, []);
 
-  const filteredApplications = applications.filter((app) => {
-    const matchesSearch =
-      app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.studentId.includes(searchTerm);
-    const matchesStatus = statusFilter === "All" || app.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+    const filteredApplications = applications.filter(app => {
+
+      const studentName = app.studentName || '';
+      const studentId = app.studentId || '';
+
+      const matchesSearch = studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      studentId.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
 
   const handleUpdateStatus = (appId, newStatus, feedback) => {
       setApplications(prevApps => 

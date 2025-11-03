@@ -1,32 +1,70 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import { PlusCircle, Edit, Trash2, Clock, CheckCircle } from 'lucide-react'
 import SchemeModal from './SchemeModal';
+import { toast } from 'react-toastify';
 
-const initialSchemes = [
-    {id: 1, name: 'Central Sector Scholarship', deadline: "2025-31-10", fundAmount: "12,000", isActive: true, criteria: { minPercentage: 80, maxIncome: 250000, minStudyYear: '1st Year'} },
-    {id: 2, name: 'Post Metric Scholarship', deadline: "2025-31-12", fundAmount: "16,000", isActive: true,  criteria: { minPercentage: 50, maxIncome: 800000, minStudyYear: '2nd Year' } },
-    {id: 3, name: 'Gav Ki Beti Scholarship', deadline: "2025-31-11",fundAmount: "5,000", isActive: false, criteria: { minPercentage: 60, maxIncome: 100000, minStudyYear: '1st Year' } },
-];
+// const initialSchemes = [
+//     {id: 1, name: 'Central Sector Scholarship', deadline: "2025-31-10", fundAmount: "12,000", isActive: true, criteria: { minPercentage: 80, maxIncome: 250000, minStudyYear: '1st Year'} },
+//     {id: 2, name: 'Post Metric Scholarship', deadline: "2025-31-12", fundAmount: "16,000", isActive: true,  criteria: { minPercentage: 50, maxIncome: 800000, minStudyYear: '2nd Year' } },
+//     {id: 3, name: 'Gav Ki Beti Scholarship', deadline: "2025-31-11",fundAmount: "5,000", isActive: false, criteria: { minPercentage: 60, maxIncome: 100000, minStudyYear: '1st Year' } },
+// ];
 
 const ManageScholarshipSchemes = () => {
-    const [schemes,setSchemes] = useState(initialSchemes);
+    const [schemes,setSchemes] = useState([]);
+    const [loading,setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schemeToEdit, setSchemeToEdit] = useState(null);
 
-    const handleSave = (newSchemeData) => {
-        if(newSchemeData.id) {
-            setSchemes(schemes.map(s => s.id === newSchemeData.id ? newSchemeData : s));
-        } else {
-            const newId = Math.max(...schemes.map(s => s.id)) + 1;
-            setSchemes([...schemes, { ...newSchemeData, id: newId }]);
+    const fetchSchemes = async () => {
+        try {
+            const token = localStorage.getItem('adminToken');
+            const response = await axios.get('http://localhost:4000/api/admin/schemes', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setSchemes(response.data);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to fetch schemes.");
+        } finally {
+            setLoading(false);
         }
-        setIsModalOpen(false);
-        setSchemeToEdit(null);
     };
 
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this scheme?")) {
-            setSchemes(schemes.filter(s => s.id !== id));
+    useEffect(() => {
+        fetchSchemes();
+    },[]);
+
+
+    const handleSave = async (schemeData) => {
+        try {
+            const token = localStorage.getItem('adminToken');
+            const method = schemeData.id ? 'put' : 'post';
+            const url = schemeData.id ? `http://localhost:4000/api/admin/schemes/${schemeData.id}` : "http://localhost:4000/api/admin/schemes";
+
+            const res = await axios({ method, url, data: schemeData, headers: { Authorization: `Bearer ${token}`} });
+
+            toast.success(schemeData.id ? 'Scheme updated successfully!' : 'Scheme created successfully!');
+            fetchSchemes();
+            setIsModalOpen(false);
+            setSchemeToEdit(null);
+
+        } catch (error) {
+            toFormData.error(error.response?.data?.message || 'Failed to save scheme data.');
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if(window.confirm('Are you sure you want to delete this scheme? This cannot be undone.')) {
+            try {
+                const token = localStorage.getItem('adminToken');
+                await axios.delete(`http://localhost:4000/api/admin/schemes/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+                toast.success('Scheme deleted!');
+                fetchSchemes();
+            } catch (error) {
+                toast.error('Failed to delete scheme.');
+            }
         }
     };
 
@@ -34,6 +72,10 @@ const ManageScholarshipSchemes = () => {
         setSchemeToEdit(scheme);
         setIsModalOpen(true);
     };
+
+    if(loading) {
+        return <div className='p-8 text-center'>Loading scholarship schemes...</div>
+    }
 
   return (
     <div className='p-6 bg-white rounded-xl shadow-lg'>
@@ -96,7 +138,7 @@ const ManageScholarshipSchemes = () => {
             />
         )}
     </div>
-  )
-}
+  );
+};
 
 export default ManageScholarshipSchemes

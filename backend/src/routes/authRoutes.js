@@ -4,10 +4,6 @@ import jwt from "jsonwebtoken";
 import Student from "../models/Student.js";
 import Admin from "../models/Admin.js";
 import { protect } from "../middleware/authMiddleware.js";
-import applicationUploads from "../middleware/uploadMiddleware.js";
-import Application from "../models/Application.js";
-import StudentProfile from "../models/StudentProfile.js";
-
 
 
 
