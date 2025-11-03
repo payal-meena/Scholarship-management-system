@@ -1,45 +1,47 @@
-import React, { useState } from "react";
-import { Search, Users } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Search, Users, CheckCircle, XCircle } from "lucide-react";
 import ApplicationDetailModal from "./ApplicationDetailModal";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
-const initialApplications = [
-  {
-    id: 101,
-    name: "Rahul Sharma",
-    studentId: "S2024001",
-    scheme: "Post metric Scholarship",
-    status: "Pending Review",
-    documents: "Incomplete",
-    date: "2025-09-28",
-  },
-  {
-    id: 102,
-    name: "Priya Singh",
-    studentId: "S2024002",
-    scheme: "Central Sector Scholarship",
-    status: "Approved",
-    documents: "Verified",
-    date: "2025-09-29",
-  },
-  {
-    id: 103,
-    name: "Mohan Das",
-    studentId: "S2024003",
-    scheme: "Post metric Scholarship",
-    status: "Reverted for Correction",
-    documents: "Incorrect Income Proof",
-    date: "2025-09-30",
-  },
-  {
-    id: 104,
-    name: "Anjali Verma",
-    studentId: "S2024004",
-    scheme: "Gav Ki Beti Scholarship",
-    status: "Documents Missing",
-    documents: "N/A",
-    date: "2025-10-01",
-  },
-];
+// const initialApplications = [
+//   {
+//     id: 101,
+//     name: "Rahul Sharma",
+//     studentId: "S2024001",
+//     scheme: "Post metric Scholarship",
+//     status: "Pending Review",
+//     documents: "Incomplete",
+//     date: "2025-09-28",
+//   },
+//   {
+//     id: 102,
+//     name: "Priya Singh",
+//     studentId: "S2024002",
+//     scheme: "Central Sector Scholarship",
+//     status: "Approved",
+//     documents: "Verified",
+//     date: "2025-09-29",
+//   },
+//   {
+//     id: 103,
+//     name: "Mohan Das",
+//     studentId: "S2024003",
+//     scheme: "Post metric Scholarship",
+//     status: "Reverted for Correction",
+//     documents: "Incorrect Income Proof",
+//     date: "2025-09-30",
+//   },
+//   {
+//     id: 104,
+//     name: "Anjali Verma",
+//     studentId: "S2024004",
+//     scheme: "Gav Ki Beti Scholarship",
+//     status: "Documents Missing",
+//     documents: "N/A",
+//     date: "2025-10-01",
+//   },
+// ];
 
 const getStatusClasses = (status) => {
   switch (status) {
@@ -55,11 +57,34 @@ const getStatusClasses = (status) => {
 };
 
 const ManageApplicationsPage = () => {
-  const [applications, setApplications] = useState(initialApplications);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState("All");
 
   const [selectedApplication, setSelectedApplication] = useState(null);
+  
+    useEffect(() => {
+      const fetchApplications = async () => {
+       try {
+        const token = localStorage.getItem('adminToken');
+        if (!token) throw new Error('Authentication required.');
+
+        const response = await axios.get('http://localhost:4000/api/admin/applications', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setApplications(response.data);
+       } catch (error) {
+        console.error("Error fetching applications:", error);
+        toast.error(error.response?.data?.message || "Failed to load application data.");
+       } finally {
+        setLoading(false);
+       }
+      };
+      fetchApplications();
+    }, []);
 
   const filteredApplications = applications.filter((app) => {
     const matchesSearch =
@@ -80,8 +105,13 @@ const ManageApplicationsPage = () => {
              : app
         )
       );
-      console.log(`Succesfully updated ID ${appId} to ${newStatus}. Feedback: ${feedback}`);
+      setSelectedApplication(null);
+      toast.success(`Application ID ${appId} status updated to ${newStatus}.`);
   };
+
+  if (loading) {
+    return <div className="p-8 text-center">Loading applications data...</div>
+  }
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg">
@@ -130,6 +160,9 @@ const ManageApplicationsPage = () => {
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Eligibility
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Document Note
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -159,6 +192,19 @@ const ManageApplicationsPage = () => {
                       {app.status}
                     </span>
                   </td>
+
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {app.isEligible ? (
+                          <span className="text-green-600 font-bold flex items-center">
+                              <CheckCircle className="w-4 h-4 mr-1"/> Eligible
+                          </span>
+                      ) : (
+                          <span className="text-red-600 font-bold flex items-center">
+                              <XCircle className="w-4 h-4 mr-1"/> Not Eligible
+                          </span>
+                      )}
+                  </td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {app.documents}
                   </td>

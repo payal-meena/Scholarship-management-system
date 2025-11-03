@@ -47,12 +47,12 @@ const applicationSchema = new mongoose.Schema({
         photoFile: { type: String, required: true },          
         aadharFile: { type: String, required: true },
         bankPassbookFile: { type: String, required: true },
-        incomeProofFile: { type: String, required: true }, 
+        incomeCertificateFile: { type: String, required: true }, 
         
-        casteCertFile: { type: String, required: true }, 
-        domicileCertFile: { type: String, required: true },
+        casteCertificateFile: { type: String, required: true }, 
+        domicileCertificateFile: { type: String, required: true },
 
-        tenMarksheetFile: { type: String, required: true },  
+        tenthMarksheetFile: { type: String, required: true },  
         twelveMarksheetFile: { type: String, required: true }, 
         lastYearMarksheetFile: { type: String, required: true },
     },
