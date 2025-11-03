@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Search, Users, Eye } from 'lucide-react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
-const initialStudents = [
-    { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
-    { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002",currentStudyYear: "1st Year", applicationStatus: "Application Complete", scheme: "Govt. Scheme B" }, // Add currentStudyYear property here" applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
-    { id: 105, name: "Suresh Kumar", email: "suresh@example.com", studentId: "S2024005",currentStudyYear: "3rd Year", applicationStatus: "Not Started", scheme: "N/A" },
-    { id: 106, name: "Anjali Verma", email: "anjali@example.com", studentId: "S2024006",currentStudyYear: "2nd Year", applicationStatus: "Not Started", scheme: "N/A" },
-    { id: 103, name: "Mohan Das", email: "mohan@example.com", studentId: "S2024003",currentStudyYear: "3rd Year", applicationStatus: "Reverted for Correction", scheme: "Merit Grant" },
-    { id: 104, name: "Vikram Reddy", email: "vikram@example.com", studentId: "S2024004",currentStudyYear: "4th year", applicationStatus: "Application Complete", scheme: "Govt. Scheme A" },
-];
+// const initialStudents = [
+//     { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
+//     { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002",currentStudyYear: "1st Year", applicationStatus: "Application Complete", scheme: "Govt. Scheme B" }, // Add currentStudyYear property here" applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
+//     { id: 105, name: "Suresh Kumar", email: "suresh@example.com", studentId: "S2024005",currentStudyYear: "3rd Year", applicationStatus: "Not Started", scheme: "N/A" },
+//     { id: 106, name: "Anjali Verma", email: "anjali@example.com", studentId: "S2024006",currentStudyYear: "2nd Year", applicationStatus: "Not Started", scheme: "N/A" },
+//     { id: 103, name: "Mohan Das", email: "mohan@example.com", studentId: "S2024003",currentStudyYear: "3rd Year", applicationStatus: "Reverted for Correction", scheme: "Merit Grant" },
+//     { id: 104, name: "Vikram Reddy", email: "vikram@example.com", studentId: "S2024004",currentStudyYear: "4th year", applicationStatus: "Application Complete", scheme: "Govt. Scheme A" },
+// ];
 
 const getStatusClasses = (status) => {
     switch (status) {
@@ -21,10 +24,34 @@ const getStatusClasses = (status) => {
 };
 
 const ManageStudentsPage = () => {
-    const [students, setStudents] = useState(initialStudents);
+    const [students, setStudents] = useState([]);
+    const [loading,setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [yearFilter,setYearFilter] = useState("All");
+
+    useEffect(() => {
+        const fetchAllStudents = async () => {
+            try {
+                const token = localStorage.getItem('adminToken');
+                if (!token) throw new Error('Admin authentication required.');
+
+                const response = await axios.get('http://localhost:4000/api/admin/students', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                setStudents(response.data);
+            } catch (error) {
+                console.error("Error fetching student list:", error);
+                toast.error(error.response?.data?.message || "Failed to load student records.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAllStudents();
+    }, []);
 
     const filteredStudents = students.filter(student => {
         const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -34,6 +61,9 @@ const ManageStudentsPage = () => {
         return matchesSearch && matchesStatus && matchesYear;
     });
 
+    if(loading) {
+        return <div className='p-8 text-center'>Loading student data...</div>
+    }
     const handleViewDetails = (studentId) => {
         alert(`Viewing complete details for Student ID: ${studentId}`);
     };
