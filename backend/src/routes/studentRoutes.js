@@ -43,7 +43,7 @@ studentRouter.post("/signup", async (req,res) => {
     //     }
     // })
 
-    studentRouter.post('/apply', protect, applicationUploads, async (req,res) => {
+studentRouter.post('/apply', protect, applicationUploads, async (req,res) => {
         try{
             const studentId = req.user.id;
             const { body } = req;
@@ -107,6 +107,57 @@ studentRouter.post("/signup", async (req,res) => {
                     console.error('Application submission failed:', error);
                     res.status(500).json({ message: 'Application submission failed due to a server error.'});
                 }
-        });
+});
+
+studentRouter.put('/appyly/:id', protect, applicationUploads, async (req,res) => {
+    try {
+        const studentId = req.user.id;
+        const applicationId = req.params.id;
+        const { body } = req;
+        const files = req.files;
+
+        const application = await Application.findById(applicationId);
+
+        if(!application) {
+            return res.status(404).json({ message: "Application not found for update."});
+        } 
+
+        if(application.student.toString() !== studentId.toString()) {
+            return res.status(403).json({ message: "Unauthorized: You cannot edit this application."});
+        }
+
+        const documentPaths = application.documentPaths || {};
+        for(const key in files) {
+            documentPaths[key] = files[key][0].path;
+        }
+
+        const updateData = {
+
+            'personalData.fullName': body.fullName,
+            'personalData.contactNo': body.contactNo,
+
+            'academicData.cgpa': parseFloat(body.cgpa),
+            'financialData.income': parseFloat(body.income),
+
+            documentPaths: documentPaths,
+
+            status: 'Pending Review',
+            adminFeedback: 'Resubmitted for review.',
+            updatedAt: new Date(),
+        };
+
+        const updatedApplication = await Application.findByIdAndUpdate(
+            applicationId,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+
+        res.status(200).json({ message: 'Application successfully updated and submitted for review.', application: updatedApplication });
+    } catch (error) {
+        console.error('Application re-submission failed:', error);
+        res.status(500).json({ message: 'Res-submission failed due to a server error.'});
+        
+    }
+});
 
 export default studentRouter;
