@@ -22,7 +22,7 @@ const getStatusClasses = (status) => {
     }
 };
 
-const ManageStudentsPage = () => {
+const ManageStudentsPage = () => { 
     const [students, setStudents] = useState([]);
     const [loading,setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
