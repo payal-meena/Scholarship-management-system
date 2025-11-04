@@ -34,13 +34,25 @@ adminRouter.post("/signup",async(req,res)=> {
 
 adminRouter.get('/students', protect , adminOnly, async (req,res) => {
     try{
-        const studentsData = await StudentProfile.find({})
+        const { year, status } = req.query;
+
+        const filter = {};
+
+        if(year && year !== 'All') {
+            filter.currentStudyYear = year;
+        }
+
+        if(status && status !== 'All') {
+            filter.applicationStatus = status;
+        }
+        
+        const studentsData = await StudentProfile.find(filter)
             .populate('student', 'name email');
 
             if (!studentsData || studentsData.length === 0) {
                 return res.json([]);            }
 
-            const formattedData = studentsData.map(profile =>{
+            const formattedData = studentsData.map(profile => {
 
                 if(!profile.student) {
                     return null;

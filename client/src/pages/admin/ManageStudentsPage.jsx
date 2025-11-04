@@ -35,7 +35,14 @@ const ManageStudentsPage = () => {
                 const token = localStorage.getItem('adminToken');
                 if (!token) throw new Error('Admin authentication required.');
 
-                const response = await axios.get('http://localhost:4000/api/admin/students', {
+                const queryParams = new URLSearchParams({
+                    year: yearFilter,
+                    status: statusFilter,
+                }).toString();
+
+                const url = `http://localhost:4000/api/admin/students?${queryParams}`;
+
+                const response = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -94,7 +101,9 @@ const ManageStudentsPage = () => {
                 <select
                     className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
                     value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
+                    onChange={(e) => {
+                        setLoading(true);
+                        setStatusFilter(e.target.value)}}
                 >
                     <option value="All">All</option>
                     <option value="Application Complete">Application Complete</option>
@@ -106,7 +115,9 @@ const ManageStudentsPage = () => {
                 <select
                     className="md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
                     value={yearFilter}
-                    onChange={(e) => setYearFilter(e.target.value)}
+                    onChange={(e) => {
+                        setLoading(true);
+                        setYearFilter(e.target.value)}}
                 >
                     <option value="All">All Years</option>
                     <option value="1st Year">1st Year</option>
