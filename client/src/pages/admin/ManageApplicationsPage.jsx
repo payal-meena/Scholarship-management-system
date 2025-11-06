@@ -177,7 +177,7 @@ const ManageApplicationsPage = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredApplications.length > 0 &&  
+            {filteredApplications.length > 0 ? (
               filteredApplications.map((app) => (
                 <tr key={app.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -223,7 +223,15 @@ const ManageApplicationsPage = () => {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )) 
+            )  : (
+                  <tr>
+                      <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                          No application found.
+                      </td>
+                  </tr>
+                 )
+              }
           </tbody>
         </table>
       </div>

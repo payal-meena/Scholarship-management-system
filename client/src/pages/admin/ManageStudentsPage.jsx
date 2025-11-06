@@ -64,8 +64,8 @@ const ManageStudentsPage = () => {
         const name = student.name || '';
         const id = student.studentId || '';
 
-        const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                              student.studentId.includes(searchTerm);
+        const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              id.includes(searchTerm);
         const matchesStatus = statusFilter === 'All' || student.applicationStatus === statusFilter;
         const matchesYear = yearFilter === 'All' || student.currentStudyYear === yearFilter;
        
