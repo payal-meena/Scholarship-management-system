@@ -3,14 +3,22 @@ import { toast } from 'react-toastify';
 import { X, Save, PlusCircle } from 'lucide-react';
 
 const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
-    const initialState = schemeToEdit || {
+    const initialState = schemeToEdit ? {
+        ...schemeToEdit,
+        fundAmount: schemeToEdit.fundAmount || 0,
+        criteria: {
+            ...schemeToEdit.criteria,
+            minPercentage: schemeToEdit.criteria.minPercentage || 0,
+            maxIncome: schemeToEdit.criteria.maxIncome || 0,
+        }
+    } : {
         name: '',
         deadline: '',
-        fundAmount: '',
+        fundAmount: 0, 
         isActive: true,
         criteria: {
-            minPercentage: '',
-            maxIncome: '',
+            minPercentage: 0,
+            maxIncome: 0,
             minStudyYear: '1st Year',
         }
     };
@@ -19,11 +27,12 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if(name in formData.criteria) {
+        if(name === 'minPercentage' || name === 'maxIncome' || name === 'minStudyYear') {
             setFormData(prev => ({
                 ...prev,
                 criteria: {
-                    ...prev, [name]: value 
+                    ...prev.criteria,
+                    [name]: value
                 }
             }));
         } else {
@@ -33,16 +42,32 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
-        if(!formData.name || !formData.deadline || !formData.fundAmount || !formData.criteria.minPercentage ) {
-            toast.error("Please fill all scheme details and criteria.");
+        const fundAmountValue = formData.fundAmount;
+        const minPercValue = formData.criteria.minPercentage;
+        const maxIncomeValue = formData.criteria.maxIncome;
+
+    const dataToSend = {
+        ...formData,
+        fundAmount: fundAmountValue ? Number(fundAmountValue) : null, 
+        
+        criteria: {
+            ...formData.criteria,
+            minPercentage: minPercValue ? Number(minPercValue) : null, 
+            maxIncome: maxIncomeValue ? Number(maxIncomeValue) : null, 
+        }
+    };
+    
+   if (!dataToSend.name || !dataToSend.deadline || dataToSend.fundAmount <= 0) {
+            alert("Scheme Name, Deadline, and Fund Amount must be filled with valid values.");
+            setIsLoading(false);
             return;
         }
-        setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve,1000));
-
-        onSave(formData);
+        
+        onSave(dataToSend);
         setIsLoading(false);
+        onClose();
     };
 
     return (
@@ -70,7 +95,7 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Deadline</label>
-                                <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} required
+                                <input type="date" name="deadline" value={formData.deadline ? formData.deadline.substring(0,10) : ''}  onChange={handleChange} required
                                     className="mt-1 w-full border rounded-md p-2" />
                             </div>
                             <div>
@@ -86,7 +111,7 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Minimum Percentage</label>
-                                <input type="number" name="minPercentage" value={formData.criteria.minPercentage} onChange={handleChange} required step="0.01"
+                                <input type="number" name="minPercentage" value={formData.criteria.minPercentage} onChange={handleChange} step="0.01"
                                     className="mt-1 w-full border rounded-md p-2" />
                             </div>
                             <div>

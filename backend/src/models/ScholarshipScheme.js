@@ -6,9 +6,12 @@ const schemeSchema = new mongoose.Schema({
     fundAmount: {type: Number, required: true},
     isActive: { type: Boolean, default: true },
     criteria: {
-        minPercentage: { type: Number, required: true },
-        maxIncome: { type: Number, required: true },
-        minStudyYear: { type: String },
+        type : new mongoose.Schema({
+             minPercentage: { type: Number, min: 0 },
+            maxIncome: { type: Number, required: true },
+            minStudyYear: { type: String },
+        }, {_id: false}),
+        required: true
     },
 }, { timestamps: true });
 

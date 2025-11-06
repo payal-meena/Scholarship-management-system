@@ -138,7 +138,7 @@ adminRouter.post('/schemes', protect, adminOnly, async (req,res) => {
     try {
         const { name, deadline, fundAmount, isActive, criteria } = req.body;
 
-        if (!name || !deadline || !fundAmount || !criteria || !criteria.minCGPA) {
+        if (!name || !deadline || !fundAmount || !criteria ) {
             return res.status(400).json({ message: 'Please provide all required scheme details and criteria.'});
         }
 
@@ -167,6 +167,44 @@ adminRouter.get('/schemes', protect, adminOnly, async (req,res) => {
     } catch (error) {
         console.error('Error fetching schemes:', error);
         res.status(500).json({ message: 'Server error retrieving schemes list.'})
+    }
+});
+
+adminRouter.put('/schemes/:id', protect, adminOnly, async (req,res) => {
+    try {
+        const schemeId = req.params.id;
+        const updatedData = req.body;
+
+        const updatedScheme = await ScholarshipScheme.findByIdAndUpdate(
+            schemeId,
+            { $set: updatedData },
+            { new: true, runValidators: true }
+        );
+
+        if(!updatedScheme) {
+            return res.status(404).json({ message: 'Scholarship scheme not found.'});
+        }
+        res.json({ message: 'Scheme updated successfully', scheme: updatedScheme});
+    } catch (error) {
+        console.error('Error updating scheme:', error);
+        res.status(400).json({ message: 'Invalid ID or data format for update.'});
+    }
+});
+
+adminRouter.delete('/schemes/:id', protect, adminOnly, async(req,res) => {
+    try{
+        const schemeId = req.params.id;
+
+        const result = await ScholarshipScheme.findByIdAndDelete(schemeId);
+
+        if(!result) {
+            return res.status(404).json({ message: 'Scholarship scheme not found for deletion.'});
+        }
+
+        res.json({ message: 'Scheme deleted successfully.'});
+    } catch (error) {
+        console.error('Error deleting scheme:', error);
+        res.status(400).json({ message: 'Invalid ID format for deletion.'});
     }
 });
 

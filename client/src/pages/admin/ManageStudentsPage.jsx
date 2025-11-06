@@ -28,7 +28,7 @@ const ManageStudentsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [yearFilter,setYearFilter] = useState("All");
-
+    
     useEffect(() => {
         const fetchAllStudents = async () => {
             try {

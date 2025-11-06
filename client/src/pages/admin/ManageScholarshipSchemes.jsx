@@ -40,18 +40,18 @@ const ManageScholarshipSchemes = () => {
     const handleSave = async (schemeData) => {
         try {
             const token = localStorage.getItem('adminToken');
-            const method = schemeData.id ? 'put' : 'post';
-            const url = schemeData.id ? `http://localhost:4000/api/admin/schemes/${schemeData.id}` : "http://localhost:4000/api/admin/schemes";
+            const method = schemeData._id ? 'put' : 'post';
+            const url = schemeData._id ? `http://localhost:4000/api/admin/schemes/${schemeData._id}` : "http://localhost:4000/api/admin/schemes";
 
             const res = await axios({ method, url, data: schemeData, headers: { Authorization: `Bearer ${token}`} });
 
-            toast.success(schemeData.id ? 'Scheme updated successfully!' : 'Scheme created successfully!');
+            toast.success(schemeData._id ? 'Scheme updated successfully!' : 'Scheme created successfully!');
             fetchSchemes();
             setIsModalOpen(false);
             setSchemeToEdit(null);
 
         } catch (error) {
-            toFormData.error(error.response?.data?.message || 'Failed to save scheme data.');
+            toast.error(error.response?.data?.message || 'Failed to save scheme data.');
         }
     };
 
@@ -100,11 +100,15 @@ const ManageScholarshipSchemes = () => {
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
                     {schemes.map((scheme) => (
-                        <tr key={scheme.id}>
+                        <tr key={scheme._id}>
                         <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{scheme.name} <br /> 
-                        <span className='text-xs text-gray-500'>ID: {scheme.id} </span>
+                        <span className='text-xs text-gray-500'>ID: {scheme._id} </span>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{scheme.deadline}</td>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{new Date(scheme.deadline).toLocaleDateString('en-GB', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        })}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     Min Perc: {scheme.criteria.minPercentage}
                          </td>
@@ -118,7 +122,7 @@ const ManageScholarshipSchemes = () => {
                                 <Edit className='w-4 h-4 inline' />
                             </button>
                             <button 
-                                onClick={()=> handleDelete(scheme.id)}
+                                onClick={()=> handleDelete(scheme._id)}
                                 className='cursor-pointer text-red-600 hover:text-red-900'
                             >
                                 <Trash2 className='w-4 h-4 inline' />
