@@ -24,7 +24,7 @@ const studentProfileSchema = new mongoose.Schema({
     },
     applicationStatus: {
         type: String,
-        enum: ['Not Started', 'Submitted', 'Reverted', 'Approved', 'Rejected'],
+        enum: ['Not Started', 'Submitted', 'Reverted', 'Approved', 'Rejected', 'Pending Review'],
         default: 'Not Started'
     },
 }, { timestamps: true});

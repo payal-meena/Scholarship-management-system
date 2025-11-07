@@ -43,7 +43,11 @@ studentRouter.post("/signup", async (req,res) => {
     //     }
     // })
 
-studentRouter.post('/apply', protect, applicationUploads, async (req,res) => {
+studentRouter.post('/apply', protect, (req,res,next) => {
+    console.log("UserID before Multer:", req.user.id);
+    next();
+    
+}, applicationUploads, async (req,res) => {
         try{
             const studentId = req.user.id;
             const { body } = req;
@@ -90,21 +94,30 @@ studentRouter.post('/apply', protect, applicationUploads, async (req,res) => {
                 documentPaths: documentPaths,
                 status: 'Pending Review',
             });
-                    await newApplication.save();
+                await newApplication.save();
 
-                    await StudentProfile.findOneAndUpdate(
+                await StudentProfile.findOneAndUpdate(
                         { student: studentId },
                         {
                             applicationStatus: 'Pending Review',
                             currentStudyYear: body.currentStudyYear,
                             currentCourse: body.currentCourse,
                             currentBranch: body.currentBranch,
+                            collegeId: studentId,
+                        },
+                        {
+                            upsert: true,
+                            new: true,
+                            runValidators: true
                         }
                     );
 
                     res.status(201).json({ message: 'Application submitted successfully.', application: newApplication});
                 } catch (error) {
                     console.error('Application submission failed:', error);
+                    if (error.name === 'ValidationError') {
+                        return res.status(400).json({ message: `Validation Error: ${error.message}` });
+                    }
                     res.status(500).json({ message: 'Application submission failed due to a server error.'});
                 }
 });

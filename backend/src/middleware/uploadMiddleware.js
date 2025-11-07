@@ -1,12 +1,19 @@
 import multer from 'multer';
 import path from 'path';
 import fs  from 'fs';
-import { application } from 'express';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const uploadDir = path.resolve('uploads');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const uploadDir = path.join(__dirname, '..', 'uploads');
 
 if(!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log(`Creating directory: ${uploadDir}`);
+    fs.mkdirSync(uploadDir, { recursive:true});    
+} else {
+    console.log(`Upload directory found at: ${uploadDir}`);
 }
 
 const storage = multer.diskStorage({
