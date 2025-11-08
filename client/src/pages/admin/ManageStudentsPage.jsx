@@ -73,7 +73,7 @@ const ManageStudentsPage = () => {
     });
 
     if(loading) {
-        return <div className='p-8 text-center'>Loading student records fro tracking...</div>;
+        return <div className='p-8 text-center'>Loading student records for tracking...</div>;
     }
     const handleViewDetails = (studentId) => {
         alert(`Viewing complete record for Student ID: ${studentId}.`);
@@ -155,7 +155,7 @@ const ManageStudentsPage = () => {
                                             {student.applicationStatus || 'N/A'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.scheme || 'N/A'}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.schemeApplied || 'N/A'}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button 
                                             onClick={() => handleViewDetails(student.studentId)}

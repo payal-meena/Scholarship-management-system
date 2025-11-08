@@ -35,7 +35,6 @@ adminRouter.post("/signup",async(req,res)=> {
 adminRouter.get('/students', protect , adminOnly, async (req,res) => {
     try{
         const { year, status } = req.query;
-
         const filter = {};
 
         if(year && year !== 'All') {
@@ -47,7 +46,8 @@ adminRouter.get('/students', protect , adminOnly, async (req,res) => {
         }
         
         const studentsData = await StudentProfile.find(filter)
-            .populate('student', 'name email');
+            .populate('student', 'name email')
+            .populate('latestScheme', 'name');
 
             if (!studentsData || studentsData.length === 0) {
                 return res.json([]);            }
@@ -66,7 +66,7 @@ adminRouter.get('/students', protect , adminOnly, async (req,res) => {
                 studentId: profile.collegeId,
                 currentStudyYear: profile.currentStudyYear,
                 applicationStatus: profile.applicationStatus,
-                scheme: profile.schemeApplied || 'N/A',
+                schemeApplied: profile.latestScheme ? profile.latestScheme.name : 'N/A',
                 };
             }).filter(item => item !== null);
 
@@ -228,11 +228,5 @@ adminRouter.get('/public/schemes', async (req,res) => {
         res.status(500).json({ message: 'Server error retrieving public schemes.'});
     }
 })
-
-
-
-
-
-
 
 export default adminRouter;

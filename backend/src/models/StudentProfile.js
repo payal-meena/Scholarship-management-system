@@ -27,6 +27,10 @@ const studentProfileSchema = new mongoose.Schema({
         enum: ['Not Started', 'Submitted', 'Reverted', 'Approved', 'Rejected', 'Pending Review'],
         default: 'Not Started'
     },
+    latestScheme: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ScholarshipScheme',
+    }
 }, { timestamps: true});
 
 export default mongoose.model('StudentProfile', studentProfileSchema);

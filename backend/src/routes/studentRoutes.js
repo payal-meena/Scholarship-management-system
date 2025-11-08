@@ -80,9 +80,12 @@ studentRouter.post('/apply', protect, (req,res,next) => {
                 await StudentProfile.findOneAndUpdate(
                         { student: studentId },
                         {
+                            $set: {
                             applicationStatus: 'Pending Review',
                             currentStudyYear: body.currentStudyYear,
                             currentCourse: body.currentCourse,
+                            latestScheme: body.scheme,
+                            },
                             currentBranch: body.currentBranch,
                             collegeId: studentId,
                         },
