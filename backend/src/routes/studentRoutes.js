@@ -24,25 +24,6 @@ studentRouter.post("/signup", async (req,res) => {
     }
 });
 
-    // studentRouter.get('/me', protect, async (req,res)=> {
-    //     try {
-    //         const student = await Student.findById(req.user.id).select('-password');
-
-    //         if(student) {
-    //             res.json({
-    //                 success: true,
-    //                 name: student.name,
-    //                 email: student.email,
-    //                 studentId: student._id,
-    //             });
-    //         } else {
-    //             res.status(404).json({ message: 'Student record not found.'});
-    //         }
-    //     } catch (error){
-    //             res.status(500).json({ message: 'Server error while fetching profile.'})
-    //     }
-    // })
-
 studentRouter.post('/apply', protect, (req,res,next) => {
     console.log("UserID before Multer:", req.user.id);
     next();
@@ -67,7 +48,7 @@ studentRouter.post('/apply', protect, (req,res,next) => {
 
             const newApplication = new Application({
                 student: studentId,
-                scheme: body.schemeId,
+                scheme: req.body.scheme,
 
                 personalData: {
                     fullName: body.fullName,

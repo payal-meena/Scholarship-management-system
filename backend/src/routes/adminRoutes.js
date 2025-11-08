@@ -80,48 +80,57 @@ adminRouter.get('/students', protect , adminOnly, async (req,res) => {
 
 adminRouter.get('/applications', protect, adminOnly, async (req, res) => {
         try {
-            const applications = await Application.find({})
+            const applications = await Application.find()
             .populate('student', 'name email')
-            .populate('scheme');
-
+            .populate('scheme', 'name criteria');
+            
             if (!applications) {
                 return res.json([]);
             }
             const formattedApps = applications.map(app =>{
+                const studentData = app.student;
+                const schemeData = app.scheme;
+                console.log(schemeData);
+                
+                const hasMissing = !studentData || !schemeData || !schemeData.criteria;
 
-                if(!app.scheme) {
+                if (hasMissing) {
+                    console.warn(`Missing data for Application ID ${app._id}`);
+                    
                     return {
-                        id: app._id,
-                        studentName: app.student.name || 'N/A',
-                        studentEmail: app.student.email || 'N/A',
-                        schemeName: 'ERROR: Scheme Deleted/Invalid',
-                        status: app.status,
-                        isEligible: false,
-                        documentsNote: 'Application linked to a missing Scholarship Scheme.',
+                    id: app._id,
+                    studentName: studentData?.name || 'MISSING STUDENT',
+                    studentEmail: studentData?.email || 'N/A',
+                    schemeName: schemeData?.name || 'MISSING SCHEME',
+                    status: app.status || 'Data Error',
+                    adminFeedback: app.adminFeedback || 'Linked data not found',
+                    isEligible: false,
+                    documentsNote: 'Missing linked Student/Scheme/Criteria data.',
                     };
                 }
+            
+                const criteria = schemeData.criteria || {};
+                const academic = app.academicData || {};
+                const financial = app.financialData ||{};
 
-                const criteria = app.scheme.criteria;
-                const academic = app.academicData;
-                const financial = app.financialData;
+                const minCGPA = criteria.minPercentage || 0; 
+                const studentCGPA = academic.cgpa || 0;
+                const maxIncome = criteria.maxIncome || 0;
+                const studentIncome = financial.income || 0;
 
-                const meetsCGPA = academic.cgpa >= criteria.minCGPA;
-                const meetsIncome = financial.income <= criteria.maxIncome;
+                const meetsCGPA = studentCGPA >= minCGPA;
+                const meetsIncome = studentIncome <= maxIncome;
 
-                const currentYearNum = parseStudyYear(academic.currentStudyYear);
-                const minimumYearNum = parseStudyYear(criteria.minStudyYear);
-                const meetsStudyYear = currentYearNum >= minimumYearNum;
-
-                const isEligible = meetsCGPA && meetsIncome && meetsStudyYear;
+                const isEligible = meetsCGPA && meetsIncome;
 
                 return {
                     id: app._id,
-                    studentName: app.student.name,
-                    studentEmail: app.student.email,
-                    schemeName: app.scheme.name,
-                    status: app.status,
-                    adminFeedback: app.adminFeedback,
-                    isEligible: isEligible,
+                    studentName: studentData.name || 'N/A',
+                    studentEmail: studentData.email || 'N/A',
+                    schemeName: schemeData.name || 'N/A',
+                    status: app.status || 'Pending Review',
+                    adminFeedback: app.adminFeedback || 'N/A',
+                    isEligible,
                     documentsNote: app.adminFeedback || 'N/A',
                 };
             });
@@ -130,7 +139,6 @@ adminRouter.get('/applications', protect, adminOnly, async (req, res) => {
         } catch (error) {
             console.error('Error fetching all applications for admin review:', error);
             res.status(500).json({ message: 'Server error retrieving all applications.'});
-            
         }
 });
 

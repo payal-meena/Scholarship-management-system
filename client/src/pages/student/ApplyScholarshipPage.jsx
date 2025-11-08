@@ -5,7 +5,7 @@ import axios from "axios";
 
 const availableSchemes = [
   { id: '654a8b79f3d9d3002f2329e1', name: "Central Sector 2025-26", deadline: "2025-10-31" },
-  { id: '654a8b79f3d9d3002f2329e2', name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
+  { id: '690c55c7c8ce883efd58f499', name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
   { id: '654a8b79f3d9d3002f2329e3', name: "Gav Ki Beti Scholarship 2025-26", deadline: "2026-01-31" },
 ];
 
@@ -110,7 +110,8 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
         formPayload.append(key, formData[key]);
       }
     });
-    formPayload.append("schemeId", scheme.id);
+    formPayload.append("scheme", scheme.id);
+
 
     try{
       const token = localStorage.getItem('studentToken');
@@ -369,7 +370,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
 const ApplyScholarshipPage = () => {
   const [selectedScheme, setSelectedScheme] = useState(null);
   const handleFormSubmit = (schemeId, data) => {
-    toast.success(`Applicayion for Scheme ID ${schemeId} submitted successfully!`);
+    toast.success(`Application for Scheme ID ${schemeId} submitted successfully!`);
     console.log("Final Submission Date:", data);
     setSelectedScheme(null);
   };

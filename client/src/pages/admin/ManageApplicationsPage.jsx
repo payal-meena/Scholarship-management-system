@@ -181,13 +181,13 @@ const ManageApplicationsPage = () => {
               filteredApplications.map((app) => (
                 <tr key={app.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {app.name} <br />
+                    {app.studentName || 'N/A'} <br />
                     <span className="text-gray-500 text-xs">
-                      {app.studentId}
+                      {app.studentEmail || 'N/A'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {app.scheme}
+                    {app.schemeName || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
