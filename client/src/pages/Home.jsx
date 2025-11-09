@@ -17,7 +17,7 @@ function Home() {
 
   const ContactDetail = ({ icon, title, detail }) => (
     <div className="flex items-start space-x-4">
-      <div className="flex-shrink-0 p-2 bg-violet-300 rounded-full">{icon}</div>
+      <div className="flex-shrink-0 p-2 bg-white rounded-full">{icon}</div>
       <div>
         <h4 className="text-lg font-semibold">{title}</h4>
         <p className="text-violet-200">{detail}</p>

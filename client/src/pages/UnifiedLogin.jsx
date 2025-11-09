@@ -48,10 +48,10 @@ const UnifiedLogin = () => {
 
     return (
         <div className="flex items-center justify-center h-screen bg-gray-100">
-            <div className="bg-white shadow-xl rounded-xl p-8 w-96 border-t-4 border-indigo-500">
-                <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700 flex justify-center items-center space-x-2">
+            <div className="bg-white shadow-xl rounded-xl p-8 w-96 border-t-4 border-violet-800">
+                <h2 className="text-2xl font-bold text-center mb-6 text-violet-800 flex justify-center items-center space-x-2">
                     <User className="w-6 h-6" />
-                    <span>Portal Login</span>
+                    <span>Welcome back </span>
                 </h2>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
@@ -59,26 +59,26 @@ const UnifiedLogin = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                    />
                     <input type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e)=> setPassword(e.target.value)}
-                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                     />
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-indigo-600 cursor-pointer text-white py-3 rounded-lg hover:bg-indigo-700 disabled:bg-indigo-400"
+                        className="w-full bg-violet-800 cursor-pointer text-white py-3 rounded-lg hover:bg-violet-700 disabled:bg-indigo-400"
                     >
                         {loading ? 'Verifying Credentials...' : 'Login'}
                     </button>
                 </form>
 
                 <p className="mt-4 text-sm text-center">
-                    New Student? <Link to="/student-signup" className="text-indigo-600 font-medium hover:underline"> Register Here </Link>
+                    New Student? <Link to="/student-signup" className="text-violet-600 font-medium hover:underline"> Register Here </Link>
                 </p>
 
                 <Link to="/" className="text-sm text-center text-gray-500 hover:text-gray-700 mt-2 block">

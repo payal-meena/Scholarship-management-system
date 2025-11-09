@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from "react-toastify";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft , User, User2} from "lucide-react";
 
 
 const StudentSignupPage = () => {
@@ -59,8 +59,11 @@ const StudentSignupPage = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-96 bg-white shadow-xl rounded-2xl p-8 text-center border-t-4 border-indigo-500">
-        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700">Signup</h2>
+      <div className="w-96 bg-white shadow-xl rounded-2xl p-8 text-center border-t-4 border-violet-800">
+       <h2 className="text-2xl font-bold text-center mb-6 text-violet-800 flex justify-center items-center space-x-2">
+        <User2 className="h-6 w-6" /> 
+       <span>Sign up</span>
+        </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
@@ -68,34 +71,34 @@ const StudentSignupPage = () => {
             placeholder="Full Name"
             value={name}
             onChange={(e)=> setName(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400 transition"
           />
           <input
             type="email"
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 tranisiton"
+            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400 tranisiton"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e)=> setPassword(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400 transition"
           />
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e)=> setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full cursor-pointer bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+            className="w-full cursor-pointer bg-violet-800 text-white py-3 rounded-xl font-semibold hover:bg-violet-700 transition"
           >
             {loading ? "Signing up..." : "Create Account"}
           </button>
@@ -105,7 +108,7 @@ const StudentSignupPage = () => {
           Already registered?{" "}
           <Link
             to="/unified-login"
-            className="text-indigo-600 font-medium hover:underline"
+            className="text-violet-600 font-medium hover:underline"
           >
             Login here
           </Link>
