@@ -8,7 +8,7 @@ const StatCard = ({ title, value, icon: Icon, color }) => (
                 <p className='text-sm font-medium text-gray-500'>{title}</p>
                 <p className='text-3xl font-extrabold text-gray-900 mt-1'>{value}</p>
             </div>
-            <div className={`p-3 rounded-full ${color === '#4F46E5' ? 'bg-indigo-100' : color === '#10B981' ? 'bg-green-100' : color === '#F59E0B' ? 'bg-yellow-100' : 'bg-red-100' }`}>
+            <div className={`p-3 rounded-full ${color === '#3B1C82' ? 'bg-violet-100' : color === '#10B981' ? 'bg-green-100' : color === '#F59E0B' ? 'bg-yellow-100' : 'bg-red-100' }`}>
                 <Icon className={`w-8 h-8`} style={{ color: color}} />
             </div>
         </div>
@@ -16,14 +16,14 @@ const StatCard = ({ title, value, icon: Icon, color }) => (
 )
 const AdminDashboardHome = () => {
     const stats = [
-        { title: 'Total Students', value: '850', icon: Users, color: '#4F46E5' },
+        { title: 'Total Students', value: '850', icon: Users, color: '#3B1C82' },
         { title: 'Applications Reviewed', value: '342', icon: ListChecks, color: '#10B981' },
         { title: 'Funds Disbursed (₹)', value: '1.2 Cr', icon: DollarSign, color: '#F59E0B' },
         { title: 'Pending Reviews', value: '48', icon: Clock, color: '#EF4444' },
     ]
   return (
     <div className='space-y-8'>
-        <h1 className='text-3xl font-extrabold text-gray-900'>Admin Overview</h1>
+        <h1 className='text-3xl font-extrabold text-indigo-950'>Admin Overview</h1>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />

@@ -14,7 +14,7 @@ const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
         >
         <Menu size={24}/>
         </button>
-        <div className="text-xl font-bold text-indigo-600">
+        <div className="text-xl font-bold text-indigo-950">
           Scholarship Portal
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X , LogIn , Award} from "lucide-react"; 
+import { Menu, X , LogIn , Award ,} from "lucide-react"; 
 
 const Navbar = ({onNavLinkClick , currentView}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +29,8 @@ const Navbar = ({onNavLinkClick , currentView}) => {
 
           <Link to="/" 
           className="flex-shrink-0 flex items-center">
-            <Award className="h-7 w-7 text-indigo-600 mr-2" />
-            <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
+            <Award className="h-7 w-7 text-violet-800 mr-2" />
+            <span className="text-2xl font-extrabold text-violet-800 tracking-tight">
               ScholarshipPortal
             </span>
           </Link>
@@ -55,8 +55,8 @@ const Navbar = ({onNavLinkClick , currentView}) => {
               to={isHomePage ? '/auth' : '/'}
               className={`group flex items-center justify-center space-x-2 px-4 py-2 cursor-pointer border border-transparent text-sm font-medium rounded-full shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
                 isHomePage 
-                ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'
-                : 'text-indigo-600 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-300'
+                ? 'text-white bg-violet-800 hover:bg-violet-700 focus:ring-violet-500'
+                : 'text-violet-600 bg-violet-100 hover:bg-violet-200 focus:ring-violet-300'
               }`}
             >
               {isHomePage ? (
@@ -77,7 +77,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
                 <div className="flex md:hidden ml-2">
                     <button
                     onClick={toggleMenu}
-                    className="inline-flex items-center justify-center p-2 rounded-full text-gray-400 hover:text-indigo-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                    className="inline-flex items-center justify-center p-2 rounded-full text-gray-400 hover:text-violet-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                     aria-expanded={isOpen}
                     >
                     <span className="sr-only">Open main menu</span>

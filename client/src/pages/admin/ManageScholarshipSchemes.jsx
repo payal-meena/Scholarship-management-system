@@ -80,8 +80,8 @@ const ManageScholarshipSchemes = () => {
   return (
     <div className='p-6 bg-white rounded-xl shadow-lg'>
         <div className='flex justify-between items-center mb-6 border-b pb-2'>
-            <h1 className='text-3xl font-extrabold text-gray-800'>Manage Schemes</h1>
-            <button onClick={() => handleOpenModal()} className='cursor-pointer bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700'>
+            <h1 className='text-3xl font-extrabold text-indigo-950'>Manage Scholarships</h1>
+            <button onClick={() => handleOpenModal()} className='cursor-pointer bg-violet-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-violet-800'>
                 <PlusCircle className='w-5 h-5' />
                 <span>Create New Scheme</span>
             </button>
@@ -113,12 +113,12 @@ const ManageScholarshipSchemes = () => {
                                     Min Perc: {scheme.criteria.minPercentage}
                          </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${scheme.isActive ? 'bg-indigo-100 text-indigo-800' : 'bg-red-100 text-red-800'}`}>
+                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${scheme.isActive ? 'bg-violet-200 text-violet-800' : 'bg-red-100 text-red-800'}`}>
                                 {scheme.isActive ? <CheckCircle className='w-4 h-4 mr-1' /> : <Clock className='w-4 h-4 mr-1'/>} {scheme.isActive ? 'Active' : 'Inactive'}
                          </span>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                            <button onClick={()=> handleOpenModal(scheme)} className='cursor-pointer text-indigo-600 hover:text-indigo-900 flex items-center space-x-1'>
+                            <button onClick={()=> handleOpenModal(scheme)} className='cursor-pointer text-violet-600 hover:text-violet-900 flex items-center space-x-1'>
                                 <Edit className='w-4 h-4 inline' />
                             </button>
                             <button 

@@ -6,11 +6,13 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
     const [comments, setComments] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    
+
     const getStatusColor = (currentStatus) => {
         if(currentStatus.includes('Approved')) return 'bg-green-600';
         if(currentStatus.includes('Reverted')) return 'bg-yellow-600';
-        if(currentStatus.includes('Missing')) return 'bg-red-600';
-        return 'bg-indigo-600';
+        if(currentStatus.includes('Rejected')) return 'bg-red-600';
+        return 'bg-violet-900';
     };
 
     const handleSubmit = async ()=> {
@@ -32,8 +34,8 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
 
                 <div className='sticky top-0 bg-white p-6 border-b flex justify-between items-center'>
                     <h2 className='text-2xl font-bold text-gray-800 flex items-center space-x-2'>
-                        <FileText className='w-6 h-6 text-indigo-600'/>
-                        <span>Application Details: {application.name}</span>
+                        <FileText className='w-6 h-6 text-indigo-950'/>
+                        <span className='text-indigo-950'>Application Details</span>
                     </h2>
                     <button onClick={onClose} className='text-gray-500 hover:text-gray-800 p-2'>
                         <X size={24}/>
@@ -42,12 +44,14 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
 
                 <div className='p-6 grid md:grid-cols-3 gap-8'>
                     <div className='md:cols-pan-2 space-y-4'>
-                        <h3 className='text-lg font-semibold border-b pb-2 text-indigo-700'>Student & Scheme Info</h3>
+                        <h3 className='text-lg font-semibold border-b pb-2 text-indigo-950'>Student & Scheme Info</h3>
 
                         <div className='bg-gray-50 p-4 rounded-lg space-y-1'>
-                            <p><strong>Student ID:</strong>{application.studentId}</p>
-                            <p><strong>Applied Scheme:</strong>{application.scheme}</p>
-                            <p><strong>Date Submitted</strong>{application.date}</p>
+                            <p><strong>Student Name:</strong>{application.studentName || 'N/A'}</p>
+                            <p><strong>Student Email:</strong>{application.studentEmail || 'N/A'}</p>
+                            {/* <p><strong>Student ID:</strong>{application.studentId || 'N/A'}</p> */}
+                            <p><strong>Applied Scheme:</strong>{application.schemeName || 'N/A'}</p>
+                            {/* <p><strong>Date Submitted</strong>{application.date || 'N/A'}</p> */}
                             <p><strong>Current Status:</strong>
                             <span classname={`px-3 py-1 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(application.status)} text-white`}>
                                 {application.status}
@@ -55,17 +59,23 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
                             </p>
                         </div>
 
-                        <h3 className='text-lg font-semibold border-b pb-2 mt-4 text-indigo-700'>Uploaded Documents (Action Area)</h3>
+                        <h3 className='text-lg font-semibold border-b pb-2 mt-4 text-indigo-950'>Uploaded Documents</h3>
                    
                         <div className='space-y-3'>
-                            {['Income Proof.pdf', 'Mark Sheet.pdf', 'Aadhaar Card.pdf'].map(doc => (
-                                 <div key={doc} className='flex justify-between items-center p-3 border rounded-lg hover:bg-indigo-50 transition'>
-                                <span className='text-sm font-medium'>{doc}</span>
-                                <a href="#" className='text-indigo-600 text-xs font-semibold hover:underline' onClick={(e)=> {e.preventDefault(); alert(`Downloading ${doc}...`);}}>
-                                    Download / View
-                                </a>
-                            </div>
+                            {application.documentPaths && Object.keys(application.documentPaths).map(docKey => (
+                                <div key={docKey} className='flex justify-between items-center p-3 border rounded-lg hover:bg-violet-50 transition'>
+                                    <span className='text-sm font-medium'>{docKey}</span>
+                                    <a 
+                                        href={`http://localhost:4000/${application.documentPaths[docKey]}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        className='text-violet-600/30 text-xs font-semibold hover:underline'
+                                    >
+                                        Download / View
+                                    </a>
+                                </div>
                             ))}
+                            {!application.documentPaths && <p className="text-gray-500 text-sm">No documents uploaded for this application.</p>}
                         </div>
                     </div>
 
@@ -91,7 +101,7 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
                             onChange={(e)=> setComments(e.target.value)}
                             rows="4"
                             placeholder='Enter specific reasons for Reversion (e.g., Income proof date is expired) or confirmation notes.'
-                            className='w-full p-2 border rounded-lg focus:ring-indigo-500'
+                            className='w-full p-2 border rounded-lg focus:ring-violet-500/20'
                             ></textarea>
                         </div>
 

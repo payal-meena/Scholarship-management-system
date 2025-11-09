@@ -6,21 +6,21 @@ import { Link } from "react-router-dom";
 function Home() {
   
       const FeatureCard = ({ title, description, icon }) => (
-    <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 transition duration-300 hover:shadow-xl hover:translate-y-[-2px]">
-      <div className="p-3 rounded-lg inline-flex items-center justify-center bg-indigo-100 text-indigo-600 mb-4">
+    <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-violet-800 transition duration-300 hover:shadow-xl hover:translate-y-[-2px]">
+      <div className="p-3 rounded-lg inline-flex items-center justify-center bg-violet-200 text-violet-800 mb-4">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
+      <h3 className="text-xl font-semibold text-violet-800 mb-3">{title}</h3>
+      <p className="text-violet-950 text-sm">{description}</p>
     </div>
   );
 
   const ContactDetail = ({ icon, title, detail }) => (
     <div className="flex items-start space-x-4">
-      <div className="flex-shrink-0 p-2 bg-indigo-800 rounded-full">{icon}</div>
+      <div className="flex-shrink-0 p-2 bg-violet-300 rounded-full">{icon}</div>
       <div>
         <h4 className="text-lg font-semibold">{title}</h4>
-        <p className="text-indigo-200">{detail}</p>
+        <p className="text-violet-200">{detail}</p>
       </div>
     </div>
   );
@@ -47,7 +47,7 @@ function Home() {
                   </p>
                   <Link
                     to="/auth"
-                    className="bg-indigo-600 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-indigo-700 transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-500"
+                    className="bg-violet-800 hover:bg-violet-700 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl  transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-violet-700"
                   >
                     Get Started
                   </Link>
@@ -55,7 +55,7 @@ function Home() {
           </section>
         <section id="about" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-base font-semibold text-indigo-600 uppercase tracking-wider mb-2">
+          <p className="text-base font-semibold text-violet-800 uppercase tracking-wider mb-2">
             Core Features
           </p>
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-6">
@@ -87,7 +87,7 @@ function Home() {
       </section>
       <section id="contact" className="pt-20 pb-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
+          <h2 className="text-3xl font-extrabold text-indigo-950 text-center mb-12">
             Have Questions? We're Here to Help.
           </h2>
           <div className="flex flex-col lg:flex-row lg:space-x-12">
@@ -117,26 +117,26 @@ function Home() {
                 ></textarea>
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 cursor-pointer border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition duration-200"
+                  className="w-full px-4 py-3 cursor-pointer border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-violet-950 hover:bg-violet-900 transition duration-200"
                 >
                   Submit Inquiry
                 </button>
               </form>
             </div>
 
-            <div className="lg:w-1/3 space-y-8 p-6 bg-indigo-700 text-white rounded-xl shadow-xl">
+            <div className="lg:w-1/3 space-y-8 p-6 bg-violet-950 text-white rounded-xl shadow-xl">
               <ContactDetail
-                icon={<Mail className="h-6 w-6 text-indigo-300" />}
+                icon={<Mail className="h-6 w-6 text-violet-600" />}
                 title="General Support"
                 detail="support@scholarshipportal.com"
               />
               <ContactDetail
-                icon={<Phone className="h-6 w-6 text-indigo-300" />}
+                icon={<Phone className="h-6 w-6 text-violet-600" />}
                 title="Partnership Line"
                 detail="+1 (555) 789-0123"
               />
               <ContactDetail
-                icon={<MapPin className="h-6 w-6 text-indigo-300" />}
+                icon={<MapPin className="h-6 w-6 text-violet-600" />}
                 title="Organization"
                 detail="Sant Singaji Institute of Science & Management (SSISM) Sandalpur , Mp India"
               />
@@ -147,7 +147,7 @@ function Home() {
 
       </main>
      
-      <footer className="bg-gray-800 py-8">
+      <footer className="py-8 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
           &copy; {new Date().getFullYear()} ScholarshipPortal. Empowering
           Futures.

@@ -49,10 +49,10 @@ const getStatusClasses = (status) => {
       return "bg-green-100 text-green-700";
     case "Reverted for Correction":
       return "bg-yellow-100 text-yellow-700";
-    case "Documents Missing":
+    case "Rejected":
       return "bg-red-100 text-red-700";
     default:
-      return "bg-blue-100 text-blue-700";
+      return "bg-violet-200 text-violet-700";
   }
 };
 
@@ -121,7 +121,7 @@ const ManageApplicationsPage = () => {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg">
-      <h1 className="text-3xl font-extrabold text-gray-800 mb-6 border-b pb-2">
+      <h1 className="text-3xl font-extrabold text-indigo-950 mb-6 border-b pb-2">
         Application Review Dashboard
       </h1>
 
@@ -131,18 +131,18 @@ const ManageApplicationsPage = () => {
           <input
             type="text"
             placeholder="Search by Student Name or ID..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         <select
-          className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+          className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20 bg-white"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
-          <option value="All">Filter by Status (All)</option>
+          <option value="All">All</option>
           <option value="Pending Review">Pending Review</option>
           <option value="Approved">Approved</option>
           <option value="Reverted for Correction">
@@ -217,7 +217,7 @@ const ManageApplicationsPage = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                       onClick={() => setSelectedApplication(app)}
-                      className="text-indigo-600 hover:text-indigo-900 text-xs font-bold"
+                      className="text-violet-600 hover:text-violet-900 text-xs font-bold"
                     >
                       View Details
                     </button>

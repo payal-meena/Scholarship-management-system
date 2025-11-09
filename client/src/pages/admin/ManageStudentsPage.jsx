@@ -18,7 +18,7 @@ const getStatusClasses = (status) => {
         case 'Reverted for Correction': return 'bg-yellow-100 text-yellow-700';
         case 'Documents Missing': return 'bg-red-100 text-red-700';
         case 'Not Started': return 'bg-gray-200 text-gray-700';
-        default: return 'bg-blue-100 text-blue-700';
+        default: return 'bg-violet-200 text-violet-700';
     }
 };
 
@@ -81,8 +81,8 @@ const ManageStudentsPage = () => {
 
     return (
         <div className="p-6 bg-white rounded-xl shadow-lg">
-            <h1 className="text-3xl font-extrabold text-gray-800 mb-6 border-b pb-2 flex items-center">
-                <Users className="w-8 h-8 mr-3 text-indigo-600" /> All Student Records
+            <h1 className="text-3xl font-extrabold text-indigo-950 mb-6 border-b pb-2 flex items-center">
+                <Users className="w-8 h-8 mr-3 text-indigo-950" /> All Student Records
             </h1>
             
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
@@ -159,7 +159,7 @@ const ManageStudentsPage = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button 
                                             onClick={() => handleViewDetails(student.studentId)}
-                                            className="text-indigo-600 hover:text-indigo-900 text-xs font-bold flex items-center space-x-1"
+                                            className="text-violet-600 hover:text-violet-900 text-xs font-bold flex items-center space-x-1"
                                         >
                                             <Eye className='w-4 h-4' /> <span>View Record</span>
                                         </button>
