@@ -6,6 +6,12 @@ import connectDB from "./src/config/mongoDB.js";
 import authRouter from "./src/routes/authRoutes.js";
 import studentRouter from "./src/routes/studentRoutes.js";
 import adminRouter from "./src/routes/adminRoutes.js";
+import path, { dirname } from "path";
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 dotenv.config();
@@ -26,6 +32,9 @@ app.get("/" , (req,res) => {
 app.use("/api/auth" , authRouter);
 app.use('/api/students', studentRouter);
 app.use('/api/admin', adminRouter);
+
+app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
+
 
 
 

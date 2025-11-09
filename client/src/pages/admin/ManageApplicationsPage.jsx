@@ -100,6 +100,7 @@ const ManageApplicationsPage = () => {
       return matchesSearch && matchesStatus;
     });
 
+
   const handleUpdateStatus = (appId, newStatus, feedback) => {
       setApplications(prevApps => 
         prevApps.map(app => 

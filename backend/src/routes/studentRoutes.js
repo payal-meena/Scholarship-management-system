@@ -29,6 +29,8 @@ studentRouter.post('/apply', protect, (req,res,next) => {
     next();
     
 }, applicationUploads, async (req,res) => {
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+
         try{
             const studentId = req.user.id;
             const { body } = req;
@@ -43,7 +45,9 @@ studentRouter.post('/apply', protect, (req,res,next) => {
 
             const documentPaths = {};
             for(const key in files) {
-                documentPaths[key] = files[key][0].path;
+                const fileName = files[key][0].filename;
+                documentPaths[key] = `${baseUrl}/uploads/${fileName}`;
+                
             }
 
             const newApplication = new Application({
