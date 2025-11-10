@@ -2,12 +2,13 @@ import React , {useState} from "react";
 import { toast } from "react-toastify";
 import { User, BookOpen, DollarSign, UploadCloud, Send } from "lucide-react";
 import axios from "axios";
+import { useEffect } from "react";
 
-const availableSchemes = [
-  { id: '654a8b79f3d9d3002f2329e1', name: "Central Sector 2025-26", deadline: "2025-10-31" },
-  { id: '690c55c7c8ce883efd58f499', name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
-  { id: '654a8b79f3d9d3002f2329e3', name: "Gav Ki Beti Scholarship 2025-26", deadline: "2026-01-31" },
-];
+// const availableSchemes = [
+//   { id: '654a8b79f3d9d3002f2329e1', name: "Central Sector 2025-26", deadline: "2025-10-31" },
+//   { id: '690c55c7c8ce883efd58f499', name: "Post Metric Scholarship 2025-26", deadline: "2025-12-31" },
+//   { id: '654a8b79f3d9d3002f2329e3', name: "Gav Ki Beti Scholarship 2025-26", deadline: "2026-01-31" },
+// ];
 
 const getCurrentAcademicYear = () => {
   const today = new Date();
@@ -24,7 +25,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
   const [formData, setFormData] = useState({
     fullName: "",
     dob: "",
-    gender: "Male",
+    gender: "",
     contactNo: "",
     fullAddress: "",
     samagraId: "",
@@ -141,7 +142,6 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
       {file ? `Uploaded: ${file.name}` : `Required`}
     </span>
   );
-
   return (
     <div className="max-w-5xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-2xl">
       <h1>Application for: {scheme.name}</h1>
@@ -151,7 +151,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="border p-6 rounded-lg bg-indigo-50">
+        <div className="border p-6 rounded-lg bg-blue-50/50">
           <h2 className="text-xl font-bold text-indigo-950 mb-4 flex items-center space-x-2">
             <User className="w-5 h-5" />{" "}
             <span>Personal & Contact Information</span>
@@ -367,8 +367,49 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
   );
 };
 
+export const getDeadlineStatus = (deadline) => {
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+
+    const diffTime = deadlineDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if(diffDays > 7) {
+      return {
+        text: `Open - ${diffDays} days left`,
+        classes: `text-green-700 border-green-500`
+      };
+    } else if (diffDays >= 1) {
+      return {
+        text: `Closing Soon - ${diffDays} days left!`,
+        classes: `text-yellow-800 border-yellow-500`
+      };
+    } else {
+      return {
+        text: 'Closed',
+        classes: `text-red-700 border-red-500`
+      }
+    }
+};
 const ApplyScholarshipPage = () => {
   const [selectedScheme, setSelectedScheme] = useState(null);
+  const [availableSchemes, setAvailableSchemes] = useState([]);
+  const [loading,setLoading] = useState(true);
+
+   useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/admin/public/schemes');
+        setAvailableSchemes(response.data);        
+      } catch (error) {
+        toast.error("Failed to load available schems from server.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSchemes();
+  }, []);
+
   const handleFormSubmit = (schemeId, data) => {
     toast.success(`Application for Scheme ID ${schemeId} submitted successfully!`);
     console.log("Final Submission Date:", data);
@@ -376,8 +417,12 @@ const ApplyScholarshipPage = () => {
   };
 
   if (selectedScheme) {
-    return <FullApplicationForm  scheme={selectedScheme} onFormSubmit={handleFormSubmit} />;
+    return <FullApplicationForm scheme={selectedScheme} onFormSubmit={handleFormSubmit} />;
   };
+
+  if(loading) {
+    return <div className="p-8 text-center">Loading available schemes...</div>;
+  }
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md  mx-auto">
@@ -385,11 +430,21 @@ const ApplyScholarshipPage = () => {
         Available Scholarships
       </h2>
 
-      {availableSchemes.map((scheme) => (
-        <div key={scheme.id} className="border border-indigo-200 p-4 rounded-md flex justify-between items-center">
+      {availableSchemes.map((scheme) => {
+        const status = getDeadlineStatus(scheme.deadline);
+
+        return (
+        <div key={scheme._id} className="border border-indigo-200 p-4 rounded-md flex justify-between items-center">
             <div>
                 <h3 className="text-xl font-semibold text-gray-800">{scheme.name}</h3>
-                <p className="text-sm text-gray-600">Deadline: {scheme.deadline}</p>
+                <p className="text-sm text-gray-600">Deadline: {new Date(scheme.deadline).toLocaleDateString('en-GB', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'})}
+                </p>
+
+                <span className={`mt-1 inline-block text-xs font-semibold px-2 py-1 rounded ${status.classes}`}>                  {status.text}
+                </span>
             </div>
             <button 
               onClick={()=> setSelectedScheme(scheme)}
@@ -398,7 +453,8 @@ const ApplyScholarshipPage = () => {
               Start Application
             </button>
         </div>
-      ))}
+        );
+})}
 
       {availableSchemes.length === 0 && (
         <p className="text-gray-500 italic">No scholarship schemes are curently open for applications.</p>

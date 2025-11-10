@@ -1,34 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Clock, CheckCircle, AlertTriangle, FileText, XCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
+import ReSubmitApplicationForm from './ReSubmitApplicationForm';
 
-const userApplications = [
-  {
-        id: 1,
-        schemeName: "Central Sector Scheme 2025-26",
-        dateSubmitted: "2025-10-09",
-        status: "Pending Review",
-        adminFeedback: "Your application is waiting for document verification.",
-        documentsComplete: true,
-    },
-    {
-        id: 2,
-        schemeName: "Post Metric Scholarship",
-        dateSubmitted: "2025-09-25",
-        status: "Reverted for Correction",
-        adminFeedback: "Income proof document is blurry. Please upload a clear PDF copy.",
-        documentsComplete: false,
-    },
-    {
-        id: 3,
-        schemeName: "Gav ki Beti Scholarship",
-        dateSubmitted: "2025-08-10",
-        status: "Approved",
-        adminFeedback: "Verification complete. Application forwarded to University.",
-        documentsComplete: true,
-    },
-];
+
+// const userApplications = [
+//   {
+//         id: 1,
+//         schemeName: "Central Sector Scheme 2025-26",
+//         dateSubmitted: "2025-10-09",
+//         status: "Pending Review",
+//         adminFeedback: "Your application is waiting for document verification.",
+//         documentsComplete: true,
+//     },
+//     {
+//         id: 2,
+//         schemeName: "Post Metric Scholarship",
+//         dateSubmitted: "2025-09-25",
+//         status: "Reverted for Correction",
+//         adminFeedback: "Income proof document is blurry. Please upload a clear PDF copy.",
+//         documentsComplete: false,
+//     },
+//     {
+//         id: 3,
+//         schemeName: "Gav ki Beti Scholarship",
+//         dateSubmitted: "2025-08-10",
+//         status: "Approved",
+//         adminFeedback: "Verification complete. Application forwarded to University.",
+//         documentsComplete: true,
+//     },
+// ];
 
 const getStatusDetails = (status) => {
     switch (status) {
@@ -44,9 +46,52 @@ const getStatusDetails = (status) => {
 }
 
 const MyApplicationsPage = () => {
-  const [applications, setApplications] = useState(userApplications);
+  const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [appToEdit, setAppToEdit] = useState(null);
 
+ 
+  useEffect(() => {
+  const fetchApplications = async ()=> {
+    try {
+      const token = localStorage.getItem('studentToken');
+      if(!token) throw new Error('Authentication required.');
+
+      const response = await axios.get('http://localhost:4000/api/students/applications', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const formattedApps = response.data.map(app => ({
+          ...app,
+          dateSubmitted: new Date(app.createdAt).toLocaleString('en-GB'),      
+      }));
+      setApplications(formattedApps);
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      toast.error(error.responser?.data?.message || "Failed to load application status.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    fetchApplications();
+  }, []);
+  
+  const handleResubmitSuccess = (updatedApplication) => {
+    setApplications(prevApps => 
+      prevApps.map(app => 
+        app._id === updatedApplication._id ? updatedApplication : app
+      )
+    );
+    toast.info('Application successfuly updated and sent for review!.');
+    setAppToEdit(null);
+  };
+
+  if(loading) {
+   return <div className='p-8 text-center'>Loading applications...</div> 
+  }
   
   return (
     <div className='bg-white p-6 rounded-lg shadow-md mx-auto space-y-8'>
@@ -65,15 +110,15 @@ const MyApplicationsPage = () => {
             const statusInfo = getStatusDetails(app.status);
 
             return (
-              <div key={app.id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
+              <div key={app._id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
                   <div className='flex justify-between items-start mb-4'>
-                      <h3 className='text-xl font-bold text-indigo-900'>{app.schemeName}</h3>
+                      <h3 className='text-xl font-bold text-indigo-900'>{app.scheme.name || "N/A"}</h3>
                       <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold ${statusInfo.classes}`}>
                             <statusInfo.icon className='w-4 h-4' />
                             <span>{statusInfo.text}</span>
                       </div>
                   </div>
-                  <p className='text-sm text-gray-500 mb-4'>Submitted on: {app.dateSubmitted}</p>
+                  <p className='text-sm text-gray-500 mb-4'>Submitted on: {app.dateSubmitted || "N/A"}</p>
 
                   <div className='p-3 border-t pt-4'>
                       <p className='font-semibold text-gray-700 mb-2'>Status Note:</p>
@@ -86,17 +131,28 @@ const MyApplicationsPage = () => {
                             </p>
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-600 italic">{app.adminFeedback}</p>
+                        <p className="text-sm text-gray-600 italic">{app.adminFeedback || 'No specific feedback available.'}</p>
                       )}
                   </div>
                    {app.status === 'Reverted for Correction' && (
-                            <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                            <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                            onClick={() => setAppToEdit(app)}
+                            >
                                 Edit & Re-submit Application
                             </button>
                         )}
               </div>
             );
           })}
+
+          { appToEdit && (
+            <ReSubmitApplicationForm 
+              applicationId={appToEdit._id}
+              initialData={appToEdit}
+              onClose={() => setAppToEdit(null)}
+              onResubmitSuccess = {handleResubmitSuccess}
+            />
+          )}
     </div>
   );
 };

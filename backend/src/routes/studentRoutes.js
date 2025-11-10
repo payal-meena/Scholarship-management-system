@@ -78,14 +78,17 @@ studentRouter.post('/apply', protect, (req,res,next) => {
                 },
                 documentPaths: documentPaths,
                 status: 'Pending Review',
-            });
-                await newApplication.save();
+                adminFeedback: 'Application submitted for review.',
 
-                await StudentProfile.findOneAndUpdate(
+            });
+            await newApplication.save();
+
+            await StudentProfile.findOneAndUpdate(
                         { student: studentId },
                         {
                             $set: {
                             applicationStatus: 'Pending Review',
+                            adminFeedback: 'Application submitted for review.',
                             currentStudyYear: body.currentStudyYear,
                             currentCourse: body.currentCourse,
                             latestScheme: body.scheme,
@@ -110,7 +113,29 @@ studentRouter.post('/apply', protect, (req,res,next) => {
                 }
 });
 
-studentRouter.put('/appyly/:id', protect, applicationUploads, async (req,res) => {
+studentRouter.get('/applications', protect, async (req, res) => {
+  try {
+    const studentId = req.user.id;
+    const applications = await Application.find({ student: studentId })
+      .populate({
+        path: 'scheme',
+        select: 'name criteria'
+      }) 
+      .sort({ createdAt: -1 });
+
+    if (!applications || applications.length === 0) {
+        return res.status(200).json([]); 
+     }
+
+
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error('Error fetching applications:', error);
+    res.status(500).json({ message: 'Failed to fetch applications.' });
+  }
+});
+
+studentRouter.put('/apply/:id', protect, applicationUploads, async (req,res) => {
     try {
         const studentId = req.user.id;
         const applicationId = req.params.id;

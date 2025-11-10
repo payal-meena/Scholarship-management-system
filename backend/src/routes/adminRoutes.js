@@ -270,7 +270,7 @@ adminRouter.get("/public/schemes", async (req, res) => {
     const activeSchemes = await ScholarshipScheme.find({
       isActive: true,
       deadline: { $gte: new Date() },
-    }).select("name dealine");
+    }).select("name deadline");
 
     res.json(activeSchemes);
   } catch (error) {
@@ -279,5 +279,29 @@ adminRouter.get("/public/schemes", async (req, res) => {
       .json({ message: "Server error retrieving public schemes." });
   }
 });
+
+adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, res) => {
+  try {
+    const { feedback, status } = req.body;
+
+    const updated = await Application.findByIdAndUpdate(
+      req.params.id,
+      { 
+        adminFeedback: feedback, 
+        status: status || 'Reviewed', 
+        updatedAt: new Date() 
+      },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ message: 'Application not found' });
+
+    res.status(200).json({ message: 'Feedback updated successfully', application: updated });
+  } catch (error) {
+    console.error('Error updating feedback:', error);
+    res.status(500).json({ message: 'Server error while updating feedback' });
+  }
+});
+
 
 export default adminRouter;

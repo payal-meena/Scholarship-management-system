@@ -17,7 +17,9 @@ const applicationSchema = new mongoose.Schema({
         enum: ['Pending Review', 'Reverted for Correction', 'Approved', 'Rejected'],
         default: 'Pending Review'
     },
-    adminFeedback: { type: String },
+    adminFeedback: { type: String ,
+        default: ''
+    },
 
     personalData: {
         fullName: { type: String, required: true },

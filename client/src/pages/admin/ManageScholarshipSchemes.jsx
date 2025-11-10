@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { PlusCircle, Edit, Trash2, Clock, CheckCircle } from 'lucide-react'
+import { PlusCircle, Edit, Trash2, Clock, CheckCircle, AlertTriangle, XCircle } from 'lucide-react'
 import SchemeModal from './SchemeModal';
 import { toast } from 'react-toastify';
+
 
 // const initialSchemes = [
 //     {id: 1, name: 'Central Sector Scholarship', deadline: "2025-31-10", fundAmount: "12,000", isActive: true, criteria: { minPercentage: 80, maxIncome: 250000, minStudyYear: '1st Year'} },
@@ -15,6 +16,7 @@ const ManageScholarshipSchemes = () => {
     const [loading,setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schemeToEdit, setSchemeToEdit] = useState(null);
+
 
     const fetchSchemes = async () => {
         try {
@@ -73,6 +75,39 @@ const ManageScholarshipSchemes = () => {
         setIsModalOpen(true);
     };
 
+    const isSchemeOpen = (deadline, adminActiveStatus) => {
+        if(!adminActiveStatus) {
+            return false;
+        }
+
+        const today = new Date();
+        const deadlineDate = new Date(deadline);
+
+        return deadlineDate.setHours(23, 59, 59, 999) >= today.getTime();
+    };
+
+    const getAdminStatusDetails = (scheme) => {
+        const deadlineDate = new Date(scheme.deadline);
+        const today = new Date();
+
+        const isOpen = isSchemeOpen(scheme.deadline, scheme.isActive);
+
+        if (isOpen) {
+            const diffTime = deadlineDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if(diffDays <= 0) {
+                return { icon: Clock, classes: 'bg-red-100 text-red-700', text: 'Expired'};
+            } else if (diffDays <= 7) {
+                return { icon: AlertTriangle, classes: 'bg-yellow-100 text-yellow-700 ', text: `Closing Soon (${diffDays} days left)`};
+            } else {
+                return { icon: CheckCircle, classes: 'bg-green-100 text-green-700', text: `Active`};
+            }
+        } else {
+            return { icon: XCircle, classes: 'bg-gray-100 text-gray700', text: 'Inactive'};
+        }
+    }
+
     if(loading) {
         return <div className='p-8 text-center'>Loading scholarship schemes...</div>
     }
@@ -93,13 +128,15 @@ const ManageScholarshipSchemes = () => {
                     <tr>
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Scheme Name</th>
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Deadline</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Min Percentage</th>
+                        {/* <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Min Percentage</th> */}
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Actions</th>
                     </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                    {schemes.map((scheme) => (
+                    {schemes.map((scheme) =>{
+                        const statusDetails = getAdminStatusDetails(scheme);
+                    return (
                         <tr key={scheme._id}>
                         <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{scheme.name} <br /> 
                         <span className='text-xs text-gray-500'>ID: {scheme._id} </span>
@@ -109,13 +146,13 @@ const ManageScholarshipSchemes = () => {
                             month: '2-digit',
                             day: '2-digit'
                         })}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     Min Perc: {scheme.criteria.minPercentage}
-                         </td>
+                         </td> */}
                         <td className='px-6 py-4 whitespace-nowrap'>
-                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${scheme.isActive ? 'bg-violet-200 text-violet-800' : 'bg-red-100 text-red-800'}`}>
-                                {scheme.isActive ? <CheckCircle className='w-4 h-4 mr-1' /> : <Clock className='w-4 h-4 mr-1'/>} {scheme.isActive ? 'Active' : 'Inactive'}
-                         </span>
+                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusDetails.classes}`}>
+                                <statusDetails.icon className='w-4 h-4 mr-1' /> {statusDetails.text} 
+                            </span>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
                             <button onClick={()=> handleOpenModal(scheme)} className='cursor-pointer text-violet-600 hover:text-violet-900 flex items-center space-x-1'>
@@ -129,7 +166,8 @@ const ManageScholarshipSchemes = () => {
                             </button>
                         </td>
                     </tr>
-                    ))}
+                    )
+             })}
                 </tbody>
             </table>
         </div>

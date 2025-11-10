@@ -56,6 +56,7 @@ const getStatusClasses = (status) => {
   }
 };
 
+
 const ManageApplicationsPage = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -213,7 +214,7 @@ const ManageApplicationsPage = () => {
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {app.documents}
+                    {app.documentsNote || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
