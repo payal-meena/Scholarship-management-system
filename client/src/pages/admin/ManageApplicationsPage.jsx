@@ -122,7 +122,7 @@ const ManageApplicationsPage = () => {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg">
-      <h1 className="text-3xl font-extrabold text-indigo-950 mb-6 border-b pb-2">
+      <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2">
         Application Review Dashboard
       </h1>
 

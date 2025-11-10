@@ -18,8 +18,8 @@ const NavLink = ({ item , active , onClick }) => {
         to={item.path}
         onClick={onClick}
         className={`flex items-center space-x-3 p-3 rounded-lg transition-colors duration-150 ${
-          isActive ? 'bg-indigo-600 text-white shadow-md'
-          : 'text-gray-300 hover:bg-indigo-500 hover:text-white'
+          isActive ? 'bg-violet-600/30 text-white shadow-md'
+          : 'text-gray-300 hover:bg-violet-500/20 hover:text-white'
         }`}
         >
           <item.icon className="w-5 h-5" />
@@ -34,7 +34,7 @@ const StudentSidebar = ({ open, setOpen , active, onLogout }) => {
 
   return (
     <>
-    <div className="hidden md:flex flex-col w-64 bg-indigo-900 text-white space-y-4 p-4 min-h-full">
+    <div className="hidden md:flex flex-col w-64 bg-indigo-950 text-white space-y-4 p-4 min-h-full">
       <h2 className="text-xl font-extrabold text-white-400 mt-2 mb-4 tracking-wider">Student Menu</h2>
       <ul className="space-y-2 flex-1">
         {navItems.map(item => (
@@ -44,7 +44,7 @@ const StudentSidebar = ({ open, setOpen , active, onLogout }) => {
 
       <button
         onClick={onLogout}
-        className="flex cursor-pointer items-center space-x-3 p-3 mt-4 text-gray-300 bg-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150"
+        className="flex cursor-pointer items-center space-x-3 p-3 mt-4 text-gray-300 rounded-lg hover:bg-violet-500/20 hover:text-white transition-colors duration-150"
       >
         <LogOut className="w-5 h-5" />
         <span>Logout</span>
@@ -58,7 +58,7 @@ const StudentSidebar = ({ open, setOpen , active, onLogout }) => {
           onClick={closeSidebar}
         ></div>
 
-        <div className="relative w-64 bg-indigo-900 text-white p-4 space-y-4 z-50 flex flex-col">
+        <div className="relative w-64 bg-indigo-950 text-white p-4 space-y-4 z-50 flex flex-col">
           <h2 className="text-xl font-extrabold text-white-400 mt-2 mb-4 tracking-wider">Student Menu</h2>
           <ul className="space-y-2 flex-1">
               {navItems.map(item => (
@@ -67,7 +67,7 @@ const StudentSidebar = ({ open, setOpen , active, onLogout }) => {
           </ul>
           <button
             onClick={() => {onLogout(); closeSidebar(); }}
-            className="flex items-center space-x-3 p-3 mt-4 text-gray-300 bg-red-700 rounded-lg hover:bg-red-600 hover:text-white transition-colors duration-150"
+            className="flex items-center space-x-3 p-3 mt-4 text-gray-300 rounded-lg hover:bg-violet-500/20 hover:text-white transition-colors duration-150"
           >
             <LogOut className="h-5 w-5"/>
             <span>Logout</span>

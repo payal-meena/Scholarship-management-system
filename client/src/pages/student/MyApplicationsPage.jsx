@@ -39,7 +39,7 @@ const getStatusDetails = (status) => {
       case 'Rejected':
         return { icon: XCircle, classes: 'bg-red-100 text-red-700', text: 'Rejected'};
       default:
-        return { icon: Clock, classes: 'bg-blue-100 text-blue-700', text: 'Pending Review'};
+        return { icon: Clock, classes: 'bg-violet-100 text-violet-700', text: 'Pending Review'};
     }
 }
 
@@ -50,8 +50,8 @@ const MyApplicationsPage = () => {
   
   return (
     <div className='bg-white p-6 rounded-lg shadow-md mx-auto space-y-8'>
-        <h2 className='text-3xl font-extrabold text-gray-800 border-b pb-3 flex items-center'>
-          <FileText className='w-8 h-8 mr-3 text-indigo-600' />
+        <h2 className='text-3xl font-extrabold text-indigo-900 border-b pb-3 flex items-center'>
+          <FileText className='w-8 h-8 mr-3 text-indigo-900' />
           My Applications
           </h2>
 
@@ -65,9 +65,9 @@ const MyApplicationsPage = () => {
             const statusInfo = getStatusDetails(app.status);
 
             return (
-              <div key={app.id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#6366F1' }}>
+              <div key={app.id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
                   <div className='flex justify-between items-start mb-4'>
-                      <h3 className='text-xl font-bold text-gray-900'>{app.schemeName}</h3>
+                      <h3 className='text-xl font-bold text-indigo-900'>{app.schemeName}</h3>
                       <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold ${statusInfo.classes}`}>
                             <statusInfo.icon className='w-4 h-4' />
                             <span>{statusInfo.text}</span>
@@ -76,13 +76,13 @@ const MyApplicationsPage = () => {
                   <p className='text-sm text-gray-500 mb-4'>Submitted on: {app.dateSubmitted}</p>
 
                   <div className='p-3 border-t pt-4'>
-                      <p className='font-semibold text-gray-700 mb-2'>Current Feedback / Status Note:</p>
+                      <p className='font-semibold text-gray-700 mb-2'>Status Note:</p>
 
                       {app.status === 'Reverted for Correction' ? (
                         <div className='bg-yellow-50 p-3 rounded-lg border border-yellow-300'>
                             <p className='text-sm text-yellow-800 font-medium'>{app.adminFeedback}</p>
-                            <p className='text-xs text-yellow-600mt-2'>
-                              **ACTION REQUIRED:** Please re-upload the corrected document(s) by editing your application.
+                            <p className='text-xs text-yellow-600 mt-2'>
+                              **ACTION REQUIRED:** Please re-upload the corrected documents by editing your application.
                             </p>
                         </div>
                       ) : (

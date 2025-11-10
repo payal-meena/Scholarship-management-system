@@ -82,7 +82,7 @@ const ManageStudentsPage = () => {
     return (
         <div className="p-6 bg-white rounded-xl shadow-lg">
             <h1 className="text-3xl font-extrabold text-indigo-950 mb-6 border-b pb-2 flex items-center">
-                <Users className="w-8 h-8 mr-3 text-indigo-950" /> All Student Records
+                <Users className="w-8 h-8 mr-3 text-indigo-900" /> All Student Records
             </h1>
             
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">

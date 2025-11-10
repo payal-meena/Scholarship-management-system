@@ -151,8 +151,8 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="border p-6 rounded-lg bg-gray-50">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2">
+        <div className="border p-6 rounded-lg bg-indigo-50">
+          <h2 className="text-xl font-bold text-indigo-950 mb-4 flex items-center space-x-2">
             <User className="w-5 h-5" />{" "}
             <span>Personal & Contact Information</span>
           </h2>
@@ -244,8 +244,8 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
           </div>
         </div>
 
-        <div className="border p-6 rounded-lg bg-indigo-50/50">
-            <h2 className="text-xl font-bold text-indigo-800 mb-4 flex items-center space-x-2">
+        <div className="border p-6 rounded-lg bg-violet-50/50">
+            <h2 className="text-xl font-bold text-violet-900 mb-4 flex items-center space-x-2">
               <BookOpen className="w-5 h-5" /> <span>Academic History & Current Status</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -358,7 +358,7 @@ const FullApplicationForm = ({ scheme, onFormSubmit }) => {
       </div>
 
       <button type="submit" disabled={isLoading}
-          className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition flex items-center justify-center space-x-2 disabled:bg-indigo-400">
+          className="w-full bg-violet-700 text-white py-3 rounded-lg font-semibold hover:bg-violet-800 transition flex items-center justify-center space-x-2 disabled:bg-violet-400">
           <Send className="w-5 h-5 mr-1"/> 
           {isLoading ? 'Submitting Application...' : 'Submit Final Application'}
       </button>
@@ -381,8 +381,8 @@ const ApplyScholarshipPage = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md  mx-auto">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6 border-b pb-2">
-        Available Scholarship Schemes
+      <h2 className="text-3xl font-bold text-indigo-900 mb-6 border-b pb-2">
+        Available Scholarships
       </h2>
 
       {availableSchemes.map((scheme) => (
@@ -393,7 +393,7 @@ const ApplyScholarshipPage = () => {
             </div>
             <button 
               onClick={()=> setSelectedScheme(scheme)}
-              className="bg-indigo-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-indigo-700 transition"
+              className="bg-violet-700 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-violet-800 transition"
             >
               Start Application
             </button>

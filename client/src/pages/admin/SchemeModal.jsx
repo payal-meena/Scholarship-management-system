@@ -75,19 +75,19 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
             <div className='bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl'>
 
                     <div className='p-6 border-b flex justify-between items-center'>
-                        <h2 className='text-2xl font-bold text-gray-800 flex items-center space-x-2 '>
+                        <h2 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2 '>
                             {schemeToEdit ? <Save /> : <PlusCircle />}
                             <span>{schemeToEdit ? 'Edit Scheme' : 'Create New Scheme'}</span>
                         </h2>
-                        <button onClick={onClose} className='text-gray-500 hover:text-gray-800 p-2'>
+                        <button onClick={onClose} className='text-indigo-600 hover:text-indigo-900 p-2'>
                             <X size={24} />
                         </button>
                     </div>
 
                     <form className='p-6 space-y-6' onSubmit={handleSubmit}>
-                        <div className='border p-4 rounded-lg bg-gray-50 space-y-4'>
-                                <h3 className='text-lg font-semibold text-gray-700'>Scheme Details</h3>
-                                <div>
+                        <div className='border p-4 rounded-lg bg-indigo-50 space-y-4'>
+                                <h3 className='text-lg font-semibold text-indigo-700'>Scheme Details</h3>
+                        <div>
                             <label className="block text-sm font-medium text-gray-700">Scheme Name</label>
                             <input type="text" name="name" value={formData.name} onChange={handleChange} required
                                 className="mt-1 w-full border rounded-md p-2" />
@@ -138,13 +138,13 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
                             name="isActive"
                             checked={formData.isActive}
                             onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-                            className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500"
                         />
                         <label htmlFor="isActive" className="text-sm font-medium text-gray-700">Scheme is Active</label>
                     </div>
 
                     <button type="submit" disabled={isLoading}
-                        className="cursor-pointer w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-indigo-400">
+                        className="cursor-pointer w-full bg-violet-700 text-white py-3 rounded-lg font-semibold hover:bg-violet-800 transition disabled:bg-indigo-400">
                         {isLoading ? 'Saving...' : (schemeToEdit ? 'Update Scheme' : 'Create Scheme')}
                     </button>
                     </form>

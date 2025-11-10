@@ -32,7 +32,7 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
         <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
             <FileText className="w-6 h-6 text-indigo-950" />
-            <span className="text-indigo-950">Application Details</span>
+            <span className="text-indigo-900">Application Details</span>
           </h2>
           <button
             onClick={onClose}

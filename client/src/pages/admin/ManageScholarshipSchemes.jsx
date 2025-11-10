@@ -80,7 +80,7 @@ const ManageScholarshipSchemes = () => {
   return (
     <div className='p-6 bg-white rounded-xl shadow-lg'>
         <div className='flex justify-between items-center mb-6 border-b pb-2'>
-            <h1 className='text-3xl font-extrabold text-indigo-950'>Manage Scholarships</h1>
+            <h1 className='text-3xl font-extrabold text-indigo-900'>Manage Scholarships</h1>
             <button onClick={() => handleOpenModal()} className='cursor-pointer bg-violet-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-violet-800'>
                 <PlusCircle className='w-5 h-5' />
                 <span>Create New Scheme</span>
