@@ -5,8 +5,6 @@ import Student from "../models/Student.js";
 import Admin from "../models/Admin.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-
-
 const authRouter = express.Router();
 
 authRouter.post("/unified-login", async (req,res) => {
@@ -48,24 +46,6 @@ authRouter.post("/unified-login", async (req,res) => {
     }
     });
 
-     authRouter.get('/me', protect, async (req,res)=> {
-            try {
-                const student = await Student.findById(req.user.id).select('-password');
-    
-                if(student) {
-                    res.json({
-                        success: true,
-                        name: student.name,
-                        email: student.email,
-                        studentId: student._id,
-                    });
-                } else {
-                    res.status(404).json({ message: 'Student record not found.'});
-                }
-            } catch (error){
-                    res.status(500).json({ message: 'Server error while fetching profile.'})
-            }
-        });
 
 
 export default authRouter;

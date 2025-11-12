@@ -21,7 +21,7 @@ const ProfilePage = () => {
             throw new Error('No authentication token found.');
           }
 
-          const response = await axios.get('http://localhost:4000/api/auth/me', {
+          const response = await axios.get('http://localhost:4000/api/students/me', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
