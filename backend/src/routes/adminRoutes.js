@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import Student from "../models/Student.js";
+import Admin from "../models/Admin.js";
 import StudentProfile from "../models/StudentProfile.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { adminOnly } from "../middleware/authMiddleware.js";
@@ -32,6 +32,25 @@ adminRouter.post("/signup", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+adminRouter.get('/me', protect, adminOnly, async (req,res)=> {
+            try {
+                const admin = await Admin.findById(req.user.id).select('-password');
+    
+                if(admin) {
+                    res.json({
+                        success: true,
+                        name: admin.name || "Admin",
+                        email: admin.email,
+                        adminId: admin._id,
+                    });
+                } else {
+                    res.status(404).json({ message: 'Admin record not found.'});
+                }
+            } catch (error){
+                    res.status(500).json({ message: 'Server error while fetching profile.'})
+            }
+        });
 
 adminRouter.get("/students", protect, adminOnly, async (req, res) => {
   try {
@@ -301,6 +320,32 @@ adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, re
     console.error('Error updating feedback:', error);
     res.status(500).json({ message: 'Server error while updating feedback' });
   }
+});
+
+adminRouter.put('/password-change', protect, adminOnly, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const Admin = mongoose.model('Admin');
+
+    try {
+        const admin = await Admin.findById(req.user.id);
+
+        if (!admin) {
+            return res.status(404).json({ message: 'Admin user not found.' });
+        }
+        const isMatch = await admin.matchPassword(currentPassword); 
+
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Incorrect current password.' });
+        }
+        admin.password = newPassword;
+        await admin.save();
+
+        res.json({ message: 'Admin Password updated successfully.' });
+
+    } catch (error) {
+        console.error('Admin Password change error:', error);
+        res.status(500).json({ message: 'Failed to update Admin password. Server error.' });
+    }
 });
 
 
