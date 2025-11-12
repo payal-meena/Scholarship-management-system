@@ -186,4 +186,31 @@ studentRouter.put('/apply/:id', protect, applicationUploads, async (req,res) => 
     }
 });
 
+studentRouter.put('/password-change', protect, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    
+    try {
+        const student = await Student.findById(req.user.id); 
+
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found.' });
+        }
+
+        const isMatch = await student.matchPassword(currentPassword); 
+
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Incorrect current password.' });
+        }
+
+        student.password = newPassword;
+        await student.save();
+
+        res.json({ message: 'Password updated successfully.' });
+
+    } catch (error) {
+        console.error('Password change error:', error);
+        res.status(500).json({ message: 'Failed to update password. Server error.' });
+    }
+});
+
 export default studentRouter;

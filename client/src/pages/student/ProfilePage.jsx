@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { User, Lock, Mail, Phone, Hash } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import PasswordUpdateModal from './PasswordUpdateModal';
 
 const ProfilePage = () => {
 
     const [studentData, setStudentData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+    
 
     useEffect(() => {
       const fetchProfile = async () => {
@@ -33,8 +38,43 @@ const ProfilePage = () => {
       
       fetchProfile();
     }, [])
-    const handlePassowordChange = () => {
-      alert("Functionality to change password will be implemented here with a modal.");
+
+    const handlePassowordChange = async(passwordData) => {
+      const { currentPassword, newPassword, confirmPassword } = passwordData;
+
+      if (!currentPassword || !newPassword || newPassword !== confirmPassword) {
+        toast.error("Please ensure all password fields are filled and match.");
+        console.log(currentPassword);
+        console.log(newPassword);
+        console.log(confirmPassword);
+        return;
+      }
+
+      if(newPassword.length < 6) {
+        toast.error("New password must be at least 6 characters long.");
+        return;
+      }
+
+      setIsPasswordLoading(true);
+      try {
+        const token = localStorage.getItem('studentToken');
+        const response = await axios.put('http://localhost:4000/api/students/password-change', { 
+          currentPassword,
+           newPassword 
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        toast.success(response.data.message || "Password updated successfully!");
+        setIsModalOpen(false);
+
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Password update failed. Check your current password.");
+      } finally {
+        setIsPasswordLoading(false);
+      }
     };
 
     if(loading) {
@@ -47,21 +87,24 @@ const ProfilePage = () => {
 
   return (
     <div className="bg-white p-6 md:p-8 rounded-xl shadow-2xl mx-auto">
-        <h1 className='text-3xl font-extrabold text-indigo-700 mb-6 border-b pb-3 flex items-center'>
+        <h1 className='text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-3 flex items-center'>
           <User className='w-7 h-7 mr-3'/> My profile
         </h1>
+        {/* <button onClick={onClose} className='text-gray-500 hover:text-gray-800 p-1'>
+                                <X size={24} />
+         </button> */}
 
         <div className='space-y-6'>
 
             <div className='p-4 border rounded-md'>
                 <h2 className='text-xl font-semibold mb-3 text-indigo-800'>Personal Information</h2>
                 <p className='flex items-center text-gray-700 space-x-2'>
-                  <User className='w-4 h-4 text-indigo-600'/>
-                  <span>Name: <strong>{studentData.name}</strong></span>
+                  <User className='w-4 h-4 text-indigo-800'/>
+                  <span>Name : <strong>{studentData.name}</strong></span>
                 </p>
                 <p className='flex items-center text-gray-700 space-x-2 mt-2'>
-                  <Hash className='w-4 h-4 text-indigo-600' />
-                  <span>Student ID:{studentData.studentId}</span>
+                  <Hash className='w-4 h-4 text-indigo-800' />
+                  <span>Student ID : {studentData.studentId}</span>
                 </p>
             </div>
 
@@ -69,11 +112,11 @@ const ProfilePage = () => {
                 <h2 className='text-xl font-semibold mb-3 text-gray-800'>Login & Contact</h2>
                 <p className='flex items-center text-gray-700 space-x-2'>
                   <Mail className='w-4 h-4 text-gray-600' />
-                  <span>Email: {studentData.email}</span>
+                  <span>Email : {studentData.email}</span>
                 </p>
                 <p className='flex items-center text-gray-700 space-x-2 mt-2'>
                   <Phone className='w-4 h-4 text-gray-600'/>
-                  <span>Contact: {studentData.contact}</span>
+                  <span>Contact : {studentData.contact || 'N/A'}</span>
                 </p>
             </div>
 
@@ -82,15 +125,23 @@ const ProfilePage = () => {
                   <Lock className='w-5 h-5' /><span>Security Settings</span>
                 </h2>
                 <button
-                  onClick={handlePassowordChange}
+                  onClick={() => setIsModalOpen(true)}
                   className='bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition'
                 >
                     Change Password
                 </button>
             </div>
+
+            {isModalOpen && (
+              <PasswordUpdateModal
+              onSave={handlePassowordChange}
+              onClose ={() => setIsModalOpen(false)}
+              isLoading= {isPasswordLoading}
+              />
+            )}
         </div>
     </div>
   )
 }
 
-export default ProfilePage
+export default ProfilePage;
