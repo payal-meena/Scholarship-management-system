@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 import Admin from "../models/Admin.js";
 import StudentProfile from "../models/StudentProfile.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -324,7 +325,7 @@ adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, re
 
 adminRouter.put('/password-change', protect, adminOnly, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
-    const Admin = mongoose.model('Admin');
+    // const Admin = mongoose.model('Admin');
 
     try {
         const admin = await Admin.findById(req.user.id);

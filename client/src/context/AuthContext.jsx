@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
                 return;
             }
-            const res = await axios.get("http://localhost:4000/api/auth/me", {
+            const res = await axios.get("http://localhost:4000/api/students/me", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
