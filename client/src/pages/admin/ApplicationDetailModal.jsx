@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, FileText, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
   const [status, setStatus] = useState(application.status);
   const [comments, setComments] = useState("");
@@ -20,11 +21,25 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
     }
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    onUpdateStatus(application.id, status, comments);
-    setIsLoading(false);
-    onClose();
+    try {
+        const token = localStorage.getItem('adminToken');
+            const response = await axios.put(`http://localhost:4000/api/admin/applications/${application.id}/status`, {
+            status: status,
+            comments: comments,
+        }, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        onUpdateStatus(response.data.application); 
+        toast.success(response.data.message);
+        setTimeout(() => {
+        onClose();
+      }, 100);
+    } catch (error) {
+        console.error("error while updating ..",error);
+        
+    } finally {
+        setIsLoading(false);
+    }
   };
   return (
     <div className="fixed inset-0 bg-block bg-opacity-50 z-50 flex justify-center items-center p-4">

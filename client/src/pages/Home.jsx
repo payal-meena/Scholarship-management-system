@@ -1,4 +1,4 @@
-import welcome_image from "../assets/welcome.jpg"
+import welcome_image from "../assets/hero-section.png"
 import {
   Mail, Phone, MapPin , BarChart, Lock,Zap } from "lucide-react";
 import { Link } from "react-router-dom"; 
@@ -29,29 +29,28 @@ function Home() {
     <div className="scroll-smooth ">
       <main>
          <section
-                id="home"  
-                className="relative bg-gray-800 bg-cover bg-center min-h-screen flex items-center justify-center text-center"
-                style={{
-                  backgroundImage: `url(${welcome_image})`,
-                }}
+            id="home"
+            className="relative bg-gray-800 bg-cover bg-right min-h-[80vh] flex items-center justify-end text-right"
+            style={{
+              backgroundImage: `url(${welcome_image})`,
+            }}
+          >
+            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="relative text-white  px-4 py-10 max-w-2xl w-full md:mr-20 text-center">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 tracking-tight drop-shadow-lg">
+                Welcome to <br />Scholarship Management System
+              </h1>
+              <p className="text-lg md:text-xl mb-10 font-light drop-shadow">
+                A centralized platform for students to apply for scholarships and
+                for administrators to manage applications efficiently.
+              </p>
+              <Link
+                to="/auth"
+                className="bg-violet-800 hover:bg-violet-700 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl transition duration-300 transform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-violet-700 inline-block"
               >
-                <div className="absolute inset-0 bg-black/50"></div>
-        
-                <div className="relative  text-white px-4 py-20 max-w-7xl mx-auto">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight drop-shadow-lg">
-                    Welcome to Scholarship Management System
-                  </h1>
-                  <p className="text-lg md:text-xl mb-10 max-w-4xl mx-auto font-light drop-shadow">
-                    A centralized platform for students to apply for scholarships and
-                    for administrators to manage applications efficiently.
-                  </p>
-                  <Link
-                    to="/auth"
-                    className="bg-violet-800 hover:bg-violet-700 text-white font-semibold cursor-pointer text-lg px-10 py-4 rounded-full shadow-2xl  transition duration-300 tranform hover:scale-[1.05] active:scale-95 focus:outline-none focus:ring-4 focus:ring-violet-700"
-                  >
-                    Get Started
-                  </Link>
-                </div>
+                Get Started
+              </Link>
+            </div>
           </section>
         <section id="about" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

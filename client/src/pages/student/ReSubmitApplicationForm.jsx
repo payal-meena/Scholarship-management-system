@@ -261,9 +261,10 @@ const ReSubmitApplicationForm = ({ applicationId, initialData, onClose, onResubm
 
 
                     <button type="submit" disabled={isLoading}
-                        className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition disabled:bg-red-400">
-                        <Send className="w-5 h-5"/> 
-                        {isLoading ? 'Re-submitting...' : 'Fix Errors & Re-submit'}
+                        className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition disabled:bg-red-400 flex items-center justify-center">
+                        <Send className="w-5 h-5 mr-2"/> 
+                        
+                        <span> {isLoading ? ' Re-submitting...' : ' Fix Errors & Re-submit'}</span>
                     </button>
                 </form>
             </div>

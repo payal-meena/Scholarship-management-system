@@ -79,10 +79,19 @@ const MyApplicationsPage = () => {
     fetchApplications();
   }, []);
   
+  const formatApplicationForDisplay = (app) => {
+    const displayDate = app.updatedAt || app.createdAt;
+    return {
+        ...app,
+        dateSubmitted: displayDate ? new Date(displayDate).toLocaleDateString('en-GB') : 'N/A',
+        schemeName: app.scheme ? app.scheme.name : 'N/A',
+    };
+};
   const handleResubmitSuccess = (updatedApplication) => {
+    const formattedApp = formatApplicationForDisplay(updatedApplication);
     setApplications(prevApps => 
       prevApps.map(app => 
-        app._id === updatedApplication._id ? updatedApplication : app
+        app._id === formattedApp._id ? formattedApp : app
       )
     );
     toast.info('Application successfuly updated and sent for review!.');

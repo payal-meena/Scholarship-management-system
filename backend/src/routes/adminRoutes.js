@@ -300,32 +300,63 @@ adminRouter.get("/public/schemes", async (req, res) => {
   }
 });
 
-adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, res) => {
-  try {
-    const { feedback, status } = req.body;
+// adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, res) => {
+//   try {
+//     const { feedback, status } = req.body;
 
-    const updated = await Application.findByIdAndUpdate(
-      req.params.id,
-      { 
-        adminFeedback: feedback, 
-        status: status || 'Reviewed', 
-        updatedAt: new Date() 
-      },
-      { new: true }
-    );
+//     const updated = await Application.findByIdAndUpdate(
+//       req.params.id,
+//       { 
+//         adminFeedback: feedback, 
+//         status: status || 'Reviewed', 
+//         updatedAt: new Date() 
+//       },
+//       { new: true }
+//     );
 
-    if (!updated) return res.status(404).json({ message: 'Application not found' });
+//     if (!updated) return res.status(404).json({ message: 'Application not found' });
 
-    res.status(200).json({ message: 'Feedback updated successfully', application: updated });
-  } catch (error) {
-    console.error('Error updating feedback:', error);
-    res.status(500).json({ message: 'Server error while updating feedback' });
-  }
+//     res.status(200).json({ message: 'Feedback updated successfully', application: updated });
+//   } catch (error) {
+//     console.error('Error updating feedback:', error);
+//     res.status(500).json({ message: 'Server error while updating feedback' });
+//   }
+// });
+
+adminRouter.put('/applications/:id/status', protect, adminOnly, async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+        const { status, comments } = req.body; 
+        if (!status) {
+            return res.status(400).json({ message: 'New status is required.' });
+        }
+
+        const updatedApplication = await Application.findByIdAndUpdate(
+            applicationId,
+            {
+                status: status,
+                adminFeedback: comments, 
+                updatedAt: new Date(),
+            },
+            { new: true, runValidators: true } 
+        )
+        .populate('student', 'name email')
+        .populate('scheme', 'name'); 
+
+        if (!updatedApplication) {
+            return res.status(404).json({ message: 'Application not found for status update.' });
+        }
+
+        res.json({ message: 'Application status updated successfully.', application: updatedApplication });
+
+    } catch (error) {
+        console.error('Admin status update failed:', error);
+        res.status(500).json({ message: 'Server error updating application status.' });
+    }
 });
 
 adminRouter.put('/password-change', protect, adminOnly, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
-    // const Admin = mongoose.model('Admin');
 
     try {
         const admin = await Admin.findById(req.user.id);

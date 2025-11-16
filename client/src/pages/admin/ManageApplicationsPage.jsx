@@ -102,21 +102,15 @@ const ManageApplicationsPage = () => {
     });
 
 
-  const handleUpdateStatus = (appId, newStatus, feedback) => {
+  const handleUpdateStatus = (updatedApp) => {
       setApplications(prevApps => 
         prevApps.map(app => 
-          app.id === appId 
-          ? {
-            ...app, 
-            status: newStatus,
-             documents: feedback || app.documents,  }
-             : app
+          app._id === updatedApp._id ? updatedApp : app
         )
       );
       setSelectedApplication(null);
-      toast.success(`Application ID ${appId} status updated to ${newStatus}.`);
+      toast.success(`Application ID ${updatedApp._id} status updated to ${updatedApp.status}.`);
   };
-
   if (loading) {
     return <div className="p-8 text-center">Loading applications data...</div>
   }
@@ -180,8 +174,8 @@ const ManageApplicationsPage = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredApplications.length > 0 ? (
-              filteredApplications.map((app) => (
-                <tr key={app.id}>
+              applications.map((app) => (
+                <tr key={app._id}  >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {app.studentName || 'N/A'} <br />
                     <span className="text-gray-500 text-xs">

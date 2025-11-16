@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Users, Eye } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { PlusCircle, Upload, Edit, Trash2 } from 'lucide-react';
 
 // const initialStudents = [
 //     { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
@@ -57,7 +58,7 @@ const ManageStudentsPage = () => {
             }
         };
         fetchAllStudents();
-    }, []);
+    }, [statusFilter, yearFilter]);
 
     const filteredStudents = students.filter(student => {
 
@@ -79,12 +80,31 @@ const ManageStudentsPage = () => {
         alert(`Viewing complete record for Student ID: ${studentId}.`);
     };
 
+    const handleAddStudent = () => {
+        alert("Open modal to Add New Student");
+    }
+
+    const handleBulkUpload = () => {
+        alert("Open modal for Bulk CSV Upload");
+    }
+
     return (
         <div className="p-6 bg-white rounded-xl shadow-lg">
-            <h1 className="text-3xl font-extrabold text-indigo-950 mb-6 border-b pb-2 flex items-center">
+            <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2 flex items-center">
                 <Users className="w-8 h-8 mr-3 text-indigo-900" /> All Student Records
             </h1>
             
+            <div className="flex justify-between items-center mb-6">
+                <div className="flex space-x-3">
+                    <button onClick={handleAddStudent} className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-indigo-700 transition">
+                        <PlusCircle className="w-5 h-5" /> <span>Add Single Student</span>
+                    </button>
+                    <button onClick={handleBulkUpload} className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700 transition">
+                        <Upload className="w-5 h-5" /> <span>Bulk Upload (CSV)</span>
+                    </button>
+                </div>
+            </div>
+
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
                 
                 <div className="relative flex-1">
@@ -133,9 +153,9 @@ const ManageStudentsPage = () => {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name & ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Year of Study</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Application Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Scheme Applied</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Course</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Current Year</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -148,22 +168,22 @@ const ManageStudentsPage = () => {
                                         <span className="text-gray-500 text-xs">{student.email || 'N/A'}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
-                                        {student.currentStudyYear || 'N/A'}
+                                        {student.currentCourse || 'N/A'}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
+                                    {student.currentStudyYear || 'N/A'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
                                             {student.applicationStatus || 'N/A'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.schemeApplied || 'N/A'}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button 
-                                            onClick={() => handleViewDetails(student.studentId)}
-                                            className="text-violet-600 hover:text-violet-900 text-xs font-bold flex items-center space-x-1"
-                                        >
-                                            <Eye className='w-4 h-4' /> <span>View Record</span>
-                                        </button>
-                                    </td>
+                                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.schemeApplied || 'N/A'}</td> */}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-1">
+                                    <button onClick={() => alert(`Edit ${student.name}`)} className="text-indigo-600 hover:text-indigo-900"><Edit className='w-4 h-4 inline'/></button>
+                                    <button onClick={() => alert(`Delete ${student.name}`)} className="text-red-600 hover:text-red-900"><Trash2 className='w-4 h-4 inline'/></button>
+                                    <button onClick={() => alert(`View ${student.name}`)} className="text-gray-600 hover:text-gray-900"><Eye className='w-4 h-4 inline'/></button>
+                                </td>
                                 </tr>
                             ))
                         ) : (
