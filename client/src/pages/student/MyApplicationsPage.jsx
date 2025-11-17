@@ -50,6 +50,7 @@ const MyApplicationsPage = () => {
   const [loading, setLoading] = useState(true);
   const [appToEdit, setAppToEdit] = useState(null);
 
+
  
   useEffect(() => {
   const fetchApplications = async ()=> {
@@ -80,11 +81,10 @@ const MyApplicationsPage = () => {
   }, []);
   
   const formatApplicationForDisplay = (app) => {
-    const displayDate = app.updatedAt || app.createdAt;
     return {
         ...app,
-        dateSubmitted: displayDate ? new Date(displayDate).toLocaleDateString('en-GB') : 'N/A',
         schemeName: app.scheme ? app.scheme.name : 'N/A',
+
     };
 };
   const handleResubmitSuccess = (updatedApplication) => {
@@ -117,6 +117,7 @@ const MyApplicationsPage = () => {
 
           {applications.map((app) => {
             const statusInfo = getStatusDetails(app.status);
+            const dateSubmitted = new Date(app.updatedAt).toLocaleString('en-GB');
 
             return (
               <div key={app._id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
@@ -127,7 +128,7 @@ const MyApplicationsPage = () => {
                             <span>{statusInfo.text}</span>
                       </div>
                   </div>
-                  <p className='text-sm text-gray-500 mb-4'>Submitted on: {app.dateSubmitted || "N/A"}</p>
+                  <p className='text-sm text-gray-500 mb-4'>Submitted on: {dateSubmitted || "N/A"}</p>
 
                   <div className='p-3 border-t pt-4'>
                       <p className='font-semibold text-gray-700 mb-2'>Status Note:</p>

@@ -30,12 +30,12 @@ function Home() {
       <main>
          <section
             id="home"
-            className="relative bg-gray-800 bg-cover bg-right min-h-[80vh] flex items-center justify-end text-right"
+            className="relative bg-gray-800 bg-cover bg-right min-h-[80vh] flex items-center justify-end text-right "
             style={{
               backgroundImage: `url(${welcome_image})`,
             }}
           >
-            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="absolute inset-0 bg-indigo-300/50"></div>
             <div className="relative text-white  px-4 py-10 max-w-2xl w-full md:mr-20 text-center">
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 tracking-tight drop-shadow-lg">
                 Welcome to <br />Scholarship Management System

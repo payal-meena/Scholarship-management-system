@@ -136,6 +136,7 @@ studentRouter.get('/applications', protect, async (req, res) => {
   try {
     const studentId = req.user.id;
     const applications = await Application.find({ student: studentId })
+    
       .populate({
         path: 'scheme',
         select: 'name criteria'

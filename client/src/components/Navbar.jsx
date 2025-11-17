@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X , LogIn , Award ,} from "lucide-react"; 
+import { Menu, X , LogIn , Award , GraduationCap, GraduationCapIcon} from "lucide-react"; 
 
 const Navbar = ({onNavLinkClick , currentView}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ const Navbar = ({onNavLinkClick , currentView}) => {
 
           <Link to="/" 
           className="flex-shrink-0 flex items-center">
-            <Award className="h-7 w-7 text-violet-800 mr-2" />
+            <GraduationCapIcon className="h-8 w-8 text-violet-800 mr-3" />
             <span className="text-2xl font-extrabold text-violet-800 tracking-tight">
               ScholarshipPortal
             </span>

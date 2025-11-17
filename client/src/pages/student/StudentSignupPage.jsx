@@ -62,7 +62,7 @@ const StudentSignupPage = () => {
       <div className="w-96 bg-white shadow-xl rounded-2xl p-8 text-center border-t-4 border-violet-800">
        <h2 className="text-2xl font-bold text-center mb-6 text-violet-800 flex justify-center items-center space-x-2">
         <User2 className="h-6 w-6" /> 
-       <span>Sign up</span>
+       <span>Signup</span>
         </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
