@@ -64,6 +64,9 @@ const ManageApplicationsPage = () => {
   const [statusFilter, setStatusFilter] = useState("All");
 
   const [selectedApplication, setSelectedApplication] = useState(null);
+
+  const [schemeList, setSchemeList] = useState([]);
+  const [schemeFilter, setSchemeFilter] = useState('All');
   
     useEffect(() => {
       const fetchApplications = async () => {
@@ -88,18 +91,31 @@ const ManageApplicationsPage = () => {
       fetchApplications();
     }, []);
 
+    useEffect(() => {
+        const fetchSchemeList = async () => {
+            try {
+                const token = localStorage.getItem('adminToken');
+                const response = await axios.get('http://localhost:4000/api/admin/schemes/list', { 
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setSchemeList(response.data); 
+            } catch (error) {
+                toast.error("Failed to fetch scheme list for filter.");
+            }
+        };
+        fetchSchemeList();
+    }, []);
+
     const filteredApplications = applications.filter(app => {
 
       const studentName = app.studentName || '';
-      const studentId = app.studentId || '';
-
       const matchesSearch = studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      studentId.toLowerCase().includes(searchTerm.toLowerCase());
-
+                          (app.studentId || '').toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
-
-      return matchesSearch && matchesStatus;
-    });
+      const appSchemeId = app.scheme?._id ? app.scheme._id.toString() : null;
+      const filterValue = schemeFilter;
+      const matchesScheme = filterValue === 'All' || appSchemeId === filterValue;
+        return matchesSearch && matchesStatus && matchesScheme;});
 
 
   const handleUpdateStatus = (updatedApp) => {
@@ -146,6 +162,20 @@ const ManageApplicationsPage = () => {
           </option>
           <option value="Documents Missing">Documents Missing</option>
         </select>
+
+        <select
+          className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20 bg-white"
+          value={schemeFilter}
+          onChange={(e) => setSchemeFilter(e.target.value)}
+        >
+          <option value="All">Filter by Scheme (All)</option>
+          {schemeList.map(scheme => (
+            <option key={scheme._id} value={scheme._id} >
+              {scheme.name}
+            </option>
+          ))}
+          
+        </select>
       </div>
 
       <div className="overflow-x-auto bg-gray-50 rounded-lg border">
@@ -174,8 +204,8 @@ const ManageApplicationsPage = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredApplications.length > 0 ? (
-              applications.map((app) => (
-                <tr key={app._id}  >
+              filteredApplications.map((app) => (
+                <tr key={app.id}  >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {app.studentName || 'N/A'} <br />
                     <span className="text-gray-500 text-xs">

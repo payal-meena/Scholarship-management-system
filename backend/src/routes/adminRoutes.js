@@ -7,6 +7,9 @@ import { protect } from "../middleware/authMiddleware.js";
 import { adminOnly } from "../middleware/authMiddleware.js";
 import Application from "../models/Application.js";
 import ScholarshipScheme from "../models/ScholarshipScheme.js";
+import bulkUploadMiddleware from '../middleware/bulkUploadMiddleware.js'; 
+import csvtojson from 'csvtojson';
+import fs from 'fs';
 
 const parseStudyYear = (yearString) => {
   if (!yearString) return 0;
@@ -300,6 +303,16 @@ adminRouter.get("/public/schemes", async (req, res) => {
   }
 });
 
+adminRouter.get('/schemes/list', protect, adminOnly, async (req, res) => {
+    try {
+        const schemes = await ScholarshipScheme.find({}).select('name'); 
+        res.json(schemes);
+    } catch (error) {
+        console.error('Error fetching scheme list for filter:', error);
+        res.status(500).json({ message: 'Server error retrieving schemes list.' });
+    }
+});
+
 // adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, res) => {
 //   try {
 //     const { feedback, status } = req.body;
@@ -377,6 +390,72 @@ adminRouter.put('/password-change', protect, adminOnly, async (req, res) => {
     } catch (error) {
         console.error('Admin Password change error:', error);
         res.status(500).json({ message: 'Failed to update Admin password. Server error.' });
+    }
+});
+
+adminRouter.post('/students/bulk-upload', protect, adminOnly, bulkUploadMiddleware, async (req, res) => {
+    
+    const filePath = req.file?.path;
+    if (!filePath) {
+        return res.status(400).json({ message: 'No file uploaded or file type is incorrect (use CSV).' });
+    }
+
+    let insertedCount = 0;
+    let updatedCount = 0;
+    
+    try {
+        const studentRecords = await csvtojson().fromFile(filePath);
+
+        for (const record of studentRecords) {
+            if (!record.Email || !record.CollegeID || !record.Name) {
+                console.warn(`Skipping incomplete record: ${record.Email}`);
+                continue;
+            }
+            
+            const uniqueQuery = { collegeId: record.CollegeID }; 
+            
+            const dataToUpdate = {
+                name: record.Name,
+                email: record.Email,
+                contactNo: record.ContactNo,
+                currentStudyYear: record.Year,
+                currentCourse: record.Course,
+                currentBranch: record.Branch,
+                
+                applicationStatus: 'Not Started', 
+                student: null, 
+            };
+                const result = await StudentProfile.findOneAndUpdate(
+                uniqueQuery,
+                { $set: dataToUpdate },
+                { 
+                    upsert: true,      
+                    new: true,
+                    runValidators: true 
+                }
+            );
+
+            if (result.lastErrorObject && result.lastErrorObject.upserted) {
+                insertedCount++;
+            } else {
+                updatedCount++;
+            }
+        }
+        res.json({ 
+            message: `Bulk upload successful. Total: ${insertedCount + updatedCount} records processed.`,
+            inserted: insertedCount,
+            updated: updatedCount,
+        });
+
+    } catch (error) {
+        console.error('Bulk upload failed:', error);
+        res.status(500).json({ message: 'Bulk upload failed due to server error or validation issues.' });
+    } finally {
+        if (filePath) {
+            fs.unlink(filePath, (err) => {
+                if (err) console.error('Error cleaning up file:', err);
+            });
+        }
     }
 });
 

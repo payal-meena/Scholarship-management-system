@@ -1,36 +1,25 @@
 import mongoose from 'mongoose';
 
 const studentProfileSchema = new mongoose.Schema({
-    student : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Student',
-        required: true,
-        unique: true
+    student: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Student', 
+        unique: true,
+        default: null
     },
-    collegeId: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    contactNo: {
-        type: String,
-    },
-    currentStudyYear: {
+    collegeId: { 
         type: String, 
-        enum: ['1st Year', '2nd Year', '3rd Year', '4th Year']
+        required: true, 
+        unique: true 
     },
-    currentCourse: {
-        type: String
-    },
-    applicationStatus: {
-        type: String,
-        enum: ['Not Started', 'Submitted', 'Reverted', 'Approved', 'Rejected', 'Pending Review'],
-        default: 'Not Started'
-    },
-    latestScheme: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ScholarshipScheme',
-    }
-}, { timestamps: true});
+    
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    contactNo: { type: String },
+    
+    currentStudyYear: { type: Number, required: true },
+    branch: { type: String, required: true },
+    subject: { type: String }, 
+}, { timestamps: true });
 
 export default mongoose.model('StudentProfile', studentProfileSchema);

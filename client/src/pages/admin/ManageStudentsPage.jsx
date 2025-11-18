@@ -3,7 +3,7 @@ import { Search, Users, Eye } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PlusCircle, Upload, Edit, Trash2 } from 'lucide-react';
-
+import BulkUploadModal from './BulkUploadModal';
 // const initialStudents = [
 //     { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
 //     { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002",currentStudyYear: "1st Year", applicationStatus: "Application Complete", scheme: "Govt. Scheme B" }, // Add currentStudyYear property here" applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
@@ -29,6 +29,8 @@ const ManageStudentsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [yearFilter,setYearFilter] = useState("All");
+
+    const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
     
     useEffect(() => {
         const fetchAllStudents = async () => {
@@ -73,6 +75,10 @@ const ManageStudentsPage = () => {
         return matchesSearch && matchesStatus && matchesYear;
     });
 
+    const handleBulkUploadSuccess = () => {
+        setIsBulkModalOpen(false);
+        setStatusFilter(prev => prev === 'All' ? 'Application Complete' : 'All');
+    };
     if(loading) {
         return <div className='p-8 text-center'>Loading student records for tracking...</div>;
     }
@@ -82,10 +88,6 @@ const ManageStudentsPage = () => {
 
     const handleAddStudent = () => {
         alert("Open modal to Add New Student");
-    }
-
-    const handleBulkUpload = () => {
-        alert("Open modal for Bulk CSV Upload");
     }
 
     return (
@@ -99,8 +101,8 @@ const ManageStudentsPage = () => {
                     <button onClick={handleAddStudent} className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-indigo-700 transition">
                         <PlusCircle className="w-5 h-5" /> <span>Add Single Student</span>
                     </button>
-                    <button onClick={handleBulkUpload} className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700 transition">
-                        <Upload className="w-5 h-5" /> <span>Bulk Upload (CSV)</span>
+                    <button onClick={() => setIsBulkModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700 transition">
+                        <Upload className="w-5 h-5" /> <span>Upload (CSV)</span>
                     </button>
                 </div>
             </div>
@@ -198,7 +200,14 @@ const ManageStudentsPage = () => {
             </div>
 
             <p className="mt-6 text-sm text-gray-700 border-t pt-3">
-                    This table now fetches live data and filters by status and year for university reporting.               </p>
+                    This table now fetches live data and filters by status and year for university reporting.</p>
+
+            {isBulkModalOpen && (
+                <BulkUploadModal 
+                    onClose={() => setIsBulkModalOpen(false)}
+                    onUploadSuccess={handleBulkUploadSuccess}
+                />
+            )}
         </div>
     );
 };
