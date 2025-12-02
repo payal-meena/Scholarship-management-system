@@ -103,14 +103,14 @@ const MyApplicationsPage = () => {
   }
   
   return (
-    <div className='bg-white p-6 rounded-lg shadow-md mx-auto space-y-8'>
-        <h2 className='text-3xl font-extrabold text-indigo-900 border-b pb-3 flex items-center'>
-          <FileText className='w-8 h-8 mr-3 text-indigo-900' />
-          My Applications
+    <div className='bg-indigo-50 p-6 rounded-lg shadow-2xl mx-auto space-y-8'>
+        <h2 className='text-3xl font-extrabold text-indigo-900 border-b-2 pb-3 flex items-center'>
+          {/* <FileText className='w-8 h-8 mr-3 text-indigo-900' /> */}
+          📄 My Applications
           </h2>
 
           {applications.length === 0 && (
-            <div className='text-center p-10 bg-white rounded-lg shadow-md'>
+            <div className='text-center p-10 bg-indigo-50 rounded-lg shadow-md'>
               <p className='text-lg text-gray-500'>You have not submitted any application yet.</p>
             </div>
           )}
@@ -120,7 +120,7 @@ const MyApplicationsPage = () => {
             const dateSubmitted = new Date(app.updatedAt).toLocaleString('en-GB');
 
             return (
-              <div key={app._id} className='bg-white p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
+              <div key={app._id} className='bg-indigo-50 p-6 rounded-xl shadow-lg border-l-4' style={{ borderColor: statusInfo.classes.includes('yellow') ? '#D97706' : statusInfo.classes.includes('green') ? '#10B981' : '#3B1C82' }}>
                   <div className='flex justify-between items-start mb-4'>
                       <h3 className='text-xl font-bold text-indigo-900'>{app.scheme.name || "N/A"}</h3>
                       <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold ${statusInfo.classes}`}>

@@ -293,7 +293,7 @@ adminRouter.get("/public/schemes", async (req, res) => {
     const activeSchemes = await ScholarshipScheme.find({
       isActive: true,
       deadline: { $gte: new Date() },
-    }).select("name deadline");
+    }).select("name deadline fundAmount");
 
     res.json(activeSchemes);
   } catch (error) {

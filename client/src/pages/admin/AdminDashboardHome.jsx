@@ -2,7 +2,7 @@ import React from 'react'
 import { Users, ListChecks, DollarSign, Clock } from 'lucide-react'
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
-    <div className='bg-white p-6 rounded-xl shadow-md border-t-4' style={{ borderColor: color}}>
+    <div className='bg-indigo-50 p-6 rounded-xl shadow-md border-t-4 hover:shadow-xl duration-300' style={{ borderColor: color}}>
         <div className='flex items-center justify-between'>
             <div>
                 <p className='text-sm font-medium text-gray-500'>{title}</p>
@@ -23,14 +23,14 @@ const AdminDashboardHome = () => {
     ]
   return (
     <div className='space-y-8'>
-        <h1 className='text-3xl font-extrabold text-indigo-900'>Admin Overview</h1>
+        <h1 className='text-3xl font-extrabold text-indigo-900'>📊 Admin Overview</h1>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
             ))}
         </div>
 
-        <div className='bg-white p-6 rounded-xl shadow-lg'>
+        <div className='bg-indigo-50 p-6 rounded-xl shadow-lg'>
             <h2 className='text-xl font-semibold text-gray-800 border-b pb-3 mb-4'>Quick Links & Reminders</h2>
             <ul className='space-y-2 text-gray-600'>
                 <li>- **ACTION REQUIRED:** 12 applications are currently marked "Reverted for Correction."</li>

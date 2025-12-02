@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { X, Lock} from 'lucide-react';
+import { Lock, Save } from 'lucide-react';
 
-const AdminPasswordUpdateModal = ({ onSave, onClose }) => {
+const AdminPasswordUpdateModal = ({ onSave, onClose, isLoading }) => {
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
     });
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,64 +19,78 @@ const AdminPasswordUpdateModal = ({ onSave, onClose }) => {
     };
 
     return (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
-            <div className='bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in-0 zoom-in-95'>
-                 
-                    <div className='p-4 border-b flex justify-between items-center bg-red-50'>
-                        <h3 className='text-xl font-bold text-red-700 flex items-center space-x-2'>
-                            <Lock className=" w-5 h-5" /> <span>Change Password</span>
-                        </h3>
-                        <button className='text-gray-500 hover:text-gray-800 p-1 rounded-full hover:bg-red-100 transition'
-                            onClick={onClose}
-                        >
-                            <X size={24}/>
-                        </button>
-                    </div>
+        <div className='bg-indigo-100 rounded-xl border border-gray-200 shadow-2xl overflow-hidden'>
+             
+             {/* Header */}
+            <div className='p-6 border-b border-gray-100 bg-gray-50'>
+                <h3 className='text-2xl font-bold text-gray-800 flex items-center space-x-2'>
+                    <Lock className="text-red-600 w-6 h-6" /> <span>Update Password</span>
+                </h3>
+                <p className="text-gray-500 mt-1 ml-8">Enter your current credentials to set a new password.</p>
+            </div>
 
-                    <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                    <p className="text-sm text-gray-600">Enter your current password and set a new one for security.</p>
-                    
+            <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
                     <input
                         type="password"
                         name="currentPassword"
-                        placeholder="Current Password"
+                        placeholder="Enter current password"
                         value={passwordData.currentPassword}
                         onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 transition"
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition bg-gray-50 focus:bg-white"
                         required
                     />
-                    <input
-                        type="password"
-                        name="newPassword"
-                        placeholder="New Password (min 6 chars)"
-                        value={passwordData.newPassword}
-                        onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 transition"
-                        required
-                        minLength="6"
-                    />
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm New Password"
-                        value={passwordData.confirmPassword}
-                        onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 transition"
-                        required
-                    />
+                </div>
 
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                        <input
+                            type="password"
+                            name="newPassword"
+                            placeholder="Min 6 characters"
+                            value={passwordData.newPassword}
+                            onChange={handleChange}
+                            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition bg-gray-50 focus:bg-white"
+                            required
+                            minLength="6"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Re-enter new password"
+                            value={passwordData.confirmPassword}
+                            onChange={handleChange}
+                            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition bg-gray-50 focus:bg-white"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="pt-4 flex justify-end space-x-4 border-t border-gray-100 mt-4">
+                    <button 
+                        type="button"
+                        onClick={onClose}
+                        className="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium"
+                    >
+                        Cancel
+                    </button>
                     <button 
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition disabled:bg-red-400"
+                        className="px-8 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition disabled:bg-red-400 flex items-center shadow-lg shadow-red-100"
                     >
-                        {isLoading ? 'Updating...' : 'Update Password'}
-
+                        {isLoading ? 'Updating...' : <><Save className="w-5 h-5 mr-2"/> Update Password</>}
                     </button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     );
 };
 
-export default AdminPasswordUpdateModal
+export default AdminPasswordUpdateModal;

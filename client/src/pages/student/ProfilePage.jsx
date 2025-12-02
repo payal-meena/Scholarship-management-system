@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { User, Lock, Mail, Phone, Hash } from 'lucide-react';
+import { User, Lock, Mail, Phone, Hash, FileText, UserRoundCog, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import PasswordUpdateModal from './PasswordUpdateModal';
@@ -9,7 +9,6 @@ const ProfilePage = () => {
     const [studentData, setStudentData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isPasswordLoading, setIsPasswordLoading] = useState(false);
     
 
@@ -44,9 +43,6 @@ const ProfilePage = () => {
 
       if (!currentPassword || !newPassword || newPassword !== confirmPassword) {
         toast.error("Please ensure all password fields are filled and match.");
-        console.log(currentPassword);
-        console.log(newPassword);
-        console.log(confirmPassword);
         return;
       }
 
@@ -86,61 +82,84 @@ const ProfilePage = () => {
     }
 
   return (
-    <div className="bg-white p-6 md:p-8 rounded-xl shadow-2xl mx-auto">
-        <h1 className='text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-3 flex items-center'>
-          <User className='w-7 h-7 mr-3'/> My profile
-        </h1>
-        {/* <button onClick={onClose} className='text-gray-500 hover:text-gray-800 p-1'>
-                                <X size={24} />
-         </button> */}
+        <div className="bg-indigo-100 p-6 md:p-8 rounded-xl shadow-2xl mx-auto my-8">        
+        {isModalOpen ? (
+            <div>
+                <button 
+                    onClick={() => setIsModalOpen(false)}
+                    className="mb-4 flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition"
+                >
+                    <ArrowLeft className="w-5 h-5 mr-2" /> Back to Profile
+                </button>
 
-        <div className='space-y-6'>
+                <PasswordUpdateModal 
+                    onSave={handlePassowordChange}
+                    isLoading={isPasswordLoading}
+                    onClose={() => setIsModalOpen(false)} 
+                />
+            </div>
+        ) : (
+            
+        <div className='space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500'>
+            <h1 className='text-3xl font-extrabold text-indigo-900 mb-6 border-b-2 border-indigo-200 pb-3 flex items-center'>
+                👤 My Profile
+            </h1>
 
-            <div className='p-4 border rounded-md'>
-                <h2 className='text-xl font-semibold mb-3 text-indigo-800'>Personal Information</h2>
-                <p className='flex items-center text-gray-700 space-x-2'>
-                  <User className='w-4 h-4 text-indigo-800'/>
-                  <span>Name : <strong>{studentData.name}</strong></span>
-                </p>
-                <p className='flex items-center text-gray-700 space-x-2 mt-2'>
-                  <Hash className='w-4 h-4 text-indigo-800' />
-                  <span>Student ID : {studentData.studentId}</span>
-                </p>
+            <div className='p-5 border border-violet-200 rounded-xl bg-white shadow-sm hover:shadow-md transition'>
+                <h2 className='text-xl font-semibold mb-4 text-indigo-800 flex items-center border-b border-violet-100 pb-2'>
+                  <FileText className="w-5 h-5 mr-2" />Personal Information</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className='bg-violet-50 p-3 rounded-lg'>
+                        <span className="text-xs text-gray-500 uppercase block mb-1">Name</span>
+                        <div className='flex items-center text-gray-800 font-bold'>
+                             <User className='w-4 h-4 text-indigo-600 mr-2'/> {studentData.name}
+                        </div>
+                    </div>
+                    <div className='bg-violet-50 p-3 rounded-lg'>
+                        <span className="text-xs text-gray-500 uppercase block mb-1">Student ID</span>
+                        <div className='flex items-center text-gray-800 font-medium'>
+                             <Hash className='w-4 h-4 text-indigo-600 mr-2'/> {studentData.studentId}
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className='p-4 border border-gray-200 rounded-lg bg-gray-50'>
-                <h2 className='text-xl font-semibold mb-3 text-gray-800'>Login & Contact</h2>
-                <p className='flex items-center text-gray-700 space-x-2'>
-                  <Mail className='w-4 h-4 text-gray-600' />
-                  <span>Email : {studentData.email}</span>
-                </p>
-                <p className='flex items-center text-gray-700 space-x-2 mt-2'>
-                  <Phone className='w-4 h-4 text-gray-600'/>
-                  <span>Contact : {studentData.contact || 'N/A'}</span>
-                </p>
+            <div className='p-5 border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition'>
+                <h2 className='text-xl font-semibold mb-4 text-gray-800 flex items-center border-b border-gray-100 pb-2'>
+                  <UserRoundCog className="w-5 h-5 mr-2" />Contact Details</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className='bg-gray-50 p-3 rounded-lg'>
+                        <span className="text-xs text-gray-500 uppercase block mb-1">Email</span>
+                        <div className='flex items-center text-gray-800'>
+                             <Mail className='w-4 h-4 text-gray-600 mr-2'/> {studentData.email}
+                        </div>
+                    </div>
+                    <div className='bg-gray-50 p-3 rounded-lg'>
+                        <span className="text-xs text-gray-500 uppercase block mb-1">Phone</span>
+                        <div className='flex items-center text-gray-800'>
+                             <Phone className='w-4 h-4 text-gray-600 mr-2'/> {studentData.contact || 'N/A'}
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className='p-4 border border-red-200 rounded-lg bg-red-50/50 flex justify-between items-center'>
-                <h2 className='text-xl font-semibold text-red-700 flex items-center space-x-2'>
-                  <Lock className='w-5 h-5' /><span>Security Settings</span>
-                </h2>
+            <div className='p-6 border border-red-200 rounded-xl bg-white shadow-sm flex flex-col md:flex-row justify-between items-center gap-4'>
+                <div>
+                    <h2 className='text-xl font-semibold text-red-700 flex items-center space-x-2'>
+                        <Lock className='w-5 h-5' /><span>Security Settings</span>
+                    </h2>
+                    <p className="text-gray-500 text-sm mt-1">Update your password to keep your account safe.</p>
+                </div>
+                
                 <button
-                  onClick={() => setIsModalOpen(true)}
-                  className='bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition'
+                    onClick={() => setIsModalOpen(true)}
+                    className='bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition shadow-lg shadow-red-200 font-medium w-full md:w-auto'
                 >
                     Change Password
                 </button>
             </div>
-
-            {isModalOpen && (
-              <PasswordUpdateModal
-              onSave={handlePassowordChange}
-              onClose ={() => setIsModalOpen(false)}
-              isLoading= {isPasswordLoading}
-              />
-            )}
         </div>
-    </div>
+        )}    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { PlusCircle, Edit, Trash2, Clock, CheckCircle, AlertTriangle, XCircle } from 'lucide-react'
+import { PlusCircle, Edit, Trash2, Clock, CheckCircle, AlertTriangle, XCircle , ArrowLeft } from 'lucide-react'
 import SchemeModal from './SchemeModal';
 import { toast } from 'react-toastify';
 
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 const ManageScholarshipSchemes = () => {
     const [schemes,setSchemes] = useState([]);
     const [loading,setLoading] = useState(true);
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [schemeToEdit, setSchemeToEdit] = useState(null);
 
@@ -79,10 +80,8 @@ const ManageScholarshipSchemes = () => {
         if(!adminActiveStatus) {
             return false;
         }
-
         const today = new Date();
         const deadlineDate = new Date(deadline);
-
         return deadlineDate.setHours(23, 59, 59, 999) >= today.getTime();
     };
 
@@ -104,7 +103,7 @@ const ManageScholarshipSchemes = () => {
                 return { icon: CheckCircle, classes: 'bg-green-100 text-green-700', text: `Active`};
             }
         } else {
-            return { icon: XCircle, classes: 'bg-gray-100 text-gray700', text: 'Inactive'};
+            return { icon: XCircle, classes: 'bg-gray-100 text-gray-700', text: 'Inactive'};
         }
     }
 
@@ -113,73 +112,109 @@ const ManageScholarshipSchemes = () => {
     }
 
   return (
-    <div className='p-6 bg-white rounded-xl shadow-lg'>
-        <div className='flex justify-between items-center mb-6 border-b pb-2'>
-            <h1 className='text-3xl font-extrabold text-indigo-900'>Manage Scholarships</h1>
-            <button onClick={() => handleOpenModal()} className='cursor-pointer bg-violet-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-violet-800'>
-                <PlusCircle className='w-5 h-5' />
-                <span>Create New Scheme</span>
-            </button>
-        </div>
+    <div className='p-6 bg-indigo-100 rounded-xl shadow-2xl'>
 
-        <div className='overflow-x-auto'>
-            <table className='min-w-full divide-y divide-gray-200'>
-                <thead className='bg-gray-50'>
-                    <tr>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Scheme Name</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Deadline</th>
-                        {/* <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Min Percentage</th> */}
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Actions</th>
-                    </tr>
-                </thead>
-                <tbody className='bg-white divide-y divide-gray-200'>
-                    {schemes.map((scheme) =>{
-                        const statusDetails = getAdminStatusDetails(scheme);
-                    return (
-                        <tr key={scheme._id}>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{scheme.name} <br /> 
-                        <span className='text-xs text-gray-500'>ID: {scheme._id} </span>
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{new Date(scheme.deadline).toLocaleDateString('en-GB', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit'
-                        })}</td>
-                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    Min Perc: {scheme.criteria.minPercentage}
-                         </td> */}
-                        <td className='px-6 py-4 whitespace-nowrap'>
-                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusDetails.classes}`}>
-                                <statusDetails.icon className='w-4 h-4 mr-1' /> {statusDetails.text} 
-                            </span>
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                            <button onClick={()=> handleOpenModal(scheme)} className='cursor-pointer text-violet-600 hover:text-violet-900 flex items-center space-x-1'>
-                                <Edit className='w-4 h-4 inline' />
-                            </button>
-                            <button 
-                                onClick={()=> handleDelete(scheme._id)}
-                                className='cursor-pointer text-red-600 hover:text-red-900'
+      {isModalOpen ? (
+          <div className="max-w-4xl mx-auto">
+                 <button 
+                    onClick={() => setIsModalOpen(false)}
+                    className="mb-4 flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition"
+                >
+                    <ArrowLeft className="w-5 h-5 mr-2" /> Back to Schemes List
+                </button>
+                
+                <SchemeModal 
+                    schemeToEdit={schemeToEdit}
+                    onClose={()=> setIsModalOpen(false)}
+                    onSave={handleSave}
+                />
+            </div>
+      ) : (
+           <div className="animate-in fade-in duration-500">
+                <div className='flex justify-between items-center mb-8 border-b border-indigo-200 pb-4'>
+                    <div>
+                        <h1 className='text-3xl font-extrabold text-indigo-900'>🎓 Manage Scholarships</h1>
+                        <p className="text-gray-500 mt-1">Create, edit, and manage all scholarship programs.</p>
+                    </div>
+                    <button 
+                        onClick={() => handleOpenModal()} 
+                        className='cursor-pointer bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-3 rounded-xl shadow-lg hover:opacity-90 transition flex items-center space-x-2 transform hover:scale-105 active:scale-95'
+                    >
+                        <PlusCircle className='w-5 h-5' />
+                        <span>Create New Scheme</span>
+                    </button>
+                </div>
+
+                <div className='overflow-x-auto pb-8'>
+                    {schemes.length === 0 ? (
+                        <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-indigo-100">
+                            <h3 className="text-xl text-gray-400">No schemes found. Create one to get started.</h3>
+                        </div>
+                    ) : (
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {schemes.map((scheme) => {
+                            const status = getAdminStatusDetails(scheme);
+                            const StatusIcon = status.icon;
+
+                            return (
+                            <div
+                                key={scheme._id}
+                                className="bg-indigo-50 border-t-2 border-indigo-800 shadow-lg rounded-2xl p-6 hover:shadow-2xl hover:border-indigo-800 hover:border-t-4 transition-all duration-300 flex flex-col justify-between"
                             >
-                                <Trash2 className='w-4 h-4 inline' />
-                            </button>
-                        </td>
-                    </tr>
-                    )
-             })}
-                </tbody>
-            </table>
-        </div>
+                                <div>
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h2 className="text-xl font-bold text-gray-800 line-clamp-2" title={scheme.name}>
+                                            {scheme.name}
+                                        </h2>
+                                        <button
+                                            onClick={() => handleDelete(scheme._id)}
+                                            className="text-red-600 p-2 rounded-full bg-red-50 hover:text-red-800 hover:bg-red-100 transition"
+                                            title="Delete Scheme"
+                                        >
+                                            <Trash2 className="w-5 h-5" />
+                                        </button>
+                                    </div>
 
-        {isModalOpen && (
-            <SchemeModal 
-            schemeToEdit={schemeToEdit}
-            onClose={()=> setIsModalOpen(false)}
-            onSave={handleSave}
-            />
-        )}
-    </div>
+                                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${status.classes}`}>
+                                        <StatusIcon className="w-3 h-3 mr-1" />
+                                        {status.text}
+                                    </div>
+
+                                    <div className="mt-6 space-y-3 bg-indigo-50/50 p-4 rounded-xl">
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-gray-500">Deadline</span>
+                                            <span className="font-semibold text-gray-800">
+                                            {new Date(scheme.deadline).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-gray-500">Amount</span>
+                                            <span className="font-bold text-indigo-700">
+                                            ₹{scheme.fundAmount}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6 pt-4 border-t border-gray-100">
+                                    <button
+                                        onClick={() => handleOpenModal(scheme)}
+                                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow hover:opacity-90 transition flex items-center justify-center space-x-2"
+                                    >
+                                        <Edit className="w-4 h-4" />
+                                        <span>Edit Scheme</span>
+                                    </button>
+                                </div>
+                            </div>
+                            );
+                        })}
+                    </div>
+                    )}
+                </div>
+            </div>
+
+      )}        
+  </div>
   );
 };
 

@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Users, Eye } from 'lucide-react';
+import { Search, ArrowLeft } from 'lucide-react'; // Added ArrowLeft
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { PlusCircle, Upload, Edit, Trash2 } from 'lucide-react';
+import { PlusCircle, Upload, Edit, Trash2, Eye } from 'lucide-react';
 import BulkUploadModal from './BulkUploadModal';
-// const initialStudents = [
-//     { id: 101, name: "Rahul Sharma", email: "rahul@example.com", studentId: "S2024001",currentStudyYear: "2nd Year", applicationStatus: "Documents Missing", scheme: "Merit Grant" },
-//     { id: 102, name: "Priya Singh", email: "priya@example.com", studentId: "S2024002",currentStudyYear: "1st Year", applicationStatus: "Application Complete", scheme: "Govt. Scheme B" }, // Add currentStudyYear property here" applicationStatus: "Application Complete", scheme: "Need-Based Aid" },
-//     { id: 105, name: "Suresh Kumar", email: "suresh@example.com", studentId: "S2024005",currentStudyYear: "3rd Year", applicationStatus: "Not Started", scheme: "N/A" },
-//     { id: 106, name: "Anjali Verma", email: "anjali@example.com", studentId: "S2024006",currentStudyYear: "2nd Year", applicationStatus: "Not Started", scheme: "N/A" },
-//     { id: 103, name: "Mohan Das", email: "mohan@example.com", studentId: "S2024003",currentStudyYear: "3rd Year", applicationStatus: "Reverted for Correction", scheme: "Merit Grant" },
-//     { id: 104, name: "Vikram Reddy", email: "vikram@example.com", studentId: "S2024004",currentStudyYear: "4th year", applicationStatus: "Application Complete", scheme: "Govt. Scheme A" },
-// ];
+import CustomDropdown from '../CustomDropdown';
 
 const getStatusClasses = (status) => {
     switch (status) {
@@ -46,9 +39,7 @@ const ManageStudentsPage = () => {
                 const url = `http://localhost:4000/api/admin/students?${queryParams}`;
 
                 const response = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    headers: { Authorization: `Bearer ${token}` },
                 });
 
                 setStudents(response.data);
@@ -63,150 +54,132 @@ const ManageStudentsPage = () => {
     }, [statusFilter, yearFilter]);
 
     const filteredStudents = students.filter(student => {
-
         const name = student.name || '';
         const id = student.studentId || '';
-
-        const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                              id.includes(searchTerm);
+        const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) || id.includes(searchTerm);
         const matchesStatus = statusFilter === 'All' || student.applicationStatus === statusFilter;
         const matchesYear = yearFilter === 'All' || student.currentStudyYear === yearFilter;
-       
         return matchesSearch && matchesStatus && matchesYear;
     });
 
     const handleBulkUploadSuccess = () => {
-        setIsBulkModalOpen(false);
-        setStatusFilter(prev => prev === 'All' ? 'Application Complete' : 'All');
-    };
-    if(loading) {
-        return <div className='p-8 text-center'>Loading student records for tracking...</div>;
-    }
-    const handleViewDetails = (studentId) => {
-        alert(`Viewing complete record for Student ID: ${studentId}.`);
+        setIsBulkModalOpen(false); 
+        toast.success("Records updated! Refreshing list...");
     };
 
     const handleAddStudent = () => {
         alert("Open modal to Add New Student");
     }
+    if(loading) return <div className='p-8 text-center'>Loading student records...</div>;
 
     return (
-        <div className="p-6 bg-white rounded-xl shadow-lg">
-            <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2 flex items-center">
-                <Users className="w-8 h-8 mr-3 text-indigo-900" /> All Student Records
-            </h1>
-            
-            <div className="flex justify-between items-center mb-6">
-                <div className="flex space-x-3">
-                    <button onClick={handleAddStudent} className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-indigo-700 transition">
-                        <PlusCircle className="w-5 h-5" /> <span>Add Single Student</span>
+        <div className="p-6 bg-indigo-100 min-h-screen">
+            {isBulkModalOpen ? (
+                <div className="mx-auto animate-in fade-in slide-in-from-right duration-300">
+                    <button 
+                        onClick={() => setIsBulkModalOpen(false)}
+                        className="mb-4 flex items-center text-indigo-700 hover:text-indigo-900 font-bold transition"
+                    >
+                        <ArrowLeft className="w-5 h-5 mr-2" /> Back to Student List
                     </button>
-                    <button onClick={() => setIsBulkModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700 transition">
-                        <Upload className="w-5 h-5" /> <span>Upload (CSV)</span>
-                    </button>
-                </div>
-            </div>
 
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
-                
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Search by Student Name or ID..."
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                    <BulkUploadModal 
+                        onClose={() => setIsBulkModalOpen(false)}
+                        onUploadSuccess={handleBulkUploadSuccess}
                     />
                 </div>
+            ) : (
+                <div className="animate-in fade-in duration-500 rounded-xl shadow-2xl bg-indigo-100 p-6 border border-indigo-200">
+                    <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2 flex items-center">
+                        📑 All Student Records
+                    </h1>
+                    
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="flex space-x-3">
+                            <button onClick={handleAddStudent} className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 flex items-center space-x-2 rounded-lg shadow hover:opacity-90 transition transform active:scale-95">
+                                <PlusCircle className="w-5 h-5" /> <span>Add Single Student</span>
+                            </button>
+                            
+                            <button onClick={() => setIsBulkModalOpen(true)} className="bg-white text-purple-600 border border-purple-600 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-purple-600 hover:text-white transition duration-300">
+                                <Upload className="w-5 h-5" /> <span>Upload (CSV)</span>
+                            </button>
+                        </div>
+                    </div>
 
-                <select
-                    className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-                    value={statusFilter}
-                    onChange={(e) => {
-                        setLoading(true);
-                        setStatusFilter(e.target.value)}}
-                >
-                    <option value="All">All</option>
-                    <option value="Application Complete">Application Complete</option>
-                    <option value="Documents Missing">Documents Missing</option>
-                    <option value="Not Started">Application Not Started</option>
-                    <option value="Reverted for Correction">Reverted for Correction</option>
-                </select>
-
-                <select
-                    className="md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-                    value={yearFilter}
-                    onChange={(e) => {
-                        setLoading(true);
-                        setYearFilter(e.target.value)}}
-                >
-                    <option value="All">All Years</option>
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
-                </select>
-
-            </div>
-
-            <div className="overflow-x-auto bg-gray-50 rounded-lg border">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-200">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name & ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Course</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Current Year</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredStudents.length > 0 ? (
-                            filteredStudents.map((student) => (
-                                <tr key={student.id}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {student.name || 'N/A'} <br/>
-                                        <span className="text-gray-500 text-xs">{student.email || 'N/A'}</span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
-                                        {student.currentCourse || 'N/A'}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
-                                    {student.currentStudyYear || 'N/A'}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
-                                            {student.applicationStatus || 'N/A'}
-                                        </span>
-                                    </td>
-                                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.schemeApplied || 'N/A'}</td> */}
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-1">
-                                    <button onClick={() => alert(`Edit ${student.name}`)} className="text-indigo-600 hover:text-indigo-900"><Edit className='w-4 h-4 inline'/></button>
-                                    <button onClick={() => alert(`Delete ${student.name}`)} className="text-red-600 hover:text-red-900"><Trash2 className='w-4 h-4 inline'/></button>
-                                    <button onClick={() => alert(`View ${student.name}`)} className="text-gray-600 hover:text-gray-900"><Eye className='w-4 h-4 inline'/></button>
-                                </td>
+                    <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" />
+                            <input
+                                type="text"
+                                placeholder="Search by Student Name or ID..."
+                                className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-50 focus:outline-none"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <div className='w-64'>
+                            <CustomDropdown
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
+                                options={["All", "Application Complete", "Documents Missing", "Not Started", "Reverted for Correction"]}
+                            />
+                        </div>
+                        <div className='w-64'>
+                            <CustomDropdown
+                                value={yearFilter}
+                                onChange={(e) => setYearFilter(e.target.value)}
+                                options={["All", "1st Year", "2nd Year", "3rd Year", "4th Year"]}
+                            />
+                        </div>
+                    </div>
+                    <div className="overflow-x-auto bg-indigo-50 rounded-lg border border-indigo-300">
+                        <table className="min-w-full divide-y divide-indigo-200">
+                            <thead className="bg-indigo-200">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name & ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Course</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Current Year</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
-                                    No student records found matching your criteria.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-
-            <p className="mt-6 text-sm text-gray-700 border-t pt-3">
-                    This table now fetches live data and filters by status and year for university reporting.</p>
-
-            {isBulkModalOpen && (
-                <BulkUploadModal 
-                    onClose={() => setIsBulkModalOpen(false)}
-                    onUploadSuccess={handleBulkUploadSuccess}
-                />
+                            </thead>
+                            <tbody className="bg-indigo-50 divide-y divide-indigo-200">
+                                {filteredStudents.length > 0 ? (
+                                    filteredStudents.map((student) => (
+                                        <tr key={student.id}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-900">
+                                                {student.name || 'N/A'} <br/>
+                                                <span className="text-indigo-500 text-xs">{student.email || 'N/A'}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-700 font-semibold">
+                                                {student.currentCourse || 'N/A'}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-700 font-semibold">
+                                            {student.currentStudyYear || 'N/A'}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
+                                                    {student.applicationStatus || 'N/A'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-1">
+                                                <button className="text-indigo-600 hover:text-indigo-900"><Edit className='w-4 h-4 inline'/></button>
+                                                <button className="text-red-600 hover:text-red-900"><Trash2 className='w-4 h-4 inline'/></button>
+                                                <button className="text-gray-600 hover:text-gray-900"><Eye className='w-4 h-4 inline'/></button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                                            No student records found matching your criteria.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             )}
         </div>
     );

@@ -6,7 +6,7 @@ const DashboardNavbar = ({ role , toggleSidebar , onLogout , name}) => {
   const profileImageurl = "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"
   const navigate = useNavigate();
   return (
-    <nav className="bg-white shadow px-4 sm:px-6 py-3 flex justify-between items-center fixed w-full z-30 border-b border-indigo-100">
+    <nav className="bg-indigo-100 shadow-2xl px-4 sm:px-6 py-3 flex justify-between items-center fixed w-full z-30 border-b border-indigo-100">
         <div className="flex items-center space-x-4">
         <button
         className="md:hidden text-gray-600 hover:text-indigo-600"

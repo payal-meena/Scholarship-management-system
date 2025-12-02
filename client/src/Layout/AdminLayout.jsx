@@ -19,7 +19,7 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-indigo-100">
       <DashboardNavbar role="Admin" name="" toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onLogout={handleLogout} />
 
       <div className="flex flex-1 pt-16 min-h-screen">

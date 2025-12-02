@@ -19,7 +19,7 @@ const StudentLayout = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-indigo-100">
       <DashboardNavbar
         role="Student"
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}

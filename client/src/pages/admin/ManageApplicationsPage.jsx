@@ -106,16 +106,16 @@ const ManageApplicationsPage = () => {
         fetchSchemeList();
     }, []);
 
-    const filteredApplications = applications.filter(app => {
-
-      const studentName = app.studentName || '';
-      const matchesSearch = studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+const filteredApplications = applications.filter(app => {
+    const studentName = app.studentName || '';
+    const matchesSearch = studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           (app.studentId || '').toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
-      const appSchemeId = app.scheme?._id ? app.scheme._id.toString() : null;
-      const filterValue = schemeFilter;
-      const matchesScheme = filterValue === 'All' || appSchemeId === filterValue;
-        return matchesSearch && matchesStatus && matchesScheme;});
+    const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
+    const appSchemeId = app.scheme?._id ? app.scheme._id.toString() : null; 
+    const filterValue = schemeFilter; 
+    const matchesScheme = filterValue === 'All' || appSchemeId === filterValue; 
+        return matchesSearch && matchesStatus && matchesScheme;
+});    
 
 
   const handleUpdateStatus = (updatedApp) => {
@@ -132,25 +132,25 @@ const ManageApplicationsPage = () => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-lg">
+    <div className="p-6 bg-indigo-100 rounded-xl shadow-lg">
       <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2">
-        Application Review Dashboard
+       📋 Application Review Dashboard
       </h1>
 
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
-        <div className="relative flex-1">
+        <div className="relative flex-1 bg-indigo-50">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
             placeholder="Search by Student Name or ID..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20"
+            className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:ring-violet-500/20 focus:border-indigo-500 focus:outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         <select
-          className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20 bg-white"
+          className="md:w-64 px-4 py-2 border border-indigo-300 rounded-lg focus:ring-violet-500/20 focus:border-indigo-500 bg-indigo-50 focus:outline-none"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -164,7 +164,7 @@ const ManageApplicationsPage = () => {
         </select>
 
         <select
-          className="md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-violet-500/20 focus:border-violet-500/20 bg-white"
+          className="md:w-64 px-4 py-2 border border-indigo-300 rounded-lg focus:ring-violet-500/20 focus:border-indigo-500 bg-indigo-50 focus:outline-none"
           value={schemeFilter}
           onChange={(e) => setSchemeFilter(e.target.value)}
         >
@@ -178,9 +178,9 @@ const ManageApplicationsPage = () => {
         </select>
       </div>
 
-      <div className="overflow-x-auto bg-gray-50 rounded-lg border">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-200">
+      <div className="overflow-x-auto bg-indigo-50 rounded-lg border border-indigo-300">
+        <table className="min-w-full divide-y divide-indigo-200">
+          <thead className="bg-indigo-200">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Student Name
@@ -202,7 +202,7 @@ const ManageApplicationsPage = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-indigo-50 divide-y divide-indigo-200">
             {filteredApplications.length > 0 ? (
               filteredApplications.map((app) => (
                 <tr key={app.id}  >
