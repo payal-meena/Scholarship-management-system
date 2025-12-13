@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { X, FileText, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { X, FileText, AlertTriangle, Download, ExternalLink } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
   const [status, setStatus] = useState(application.status);
   const [comments, setComments] = useState("");
@@ -23,7 +24,7 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
 
     try {
         const token = localStorage.getItem('adminToken');
-            const response = await axios.put(`http://localhost:4000/api/admin/applications/${application.id}/status`, {
+        const response = await axios.put(`http://localhost:4000/api/admin/applications/${application.id}/status`, {
             status: status,
             comments: comments,
         }, {
@@ -31,160 +32,167 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
         });
         onUpdateStatus(response.data.application); 
         toast.success(response.data.message);
-        setTimeout(() => {
-        onClose();
-      }, 100);
+        // Timeout not needed anymore since onUpdateStatus switches view instantly, but safe to keep
+        setTimeout(() => { onClose(); }, 100);
     } catch (error) {
         console.error("error while updating ..",error);
-        
+        toast.error("Update failed.");
     } finally {
         setIsLoading(false);
     }
   };
+
   return (
-    <div className="fixed inset-0 bg-block bg-opacity-50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
+    // REMOVED: fixed inset-0 bg-block...
+    // ADDED: Card Styles
+    <div className="bg-white rounded-xl shadow-xl border border-indigo-100 overflow-hidden">
+        
+        {/* Header */}
+        <div className="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
             <FileText className="w-6 h-6 text-indigo-950" />
-            <span className="text-indigo-900">Application Details</span>
+            <span className="text-indigo-900">Review Application Details</span>
           </h2>
+          {/* Internal Close Button (Redundant with Back button, but nice to have) */}
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-800 p-2"
+            className="text-gray-400 hover:text-red-500 p-2 transition"
+            title="Close View"
           >
             <X size={24} />
           </button>
         </div>
 
         <div className="p-6 grid md:grid-cols-3 gap-8">
-          <div className="md:cols-pan-2 space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2 text-indigo-950">
-              Student & Scheme Info
-            </h3>
-
-            <div className="bg-gray-50 p-4 rounded-lg space-y-1">
-              <p>
-                <strong>Student Name:</strong>
-                {application.studentName || "N/A"}
-              </p>
-              <p>
-                <strong>Student Email:</strong>
-                {application.studentEmail || "N/A"}
-              </p>
-              {/* <p><strong>Student ID:</strong>{application.studentId || 'N/A'}</p> */}
-              <p>
-                <strong>Applied Scheme:</strong>
-                {application.schemeName || "N/A"}
-              </p>
-              {/* <p><strong>Date Submitted</strong>{application.date || 'N/A'}</p> */}
-              <p>
-                <strong>Current Status:</strong>
-                <span
-                  className={`px-3 py-1 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
-                    application.status
-                  )} text-white`}
-                >
-                  {application.status}
-                </span>
-              </p>
+          
+          {/* Left Column: Details */}
+          <div className="md:col-span-2 space-y-6">
+            
+            {/* Student Info Box */}
+            <div className="border border-indigo-100 rounded-xl p-5 bg-white shadow-sm">
+                <h3 className="text-lg font-bold border-b border-indigo-50 pb-2 mb-3 text-indigo-950 flex items-center">
+                   🎓 Student & Scheme Info
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase font-bold">Student Name</p>
+                        <p className="text-gray-800 font-medium">{application.studentName || "N/A"}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase font-bold">Student Email</p>
+                        <p className="text-gray-800 font-medium">{application.studentEmail || "N/A"}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase font-bold">Applied Scheme</p>
+                        <p className="text-indigo-700 font-bold">{application.schemeName || "N/A"}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase font-bold">Current Status</p>
+                        <span className={`mt-1 inline-flex px-2 py-0.5 text-xs font-semibold rounded-full ${getStatusColor(application.status)} text-white`}>
+                            {application.status}
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <h3 className="text-lg font-semibold border-b pb-2 mt-4 text-indigo-950">
-              Uploaded Documents
-            </h3>
-            <div className="space-y-3">
-              {application.documentPaths &&
-              Object.keys(application.documentPaths).length > 0 ? (
-                Object.entries(application.documentPaths).map(([key, path]) =>
-                  path ? (
-                    <div
-                      key={key}
-                      className="flex justify-between items-center p-3 border rounded-lg hover:bg-violet-50 transition"
-                    >
-                      <span className="text-sm font-medium capitalize">
-                        {key.replace(/File$/, "").replace(/([A-Z])/g, " $1")}
-                      </span>
-                      <a
-                        href={
-                          path.startsWith("http")
-                            ? path
-                            : `${import.meta.env.VITE_API_URL}/${path.replace(
-                                /^\/+/,
-                                ""
-                              )}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-violet-600 font-semibold hover:underline"
-                      >
-                        View
-                      </a>
-                    </div>
-                  ) : null
-                )
-              ) : (
-                <p className="text-gray-500 text-sm">
-                  No documents uploaded for this application.
-                </p>
-              )}
+            {/* Documents Section */}
+            <div>
+                <h3 className="text-lg font-bold border-b border-gray-200 pb-2 mb-4 text-indigo-950">
+                📄 Uploaded Documents
+                </h3>
+                <div className="grid gap-3">
+                {application.documentPaths && Object.keys(application.documentPaths).length > 0 ? (
+                    Object.entries(application.documentPaths).map(([key, path]) =>
+                    path ? (
+                        <div key={key} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-indigo-50 transition group">
+                            <div className="flex items-center space-x-3">
+                                <FileText className="text-indigo-400 group-hover:text-indigo-600" size={20}/>
+                                <span className="text-sm font-medium capitalize text-gray-700">
+                                    {key.replace(/File$/, "").replace(/([A-Z])/g, " $1")}
+                                </span>
+                            </div>
+                            <a
+                                href={path.startsWith("http") ? path : `${import.meta.env.VITE_API_URL}/${path.replace(/^\/+/, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center space-x-1 text-violet-600 font-semibold text-sm hover:text-violet-800 bg-white px-3 py-1.5 rounded border border-violet-200 hover:border-violet-400 transition"
+                            >
+                                <span>View</span> <ExternalLink size={14} />
+                            </a>
+                        </div>
+                    ) : null
+                    )
+                ) : (
+                    <p className="text-gray-500 text-sm italic p-4 bg-gray-50 rounded-lg text-center">
+                        No documents uploaded for this application.
+                    </p>
+                )}
+                </div>
             </div>
           </div>
 
-          <div className="md:col-span-1 bg-gray-100 p-4 rounded-xl shadow-inner space-y-4">
-            <h3 className="text-lg font-bold text-red-700 ">
-              Action & Verification
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Update Application Status:
-              </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className={`w-full p-2 border rounded-lg font-semibold ${getStatusColor(
-                  status
-                ).replace("bg", "border")}`}
-              >
-                <option value="Pending Review">Pending Review</option>
-                <option value="Approved">Approved(Send to University)</option>
-                <option value="Reverted for Correction">
-                  Reverted for Correction (Notify Student)
-                </option>
-                <option value="Rejected">Rejected</option>
-              </select>
+          {/* Right Column: Action Box */}
+          <div className="md:col-span-1">
+              <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl shadow-md border border-gray-200 sticky top-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">
+                    ⚡ Verification Action
+                </h3>
+                
+                <div className="space-y-4">
+                    <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">
+                        Update Status:
+                    </label>
+                    <div className="relative">
+                        <select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className={`w-full p-2.5 border-2 rounded-lg font-bold text-sm focus:outline-none appearance-none ${
+                                status === 'Approved' ? 'border-green-500 text-green-700 bg-green-50' :
+                                status === 'Rejected' ? 'border-red-500 text-red-700 bg-red-50' :
+                                status === 'Reverted for Correction' ? 'border-yellow-500 text-yellow-700 bg-yellow-50' :
+                                'border-gray-300 text-gray-700'
+                            }`}
+                        >
+                            <option value="Pending Review">Pending Review</option>
+                            <option value="Approved">Approved (Send to University)</option>
+                            <option value="Reverted for Correction">Revert for Correction</option>
+                            <option value="Rejected">Reject Application</option>
+                        </select>
+                    </div>
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">
+                        Admin Remarks:
+                    </label>
+                    <textarea
+                        value={comments}
+                        onChange={(e) => setComments(e.target.value)}
+                        rows="5"
+                        placeholder="Required for Rejection or Reversion. Add specific notes for the student."
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm"
+                    ></textarea>
+                    </div>
+
+                    <button
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                        className={`w-full py-3 rounded-lg text-white font-bold text-sm shadow-md transition transform active:scale-95 ${
+                            getStatusColor(status)
+                        } hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                    {isLoading ? "Processing..." : "Confirm Status Update"}
+                    </button>
+
+                    <div className="p-3 bg-blue-50 text-blue-800 text-xs rounded-lg border border-blue-100 flex items-start">
+                        <AlertTriangle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" /> 
+                        <span>Student will receive an immediate notification upon status change.</span>
+                    </div>
+                </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Admin Feedback/Reason:
-              </label>
-              <textarea
-                value={comments}
-                onChange={(e) => setComments(e.target.value)}
-                rows="4"
-                placeholder="Enter specific reasons for Reversion (e.g., Income proof date is expired) or confirmation notes."
-                className="w-full p-2 border rounded-lg focus:ring-violet-500/20"
-              ></textarea>
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={isLoading}
-              className={`w-full py-3 rounded-lg text-white font-semibold transition ${getStatusColor(
-                status
-              )} hover:opacity-90 disabled:opacity-50`}
-            >
-              {isLoading ? "Updating..." : "Confirm Status Update"}
-            </button>
-
-            <p className="text-sm text-red-500 flex items-center">
-              <AlertTriangle className="w-4 h-4 mr-1" /> Changing status
-              triggers student notification.
-            </p>
           </div>
         </div>
-      </div>
     </div>
   );
 };
