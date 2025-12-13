@@ -103,7 +103,7 @@ const ManageScholarshipSchemes = () => {
                 return { icon: CheckCircle, classes: 'bg-green-100 text-green-700', text: `Active`};
             }
         } else {
-            return { icon: XCircle, classes: 'bg-gray-100 text-gray-700', text: 'Inactive'};
+            return { icon: XCircle, classes: 'bg-gray-200 text-gray-700', text: 'Inactive'};
         }
     }
 

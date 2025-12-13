@@ -33,9 +33,8 @@ app.use("/api/auth" , authRouter);
 app.use('/api/students', studentRouter);
 app.use('/api/admin', adminRouter);
 
-app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
-
-
+const uploadsPath = path.join(__dirname, 'src/uploads'); 
+app.use('/uploads', express.static(path.resolve(__dirname, 'src/uploads')));
 
 
 const PORT = process.env.PORT || 4000;

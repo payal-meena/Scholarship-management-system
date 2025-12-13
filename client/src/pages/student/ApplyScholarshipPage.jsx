@@ -110,7 +110,13 @@ const FullApplicationForm = ({ scheme, onFormSubmit, onClose }) => {
         formPayload.append(key, formData[key]);
       }
     });
-    formPayload.append("scheme", scheme.id);
+    if(scheme && scheme._id) {
+    formPayload.append("scheme", scheme._id);
+    } else {
+      toast.error("Scheme ID is missing. Please refresh and try again.");
+      setIsLoading(false);
+      return;
+    }
 
 
     try{

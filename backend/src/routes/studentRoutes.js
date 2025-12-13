@@ -101,7 +101,7 @@ studentRouter.post('/apply', protect, (req,res,next) => {
 
             });
             await newApplication.save();
-
+            // const studyYearNumber = parseInt(body.currentStudyYear);
             await StudentProfile.findOneAndUpdate(
                         { student: studentId },
                         {

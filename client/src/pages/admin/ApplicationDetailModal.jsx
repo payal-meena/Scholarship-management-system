@@ -32,7 +32,6 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
         });
         onUpdateStatus(response.data.application); 
         toast.success(response.data.message);
-        // Timeout not needed anymore since onUpdateStatus switches view instantly, but safe to keep
         setTimeout(() => { onClose(); }, 100);
     } catch (error) {
         console.error("error while updating ..",error);
@@ -43,20 +42,15 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
   };
 
   return (
-    // REMOVED: fixed inset-0 bg-block...
-    // ADDED: Card Styles
-    <div className="bg-white rounded-xl shadow-xl border border-indigo-100 overflow-hidden">
-        
-        {/* Header */}
-        <div className="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-            <FileText className="w-6 h-6 text-indigo-950" />
+    <div className="bg-indigo-100 rounded-xl shadow-2xl border border-indigo-100 overflow-hidden ">
+        <div className="p-6 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center space-x-2 ">
+            <FileText className="w-6 h-6 text-indigo-900" />
             <span className="text-indigo-900">Review Application Details</span>
           </h2>
-          {/* Internal Close Button (Redundant with Back button, but nice to have) */}
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-red-500 p-2 transition"
+            className="text-gray-400 hover:text-gray-700 p-2 transition"
             title="Close View"
           >
             <X size={24} />
@@ -64,13 +58,9 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
         </div>
 
         <div className="p-6 grid md:grid-cols-3 gap-8">
-          
-          {/* Left Column: Details */}
-          <div className="md:col-span-2 space-y-6">
-            
-            {/* Student Info Box */}
-            <div className="border border-indigo-100 rounded-xl p-5 bg-white shadow-sm">
-                <h3 className="text-lg font-bold border-b border-indigo-50 pb-2 mb-3 text-indigo-950 flex items-center">
+                    <div className="md:col-span-2 space-y-6">
+            <div className="border border-indigo-100 rounded-xl p-5 bg-indigo-50 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">
                    🎓 Student & Scheme Info
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -95,16 +85,15 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
                 </div>
             </div>
 
-            {/* Documents Section */}
             <div>
-                <h3 className="text-lg font-bold border-b border-gray-200 pb-2 mb-4 text-indigo-950">
+                <h3 className="text-lg font-bold border-b border-gray-200 pb-2 mb-4 text-indigo-900">
                 📄 Uploaded Documents
                 </h3>
                 <div className="grid gap-3">
                 {application.documentPaths && Object.keys(application.documentPaths).length > 0 ? (
                     Object.entries(application.documentPaths).map(([key, path]) =>
                     path ? (
-                        <div key={key} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-indigo-50 transition group">
+                        <div key={key} className="flex justify-between items-center p-4 border border-gray-300 rounded-lg bg-indigo-50 hover:bg-gray-50 transition group">
                             <div className="flex items-center space-x-3">
                                 <FileText className="text-indigo-400 group-hover:text-indigo-600" size={20}/>
                                 <span className="text-sm font-medium capitalize text-gray-700">
@@ -131,9 +120,8 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
             </div>
           </div>
 
-          {/* Right Column: Action Box */}
           <div className="md:col-span-1">
-              <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl shadow-md border border-gray-200 sticky top-6">
+              <div className="bg-indigo-50 p-5 rounded-xl shadow-md border border-gray-200 sticky top-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">
                     ⚡ Verification Action
                 </h3>
@@ -171,7 +159,7 @@ const ApplicationDetailModal = ({ application, onClose, onUpdateStatus }) => {
                         onChange={(e) => setComments(e.target.value)}
                         rows="5"
                         placeholder="Required for Rejection or Reversion. Add specific notes for the student."
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-00 focus:border-transparent text-sm focus:outline-none"
                     ></textarea>
                     </div>
 

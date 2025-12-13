@@ -72,7 +72,7 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
 
     return (
             <div className='bg-indigo-50 rounded-2xl shadow-xl border border-gray-200 overflow-hidden animate-in slide-in-from-bottom-4 duration-300'>
-            <div className='p-6 border-b border-gray-100 bg-gradient-to-r from-indigo-50 to-white flex justify-between items-center'>
+            <div className='p-6 border-b border-gray-100 bg-indigo-50 flex justify-between items-center'>
                 <div>
                     <h2 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2'>
                         {schemeToEdit ? <div className='p-2 bg-indigo-100 rounded-lg'><Save className="w-6 h-6 text-indigo-600"/></div> 
@@ -96,19 +96,19 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
                         <div className="col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Scheme Name</label>
                             <input type="text" name="name" value={formData.name} onChange={handleChange} required
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" 
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-indigo-500  outline-none transition" 
                                 placeholder="e.g. Merit Cum Means Scholarship 2025"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Application Deadline</label>
                             <input type="date" name="deadline" value={formData.deadline ? formData.deadline.substring(0,10) : ''}  onChange={handleChange} required
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-indigo-500 outline-none" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Fund Amount per Student (₹)</label>
                             <input type="number" name="fundAmount" value={formData.fundAmount} onChange={handleChange} required
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-indigo-500 outline-none" 
                                 placeholder="0.00"
                             />
                         </div>
@@ -121,21 +121,21 @@ const SchemeModal = ({ schemeToEdit, onClose, onSave }) => {
                     <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center">
                         <Check className="w-4 h-4 mr-2" /> Eligibility Criteria
                     </h3>
-                    <div className="bg-yellow-50/50 border border-yellow-100 rounded-xl p-5 grid md:grid-cols-3 gap-6">
+                    <div className="bg-indigo-50 border border-gray-300 rounded-xl p-5 grid md:grid-cols-3 gap-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Min. Percentage Required</label>
                             <input type="number" name="minPercentage" value={formData.criteria.minPercentage} onChange={handleChange} step="0.01"
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 outline-none bg-white" />
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-yellow-500 outline-none bg-white" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Max. Family Income (₹)</label>
                             <input type="number" name="maxIncome" value={formData.criteria.maxIncome} onChange={handleChange} required
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 outline-none bg-white" />
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-yellow-500 outline-none bg-white" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Min. Year of Study</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Year of Study</label>
                             <select name="minStudyYear" value={formData.criteria.minStudyYear} onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 outline-none bg-white">
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-yellow-500 outline-none bg-white">
                                 <option value="1st Year">1st Year</option>
                                 <option value="2nd Year">2nd Year</option>
                                 <option value="3rd Year">3rd Year</option>

@@ -12,12 +12,15 @@ const studentProfileSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
-    
+    latestScheme: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Scheme", 
+  },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     contactNo: { type: String },
     
-    currentStudyYear: { type: Number, required: true },
+    currentStudyYear: { type: String, required: true },
     branch: { type: String, required: true },
     subject: { type: String }, 
 }, { timestamps: true });

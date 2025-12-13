@@ -94,7 +94,7 @@ const ManageApplicationsPage = () => {
   if (loading) return <div className="p-8 text-center">Loading applications data...</div>
 
   return (
-    <div className="p-6 bg-indigo-100 min-h-screen">
+    <div className="p-6 bg-indigo-100 min-h-screen shadow-2xl">
       {selectedApplication ? (
         <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-right duration-300">
              <button 
@@ -111,7 +111,7 @@ const ManageApplicationsPage = () => {
             />
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-indigo-200 animate-in fade-in duration-500">
+        <div className="bg-indigo-50 rounded-xl shadow-lg p-6 border border-indigo-200 animate-in fade-in duration-500">
             <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2">
                 📋 Application Review Dashboard
             </h1>
@@ -121,7 +121,7 @@ const ManageApplicationsPage = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                     type="text"
-                    placeholder="Search by Student Name or ID..."
+                    placeholder="Search by Student Name "
                     className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:ring-violet-500/20 focus:border-indigo-500 focus:outline-none bg-transparent"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -159,7 +159,7 @@ const ManageApplicationsPage = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Student Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Scheme</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Eligibility</th>
+                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Eligibility</th> */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Note</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
                     </tr>
@@ -180,7 +180,7 @@ const ManageApplicationsPage = () => {
                             {app.status}
                             </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm">
                             {app.isEligible ? (
                                 <span className="text-green-600 font-bold flex items-center">
                                     <CheckCircle className="w-4 h-4 mr-1"/> Eligible
@@ -190,9 +190,9 @@ const ManageApplicationsPage = () => {
                                     <XCircle className="w-4 h-4 mr-1"/> Not Eligible
                                 </span>
                             )}
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">
-                            {app.documentsNote || '-'}
+                            {app.adminFeedback || '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button
