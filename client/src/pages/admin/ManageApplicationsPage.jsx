@@ -94,7 +94,7 @@ const ManageApplicationsPage = () => {
   if (loading) return <div className="p-8 text-center">Loading applications data...</div>
 
   return (
-    <div className="p-6 bg-indigo-100 min-h-screen shadow-2xl">
+    <div className="p-6 bg-indigo-100 min-h-screen ">
       {selectedApplication ? (
         <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-right duration-300">
              <button 
@@ -111,7 +111,7 @@ const ManageApplicationsPage = () => {
             />
         </div>
       ) : (
-        <div className="bg-indigo-50 rounded-xl shadow-lg p-6 border border-indigo-200 animate-in fade-in duration-500">
+        <div className="bg-indigo-100 rounded-xl shadow-lg p-6 border border-indigo-200 animate-in fade-in duration-500">
             <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2">
                 📋 Application Review Dashboard
             </h1>

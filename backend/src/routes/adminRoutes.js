@@ -70,35 +70,38 @@ adminRouter.get("/students", protect, adminOnly, async (req, res) => {
     }
 
     const studentsData = await StudentProfile.find(filter)
-      .populate("student", "name email")
+      // .populate("student", "name email")
       .populate("latestScheme", "name");
 
+      console.log(`Fetched student count: ${studentsData.length}`); 
+        console.log(`First student record:`, studentsData[0]);
     if (!studentsData || studentsData.length === 0) {
       return res.json([]);
     }
 
     const formattedData = studentsData
       .map((profile) => {
-        if (!profile.student) {
-          return null;
-        }
 
         return {
           id: profile._id,
-          studentAuthId: profile.student._id,
-          name: profile.student.name,
-          email: profile.student.email,
-          studentId: profile.collegeId,
-          currentStudyYear: profile.currentStudyYear,
-          applicationStatus: profile.applicationStatus,
+          // studentAuthId: profile.student._id,
+          name: profile.name ,
+          email: profile.email ,
+          contactNo: profile.contactNo || "N/A",
+          collegeId: profile.collegeId || "N/A",
+          currentStudyYear: profile.currentStudyYear || "N/A",
+          course: profile.course || "N/A",
+          applicationStatus: profile.applicationStatus || "N/A",
           schemeApplied: profile.latestScheme
             ? profile.latestScheme.name
             : "N/A",
         };
       })
-      .filter((item) => item !== null);
-
+      // .filter((item) => item !== null);
+      console.log(`Successfully formatted student count: ${formattedData.length}`);
+      
     res.json(formattedData);
+    
   } catch (error) {
     console.error("Error fetching student records for admin tracking:", error);
     res
@@ -407,20 +410,20 @@ adminRouter.post('/students/bulk-upload', protect, adminOnly, bulkUploadMiddlewa
         const studentRecords = await csvtojson().fromFile(filePath);
 
         for (const record of studentRecords) {
-            if (!record.Email || !record.CollegeID || !record.Name) {
+            if (!record.Email || !record.EnrollmentNo || !record.Name) {
                 console.warn(`Skipping incomplete record: ${record.Email}`);
                 continue;
             }
             
-            const uniqueQuery = { collegeId: record.CollegeID }; 
+            const uniqueQuery = { collegeId: record.EnrollmentNo }; 
             
             const dataToUpdate = {
                 name: record.Name,
                 email: record.Email,
                 contactNo: record.ContactNo,
                 currentStudyYear: record.Year,
-                currentCourse: record.Course,
-                currentBranch: record.Branch,
+                course: record.Course,
+                // currentBranch: record.Branch,
                 
                 applicationStatus: 'Not Started', 
                 student: null, 

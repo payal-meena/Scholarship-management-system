@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { PlusCircle, Upload, Edit, Trash2, Eye } from 'lucide-react';
 import BulkUploadModal from './BulkUploadModal';
 import CustomDropdown from '../CustomDropdown';
+import ViewStudentModal from './ViewStudentModal';
 
 const getStatusClasses = (status) => {
     switch (status) {
@@ -24,6 +25,11 @@ const ManageStudentsPage = () => {
     const [yearFilter,setYearFilter] = useState("All");
 
     const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+    const [refreshToggle, setRefreshToggle] = useState(false);
+
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     
     useEffect(() => {
         const fetchAllStudents = async () => {
@@ -42,7 +48,8 @@ const ManageStudentsPage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                setStudents(response.data);
+                setStudents(response.data); 
+                               
             } catch (error) {
                 console.error("Error fetching student list:", error);
                 toast.error(error.response?.data?.message || "Failed to load student records.");
@@ -51,25 +58,44 @@ const ManageStudentsPage = () => {
             }
         };
         fetchAllStudents();
-    }, [statusFilter, yearFilter]);
+    }, [statusFilter, yearFilter,refreshToggle]);
 
     const filteredStudents = students.filter(student => {
         const name = student.name || '';
-        const id = student.studentId || '';
+        const id = student.collegeId || '';
         const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) || id.includes(searchTerm);
         const matchesStatus = statusFilter === 'All' || student.applicationStatus === statusFilter;
         const matchesYear = yearFilter === 'All' || student.currentStudyYear === yearFilter;
         return matchesSearch && matchesStatus && matchesYear;
+
     });
 
     const handleBulkUploadSuccess = () => {
         setIsBulkModalOpen(false); 
+        setRefreshToggle(prev => !prev);
         toast.success("Records updated! Refreshing list...");
     };
 
     const handleAddStudent = () => {
         alert("Open modal to Add New Student");
     }
+
+    const handleViewDetails = (student) => {
+    setSelectedStudent(student);
+    setIsViewModalOpen(true);
+    };
+
+    const handleEditStudent = (student) => {
+    setSelectedStudent(student);
+    setIsEditModalOpen(true);
+    };
+
+    const handleDeleteStudent = (studentId, studentName) => {
+    if (window.confirm(`Are you sure you want to delete the record for ${studentName} (ID: ${studentId})?`)) {
+        alert(`Deleting student ID: ${studentId}`); 
+    }
+    };
+
     if(loading) return <div className='p-8 text-center'>Loading student records...</div>;
 
     return (
@@ -111,7 +137,7 @@ const ManageStudentsPage = () => {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" />
                             <input
                                 type="text"
-                                placeholder="Search by Student Name or ID..."
+                                placeholder="Search by Student Name ..."
                                 className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-50 focus:outline-none"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -140,32 +166,36 @@ const ManageStudentsPage = () => {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Course</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Current Year</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Contact No</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-indigo-50 divide-y divide-indigo-200">
                                 {filteredStudents.length > 0 ? (
                                     filteredStudents.map((student) => (
-                                        <tr key={student.id}>
+                                        <tr key={student.collegeId}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-900">
                                                 {student.name || 'N/A'} <br/>
                                                 <span className="text-indigo-500 text-xs">{student.email || 'N/A'}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-700 font-semibold">
-                                                {student.currentCourse || 'N/A'}
+                                                {student.course || 'N/A'}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-700 font-semibold">
-                                            {student.currentStudyYear || 'N/A'}
+                                            {student.currentStudyYear || 'N/A' }
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(student.applicationStatus)}`}>
                                                     {student.applicationStatus || 'N/A'}
                                                 </span>
                                             </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-700 font-semibold">
+                                            {student.contactNo || 'N/A' }
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-1">
-                                                <button className="text-indigo-600 hover:text-indigo-900"><Edit className='w-4 h-4 inline'/></button>
-                                                <button className="text-red-600 hover:text-red-900"><Trash2 className='w-4 h-4 inline'/></button>
-                                                <button className="text-gray-600 hover:text-gray-900"><Eye className='w-4 h-4 inline'/></button>
+                                                <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-md transition duration-150" onClick={() => handleEditStudent(student)} title='Edit Record'><Edit className='w-4 h-4 inline'/></button>
+                                                <button className="text-red-600 hover:text-red-900 p-1 rounded-md transition duration-150" onClick={() => handleDeleteStudent(student.collegeId, student.name)}><Trash2 className='w-4 h-4 inline'/></button>
+                                                <button className="text-gray-600 hover:text-gray-900 p-1 rounded-md transition duration-150" onClick={() => handleViewDetails(student)}><Eye className='w-4 h-4 inline'/></button>
                                             </td>
                                         </tr>
                                     ))
@@ -181,6 +211,11 @@ const ManageStudentsPage = () => {
                     </div>
                 </div>
             )}
+            <ViewStudentModal
+            isOpen={isViewModalOpen}
+            onClose={() => setIsViewModalOpen(false)}
+            student={selectedStudent}
+        />
         </div>
     );
 };

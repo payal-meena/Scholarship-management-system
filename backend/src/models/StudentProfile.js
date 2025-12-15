@@ -4,7 +4,6 @@ const studentProfileSchema = new mongoose.Schema({
     student: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Student', 
-        unique: true,
         default: null
     },
     collegeId: { 
@@ -14,15 +13,21 @@ const studentProfileSchema = new mongoose.Schema({
     },
     latestScheme: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Scheme", 
+    ref: "ScholarshipScheme", 
   },
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true , lowercase: true },
     contactNo: { type: String },
     
     currentStudyYear: { type: String, required: true },
-    branch: { type: String, required: true },
-    subject: { type: String }, 
+    // branch: { type: String, required: true },
+    course: { type: String, required: true },
+    applicationStatus: { 
+        type: String,
+        enum: ['Not Started', 'Pending Review', 'Approved', 'Rejected', 'Reverted for Correction'],
+        default: 'Not Started'
+    }
+    // subject: { type: String }, 
 }, { timestamps: true });
 
 export default mongoose.model('StudentProfile', studentProfileSchema);
