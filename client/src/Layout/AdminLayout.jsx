@@ -22,10 +22,10 @@ const AdminLayout = () => {
     <div className="flex flex-col min-h-screen bg-indigo-100">
       <DashboardNavbar role="Admin" name="" toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onLogout={handleLogout} />
 
-      <div className="flex flex-1 pt-16 min-h-screen">
+      <div className="flex pt-16 h-[100vh]">
         <AdminSidebar active={activeLink} open={isSidebarOpen} setOpen={setIsSidebarOpen} onLogout={handleLogout} />
 
-        <main className="flex-1 p-4 md:p-8 md:mx-24 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 md:mx-24 overflow-y-auto no-scrollbar">
           <Outlet />
         </main>
       </div>
