@@ -46,13 +46,13 @@ const BulkUploadModal = ({ onClose, onUploadSuccess }) => {
         <div className="bg-indigo-100 rounded-xl shadow-2xl border border-indigo-100 overflow-hidden">
             <div className='p-6 border-b flex justify-between items-center bg-indigo-50'>
                 <div>
-                    <h3 className='text-2xl font-bold text-indigo-800 flex items-center space-x-2'>
-                        <FileSpreadsheet className="w-8 h-8 text-indigo-600" /> 
+                    <h3 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2'>
+                        <FileSpreadsheet className="w-8 h-8 text-indigo-900" /> 
                         <span>Bulk Data Upload</span>
                     </h3>
                     <p className="text-indigo-700 text-sm mt-1">Import multiple student records instantly via CSV.</p>
                 </div>
-                <button onClick={onClose} className='text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition'>
+                <button onClick={onClose} className='text-gray-400 hover:text-gray-500 p-2 rounded-full hover:bg-gray-50 transition'>
                     <X size={24} />
                 </button>
             </div>

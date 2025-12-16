@@ -462,5 +462,60 @@ adminRouter.post('/students/bulk-upload', protect, adminOnly, bulkUploadMiddlewa
     }
 });
 
+adminRouter.delete('/students/:id', protect , adminOnly , async (req, res) => {
+    try {
+      const studentProfileId = req.params.id;
+
+      if(!studentProfileId) {
+        return res.status(400).json({ message: "Student Profile ID is required for deletion."});
+      }
+
+      const profile = await StudentProfile.findById(studentProfileId);
+      if (!profile) {
+        return res.status(404).json({ message: "Student Profile not found."});
+      }
+
+      await StudentProfile.findByIdAndDelete(studentProfileId);
+
+      res.status(200).json({ message: "Student Profile deleted successfully."});
+    } catch (error) {
+      console.error("Error deleting student profile:", error);
+      res.status(500).json({ message: "Server error during deletion."});
+    }
+});
+
+adminRouter.put("/students/:id", protect, adminOnly, async (req, res) => {
+    try {
+        const studentProfileId = req.params.id;
+        const updateData = req.body; 
+        const allowedUpdates = ['name', 'email', 'collegeId', 'currentStudyYear', 'course', 'applicationStatus', 'contactNo', 'latestScheme'];
+        const updates = {};
+        Object.keys(updateData).forEach((key) => {
+            if (allowedUpdates.includes(key)) {
+                updates[key] = updateData[key];
+            }
+        });
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ message: "No valid fields provided for update." });
+        }
+
+        const updatedProfile = await StudentProfile.findByIdAndUpdate(
+            studentProfileId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedProfile) {
+            return res.status(404).json({ message: "Student Profile not found." });
+        }
+
+        res.json({ message: "Student profile updated successfully.", profile: updatedProfile });
+
+    } catch (error) {
+        console.error("Error updating student profile:", error);
+        res.status(500).json({ message: "Server error during update." });
+    }
+});
 
 export default adminRouter;
