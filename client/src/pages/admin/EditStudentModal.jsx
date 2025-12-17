@@ -34,11 +34,11 @@ const EditStudentModal = ({ student, onClose, onSaveSuccess }) => {
         setIsLoading(true);
 
         try {
-            const token = localStorage.getItem('adminToken');
-            await axios.put(`http://localhost:4000/api/admin/students/${student.collegeId}`, formData, {
+            const token = localStorage.getItem('adminToken');            
+            await axios.put(`http://localhost:4000/api/admin/students/${student.id}`, formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            onSaveSuccess(); // This will trigger the view switch back to list
+            onSaveSuccess(); 
         } catch (error) {
             console.error("Update failed", error);
             toast.error(error.response?.data?.message || "Failed to update student.");
@@ -51,7 +51,6 @@ const EditStudentModal = ({ student, onClose, onSaveSuccess }) => {
 
     return (
         <div className="bg-indigo-50 rounded-xl shadow-xl border border-indigo-100 overflow-hidden">
-            
             <div className='p-6 border-b bg-indigo-50 flex justify-between items-center'>
                 <h3 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2'>
                     <UserCog className="w-6 h-6" /> <span>Edit Student Record</span>

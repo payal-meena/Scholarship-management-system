@@ -59,12 +59,12 @@ const ManageApplicationsPage = () => {
         };
         fetchSchemeList();
     }, []);
-
+    
   const filteredApplications = applications.filter(app => {
       const studentName = app.studentName || '';
-      const sId = app.studentId || app.id || ''; 
+      const sId = app.studentEmail || ''; 
       const matchesSearch = studentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            sId.toLowerCase().includes(searchTerm.toLowerCase());
+                            sId.includes(searchTerm);
       const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
       let matchesScheme = true;
       if (schemeFilter !== 'All') {

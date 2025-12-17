@@ -11,11 +11,11 @@ import bulkUploadMiddleware from '../middleware/bulkUploadMiddleware.js';
 import csvtojson from 'csvtojson';
 import fs from 'fs';
 
-const parseStudyYear = (yearString) => {
-  if (!yearString) return 0;
-  const match = yearString.match(/\d+/);
-  return match ? parseInt(match[0], 10) : 0;
-};
+// const parseStudyYear = (yearString) => {
+//   if (!yearString) return 0;
+//   const match = yearString.match(/\d+/);
+//   return match ? parseInt(match[0], 10) : 0;
+// };
 
 const adminRouter = express.Router();
 
@@ -73,8 +73,8 @@ adminRouter.get("/students", protect, adminOnly, async (req, res) => {
       // .populate("student", "name email")
       .populate("latestScheme", "name");
 
-      console.log(`Fetched student count: ${studentsData.length}`); 
-        console.log(`First student record:`, studentsData[0]);
+      // console.log(`Fetched student count: ${studentsData.length}`); 
+      //   console.log(`First student record:`, studentsData[0]);
     if (!studentsData || studentsData.length === 0) {
       return res.json([]);
     }
@@ -316,29 +316,6 @@ adminRouter.get('/schemes/list', protect, adminOnly, async (req, res) => {
     }
 });
 
-// adminRouter.put('/applications/:id/feedback', protect, adminOnly, async (req, res) => {
-//   try {
-//     const { feedback, status } = req.body;
-
-//     const updated = await Application.findByIdAndUpdate(
-//       req.params.id,
-//       { 
-//         adminFeedback: feedback, 
-//         status: status || 'Reviewed', 
-//         updatedAt: new Date() 
-//       },
-//       { new: true }
-//     );
-
-//     if (!updated) return res.status(404).json({ message: 'Application not found' });
-
-//     res.status(200).json({ message: 'Feedback updated successfully', application: updated });
-//   } catch (error) {
-//     console.error('Error updating feedback:', error);
-//     res.status(500).json({ message: 'Server error while updating feedback' });
-//   }
-// });
-
 adminRouter.put('/applications/:id/status', protect, adminOnly, async (req, res) => {
     try {
         const applicationId = req.params.id;
@@ -464,18 +441,18 @@ adminRouter.post('/students/bulk-upload', protect, adminOnly, bulkUploadMiddlewa
 
 adminRouter.delete('/students/:id', protect , adminOnly , async (req, res) => {
     try {
-      const studentProfileId = req.params.id;
+      const {id }= req.params;
 
-      if(!studentProfileId) {
+      if(!id) {
         return res.status(400).json({ message: "Student Profile ID is required for deletion."});
       }
 
-      const profile = await StudentProfile.findById(studentProfileId);
+      const profile = await StudentProfile.findById(id);
       if (!profile) {
         return res.status(404).json({ message: "Student Profile not found."});
       }
 
-      await StudentProfile.findByIdAndDelete(studentProfileId);
+      await StudentProfile.findByIdAndDelete(id);
 
       res.status(200).json({ message: "Student Profile deleted successfully."});
     } catch (error) {
@@ -486,8 +463,9 @@ adminRouter.delete('/students/:id', protect , adminOnly , async (req, res) => {
 
 adminRouter.put("/students/:id", protect, adminOnly, async (req, res) => {
     try {
-        const studentProfileId = req.params.id;
+        const {id} = req.params;
         const updateData = req.body; 
+
         const allowedUpdates = ['name', 'email', 'collegeId', 'currentStudyYear', 'course', 'applicationStatus', 'contactNo', 'latestScheme'];
         const updates = {};
         Object.keys(updateData).forEach((key) => {
@@ -501,7 +479,7 @@ adminRouter.put("/students/:id", protect, adminOnly, async (req, res) => {
         }
 
         const updatedProfile = await StudentProfile.findByIdAndUpdate(
-            studentProfileId,
+            id,
             { $set: updates },
             { new: true, runValidators: true }
         );
@@ -510,12 +488,16 @@ adminRouter.put("/students/:id", protect, adminOnly, async (req, res) => {
             return res.status(404).json({ message: "Student Profile not found." });
         }
 
-        res.json({ message: "Student profile updated successfully.", profile: updatedProfile });
+        res.status(200).json({ 
+          message: "Student profile updated successfully.", 
+          profile: updatedProfile 
+        });
 
     } catch (error) {
         console.error("Error updating student profile:", error);
         res.status(500).json({ message: "Server error during update." });
     }
 });
+
 
 export default adminRouter;

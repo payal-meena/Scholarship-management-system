@@ -69,7 +69,7 @@ const ManageStudentsPage = () => {
 
   const filteredStudents = students.filter((student) => {
     const name = student.name || "";
-    const id = student.collegeId || "";
+    const id = student.email || "";
     const matchesSearch =
       name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       id.includes(searchTerm);
@@ -183,9 +183,7 @@ const ManageStudentsPage = () => {
             />
         </div>
 
-      /* 4. DEFAULT: LIST VIEW */
-      ) :
-      (
+      ) : (
         <div className="animate-in fade-in duration-500 rounded-xl shadow-2xl bg-indigo-100 p-6 border border-indigo-200">
           <h1 className="text-3xl font-extrabold text-indigo-900 mb-6 border-b pb-2 flex items-center">
             📑 All Student Records
@@ -215,7 +213,7 @@ const ManageStudentsPage = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" />
               <input
                 type="text"
-                placeholder="Search by Student Name ..."
+                placeholder="Search by Student Name or Id"
                 className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-50 focus:outline-none"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -311,7 +309,7 @@ const ManageStudentsPage = () => {
                         <button
                           className="text-red-600 hover:text-red-900 p-1 rounded-md transition duration-150"
                           onClick={() =>
-                            handleDeleteStudent(student.collegeId, student.name)
+                            handleDeleteStudent(student.id, student.name)
                           }
                         >
                           <Trash2 className="w-4 h-4 inline" />
