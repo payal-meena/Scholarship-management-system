@@ -50,8 +50,8 @@ const EditStudentModal = ({ student, onClose, onSaveSuccess }) => {
     if (!student) return null;
 
     return (
-        <div className="bg-indigo-50 rounded-xl shadow-xl border border-indigo-100 overflow-hidden">
-            <div className='p-6 border-b bg-indigo-50 flex justify-between items-center'>
+        <div className="bg-indigo-100 rounded-xl shadow-2xl border border-indigo-100 overflow-hidden">
+            <div className='p-6 border-b flex justify-between items-center'>
                 <h3 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2'>
                     <UserCog className="w-6 h-6" /> <span>Edit Student Record</span>
                 </h3>
@@ -94,7 +94,7 @@ const EditStudentModal = ({ student, onClose, onSaveSuccess }) => {
                         <label className="block text-sm font-bold text-gray-700 mb-2">Current Year</label>
                         <select 
                             name="currentStudyYear" value={formData.currentStudyYear} onChange={handleChange} required
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition bg-indigo-50"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
                         >
                             <option value="">Select Year</option>
                             <option value="1st Year">1st Year</option>
@@ -107,7 +107,7 @@ const EditStudentModal = ({ student, onClose, onSaveSuccess }) => {
                         <label className="block text-sm font-bold text-gray-400 mb-2">College ID (Read-only)</label>
                         <input 
                             type="text" value={student.collegeId} disabled
-                            className="w-full p-3 border border-gray-200 bg-gray-50 rounded-lg text-gray-500 cursor-not-allowed"
+                            className="w-full p-3 border border-gray-200 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed"
                         />
                     </div>
                 </div>

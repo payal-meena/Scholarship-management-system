@@ -7,6 +7,7 @@ import BulkUploadModal from "./BulkUploadModal";
 import CustomDropdown from "../CustomDropdown";
 import ViewStudentModal from "./ViewStudentModal";
 import EditStudentModal from "./EditStudentModal";
+import AddStudentModal from "./AddStudentModal";
 
 // const getStatusClasses = (status) => {
 //   switch (status) {
@@ -32,6 +33,8 @@ const ManageStudentsPage = () => {
 
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [refreshToggle, setRefreshToggle] = useState(false);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -87,7 +90,7 @@ const ManageStudentsPage = () => {
   };
 
   const handleAddStudent = () => {
-    alert("Open modal to Add New Student");
+    setIsAddModalOpen(true); 
   };
 
   const handleViewDetails = (student) => {
@@ -147,7 +150,23 @@ const ManageStudentsPage = () => {
             onUploadSuccess={handleBulkUploadSuccess}
           />
         </div>
-      ) : isViewModalOpen && selectedStudent ? (
+      ) : 
+      isAddModalOpen ? (
+            <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-right duration-300">
+             <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="mb-4 flex items-center text-indigo-700 hover:text-indigo-900 font-bold transition"
+            >
+                <ArrowLeft className="w-5 h-5 mr-2" /> Back to Student List
+            </button>
+            <AddStudentModal 
+                onClose={() => setIsAddModalOpen(false)}
+                onSuccess={handleAddStudent}
+            />
+        </div>
+      ) :
+      
+     isViewModalOpen && selectedStudent ? (
         <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-right duration-300">
              <button
                 onClick={() => {
@@ -163,10 +182,9 @@ const ManageStudentsPage = () => {
                 onClose={() => setIsViewModalOpen(false)}
             />
         </div>
-
-      /* 3. EDIT STUDENT VIEW */
-      ) : isEditModalOpen && selectedStudent ? (
-        <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-right duration-300">
+      ) :
+       isEditModalOpen && selectedStudent ? (
+        <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-right duration-300 ">
              <button
                 onClick={() => {
                     setIsEditModalOpen(false);

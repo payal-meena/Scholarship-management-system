@@ -26,8 +26,8 @@ const CustomDropdown = ({ label, options, value, onChange, placeholder = "Select
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full flex items-center justify-between p-3 border rounded-lg bg-white transition-all duration-200 outline-none
-                    ${isOpen ? 'border-indigo-500 ring-2 ring-indigo-100' : 'border-gray-300 hover:border-indigo-400'}`}
+                className={`w-full flex items-center justify-between p-3 border rounded-lg bg-indigo-50 transition-all duration-200 outline-none border-indigo-300
+                    ${isOpen ? 'border-indigo-500 ring-2 ring-indigo-100' : 'border-gray-300 '}`}
             >
                 <span className={`block truncate ${!value ? 'text-gray-400' : 'text-gray-800'}`}>
                     {value || placeholder}

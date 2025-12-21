@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, CheckCircle, XCircle, ArrowLeft } from "lucide-react"; // Added ArrowLeft
+import { Search, CheckCircle, XCircle, ArrowLeft } from "lucide-react"; 
 import ApplicationDetailModal from "./ApplicationDetailModal";
 import axios from "axios";
 import { toast } from 'react-toastify';

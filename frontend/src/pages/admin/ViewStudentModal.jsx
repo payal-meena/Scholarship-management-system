@@ -24,13 +24,13 @@ const ViewStudentModal = ({ onClose, student }) => {
 
 
     return (
-            <div className="bg-indigo-50 rounded-xl shadow-xl border border-indigo-100 overflow-hidden">
+            <div className="bg-indigo-100 rounded-xl shadow-2xl border border-indigo-100 overflow-hidden">
                 
-                <div className="p-6 border-b bg-indigo-50 flex justify-between items-center">
+                <div className="p-6 border-b flex justify-between items-center">
                 <h3 className='text-2xl font-bold text-indigo-900 flex items-center space-x-2'>
                     <User className="w-6 h-6" /> <span>Student Details</span>
                 </h3>
-                <button onClick={onClose} className='text-gray-400 hover:text-gray-500 p-2 rounded-full hover:bg-gray-50 transition'>
+                <button onClick={onClose} className='text-gray-400 hover:text-gray-500 p-2 rounded-full hover:bg-gray-100 transition'>
                     <X size={24} />
                 </button>
             </div>
