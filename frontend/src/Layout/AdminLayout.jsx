@@ -20,7 +20,7 @@ const AdminLayout = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-indigo-100">
-      <DashboardNavbar role="Admin" name="" toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onLogout={handleLogout} />
+      <DashboardNavbar role="Administrator" name="Admin" toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onLogout={handleLogout} />
 
       <div className="flex pt-16 h-[100vh]">
         <AdminSidebar active={activeLink} open={isSidebarOpen} setOpen={setIsSidebarOpen} onLogout={handleLogout} />

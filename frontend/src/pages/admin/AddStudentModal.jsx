@@ -7,7 +7,6 @@ const AddStudentModal = ({ onClose, onSuccess }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: '', 
         collegeId: '',
         contactNo: '',
         course: '',
@@ -23,7 +22,7 @@ const AddStudentModal = ({ onClose, onSuccess }) => {
         e.preventDefault();
         setIsLoading(true);
 
-        if (!formData.collegeId || !formData.email || !formData.password) {
+        if (!formData.collegeId || !formData.email ) {
             toast.error("Please fill all required fields.");
             setIsLoading(false);
             return;
@@ -32,11 +31,12 @@ const AddStudentModal = ({ onClose, onSuccess }) => {
         try {
             const token = localStorage.getItem('adminToken');
             
-            await axios.post('http://localhost:4000/api/admin/students', formData, {
+            await axios.post('http://localhost:4000/api/admin/student', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             toast.success("New student added successfully!");
+            
             onSuccess();
         } catch (error) {
             console.error("Add Student Error:", error);
@@ -82,14 +82,6 @@ const AddStudentModal = ({ onClose, onSuccess }) => {
                         <input 
                             type="email" name="email" value={formData.email} onChange={handleChange} required
                             placeholder="student@college.edu"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Default Password <span className='text-red-500'>*</span></label>
-                        <input 
-                            type="password" name="password" value={formData.password} onChange={handleChange} required
-                            placeholder="Create a strong password"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
                         />
                     </div>

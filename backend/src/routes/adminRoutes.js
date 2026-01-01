@@ -11,12 +11,6 @@ import bulkUploadMiddleware from '../middleware/bulkUploadMiddleware.js';
 import csvtojson from 'csvtojson';
 import fs from 'fs';
 
-// const parseStudyYear = (yearString) => {
-//   if (!yearString) return 0;
-//   const match = yearString.match(/\d+/);
-//   return match ? parseInt(match[0], 10) : 0;
-// };
-
 const adminRouter = express.Router();
 
 adminRouter.post("/signup", async (req, res) => {
@@ -401,8 +395,8 @@ adminRouter.post('/students/bulk-upload', protect, adminOnly, bulkUploadMiddlewa
                 currentStudyYear: record.Year,
                 course: record.Course,
                 // currentBranch: record.Branch,
-                
-                applicationStatus: 'Not Started', 
+                role: 'Student',
+                // applicationStatus: 'Not Started', 
                 student: null, 
             };
                 const result = await StudentProfile.findOneAndUpdate(
@@ -497,6 +491,38 @@ adminRouter.put("/students/:id", protect, adminOnly, async (req, res) => {
         console.error("Error updating student profile:", error);
         res.status(500).json({ message: "Server error during update." });
     }
+});
+
+adminRouter.post('/student', protect , adminOnly , async (req, res) => {
+  try {
+    const { name , email , collegeId , course, contactNo , currentStudyYear } = req.body;
+
+    const existingStudent = await StudentProfile.findOne({
+      $or : [{ email }, {collegeId }]
+    });
+
+    if(existingStudent) {
+      return res.status(400).json({ message: "Student with this email or College ID already exists. "});
+    }
+
+    const newStudent = new StudentProfile({
+      name,
+      email,
+      collegeId,
+      course,
+      contactNo,
+      currentStudyYear,
+      role: 'Student',
+    });
+
+    await newStudent.save();
+
+    res.status(201).json({ message: "Student added successfully", student: newStudent});
+
+  } catch (error) {
+    console.error("Error adding student:", error);
+    res.status(500).json({ message: "Server error "});
+  }
 });
 
 

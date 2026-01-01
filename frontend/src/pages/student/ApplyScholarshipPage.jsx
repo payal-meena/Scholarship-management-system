@@ -412,24 +412,38 @@ const ApplyScholarshipPage = () => {
   const [selectedScheme, setSelectedScheme] = useState(null);
   const [availableSchemes, setAvailableSchemes] = useState([]);
   const [loading,setLoading] = useState(true);
+  const [appliedSchemeIds, setAppliedSchemeIds] = useState([]);
+
 
    useEffect(() => {
-    const fetchSchemes = async () => {
+    const fetchSchemesAndApplications = async () => {
       try {
+        const token = localStorage.getItem('studentToken');
+
         const response = await axios.get('http://localhost:4000/api/admin/public/schemes');
-        setAvailableSchemes(response.data);        
+        setAvailableSchemes(response.data);   
+        
+        if(token) {
+          const appliedSchemesResponse = await axios.get('http://localhost:4000/api/students/applications', {
+            headers: {Authorization : `Bearer ${token}` }
+          });
+
+          const ids = appliedSchemesResponse.data.map( app => app.scheme._id || app.scheme );
+          setAppliedSchemeIds(ids);
+        }
       } catch (error) {
         toast.error("Failed to load available schems from server.");
       } finally {
         setLoading(false);
       }
     };
-    fetchSchemes();
+    fetchSchemesAndApplications();
   }, []);
 
   const handleFormSubmit = (schemeId, data) => {
     toast.success(`Application for Scheme ID ${schemeId} submitted successfully!`);
     console.log("Final Submission Date:", data);
+    setAppliedSchemeIds((prev) => [...prev, schemeId]);
     setSelectedScheme(null);
   };
 
@@ -443,9 +457,14 @@ const ApplyScholarshipPage = () => {
     onClose={handleFormClose} />;
   };
 
-  if(loading) {
-    return <div className="p-8 text-center">Loading available schemes...</div>;
+    if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
   }
+
 
   return (
     <div className="bg-indigo-100 p-6 rounded-lg shadow-2xl mx-auto">
@@ -457,6 +476,8 @@ const ApplyScholarshipPage = () => {
         {availableSchemes.map((scheme) => {
           const status = getDeadlineStatus(scheme.deadline);
           const StatusIcon = status.icon; 
+
+          const isApplied = appliedSchemeIds.includes(scheme._id);
 
           return (
             <div
@@ -494,12 +515,22 @@ const ApplyScholarshipPage = () => {
                 </p>
               </div>
               <button
-                onClick={() => setSelectedScheme(scheme)}
-                className="mt-6 w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white 
-                           py-3 rounded-xl font-semibold shadow-lg 
-                           hover:from-violet-700 hover:to-indigo-700 transition transform hover:scale-[1.01]" 
+                onClick={() => !isApplied && setSelectedScheme(scheme)}
+                disabled={isApplied || status.text === "Closed"}
+                className={`mt-6 w-full py-3 rounded-xl font-semibold shadow-lg transition transform 
+          ${isApplied 
+            ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white cursor-not-allowed" 
+            : "bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:scale-[1.01]" 
+          } 
+          disabled:opacity-70`} 
               >
-                Start Application
+                {isApplied ? (
+          <span className="flex items-center justify-center">
+            <CheckCircle className="w-5 h-5 mr-2" /> Applied
+          </span>
+        ) : (
+          "Apply"
+        )}
               </button>
             </div>
           );

@@ -133,6 +133,14 @@ const AdminDashboardHome = () => {
         navigate('/admin/applications');
     };
 
+    if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
     return (
         <div className='space-y-8 animate-in fade-in duration-500 pb-10'>
             <div className='flex justify-between items-end'>
@@ -191,7 +199,7 @@ const AdminDashboardHome = () => {
                                     cx="50%"
                                     cy="50%"
                                     innerRadius={60}
-                                    outerRadius={80}
+                                    outerRadius={70}
                                     paddingAngle={5}
                                     dataKey="value"
                                 >

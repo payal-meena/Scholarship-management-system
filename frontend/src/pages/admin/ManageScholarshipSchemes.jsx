@@ -91,20 +91,18 @@ const ManageScholarshipSchemes = () => {
 
         const isOpen = isSchemeOpen(scheme.deadline, scheme.isActive);
 
-        if (isOpen) {
-            const diffTime = deadlineDate.getTime() - today.getTime();
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+       const diffTime = deadlineDate.getTime() - today.getTime();
+       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if(diffDays <= 0) {
-                return { icon: Clock, classes: 'bg-red-100 text-red-700', text: 'Expired'};
-            } else if (diffDays <= 7) {
-                return { icon: AlertTriangle, classes: 'bg-yellow-100 text-yellow-700 ', text: `Closing Soon (${diffDays} days left)`};
-            } else {
-                return { icon: CheckCircle, classes: 'bg-green-100 text-green-700', text: `Active`};
-            }
-        } else {
-            return { icon: XCircle, classes: 'bg-gray-200 text-gray-700', text: 'Inactive'};
-        }
+       if(diffDays <= 0) {
+        return { icon: Clock, classes: 'bg-red-100 text-red-700', text: 'Expired' };
+       } else if (!isOpen) {
+        return { icon: XCircle, classes: 'bg-gray-200 text-gray-700', text: 'Inactive'};
+       } else if (diffDays <= 7) {
+        return { icon: AlertTriangle, classes: 'bg-yellow-100 text-yellow-700', text: `Closing soon - ${diffDays} days left!` };
+       } else {
+        return { icon: CheckCircle, classes: 'bg-green-100 text-green-700', text: `Active` };
+       }
     }
 
     if(loading) {

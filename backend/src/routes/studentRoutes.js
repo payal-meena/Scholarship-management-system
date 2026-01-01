@@ -41,7 +41,7 @@ studentRouter.get('/me', protect, async (req,res)=> {
             } catch (error){
                     res.status(500).json({ message: 'Server error while fetching profile.'})
             }
-        });
+});
 
 studentRouter.post('/apply', protect, (req,res,next) => {
     console.log("UserID before Multer:", req.user.id);
@@ -139,7 +139,7 @@ studentRouter.get('/applications', protect, async (req, res) => {
     
       .populate({
         path: 'scheme',
-        select: 'name criteria'
+        select: 'name criteria deadline'
       }) 
       .sort({ createdAt: -1 });
 

@@ -87,8 +87,7 @@ const ManageApplicationsPage = () => {
         return app;
       })
     );
-    setSelectedApplication(null); // Switch back to List View
-    toast.success("Status updated instantly!");
+    setSelectedApplication(null); 
   };
 
   if (loading) return <div className="p-8 text-center">Loading applications data...</div>

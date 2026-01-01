@@ -90,7 +90,10 @@ const ManageStudentsPage = () => {
   };
 
   const handleAddStudent = () => {
-    setIsAddModalOpen(true); 
+    setIsAddModalOpen(true);
+    setRefreshToggle((prev) => !prev);
+
+     
   };
 
   const handleViewDetails = (student) => {
