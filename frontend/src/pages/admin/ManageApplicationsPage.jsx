@@ -9,6 +9,7 @@ const getStatusClasses = (status) => {
     case "Approved": return "bg-green-100 text-green-700";
     case "Reverted for Correction": return "bg-yellow-100 text-yellow-700";
     case "Rejected": return "bg-red-100 text-red-700";
+    case "Expired": return "bg-gray-200 text-gray-700"
     default: return "bg-violet-200 text-violet-700";
   }
 };
@@ -137,6 +138,7 @@ const ManageApplicationsPage = () => {
                 <option value="Approved">Approved</option>
                 <option value="Reverted for Correction">Reverted</option>
                 <option value="Documents Missing">Documents Missing</option>
+                <option value="Expired">Expired</option>
                 </select>
 
                 <select
@@ -196,7 +198,12 @@ const ManageApplicationsPage = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button
                             onClick={() => setSelectedApplication(app)}
-                            className="bg-violet-600 text-white px-3 py-1.5 rounded hover:bg-violet-700 transition shadow-sm text-xs font-bold"
+                            disabled={app.status === "Expired"}
+                            className={`px-3 py-1.5 rounded text-xs font-bold transition
+                                ${app.status === "Expired"
+                                ? "bg-gray-400 cursor-not-allowed text-white"
+                                : "bg-violet-600 hover:bg-violet-700 text-white"}
+                            `}                            
                             >
                             Review
                             </button>

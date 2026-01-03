@@ -108,17 +108,30 @@ adminRouter.get("/applications", protect, adminOnly, async (req, res) => {
   try {
     const applications = await Application.find()
       .populate("student", "name email")
-      .populate("scheme", "name criteria");
+      .populate("scheme", "name criteria deadline")
+      .sort({ createdAt: -1 });;
 
     if (!applications) {
       return res.json([]);
     }
-
+    const today = new Date();
     const formattedApps = applications.map((app) => {
       const studentData = app.student;
       const schemeData = app.scheme;
 
       const hasMissing = !studentData || !schemeData || !schemeData.criteria;
+
+      if (
+        schemeData?.deadline && 
+        new Date(schemeData.deadline) < today && 
+        ["Pending Review", "Reverted for Correction"].includes(app.status)
+      ) {
+        app.status = "Expired";
+        app.adminFeedback = 
+        "Application not reviewd before scheme deadline.";
+
+        app.save();
+      }
 
       if (hasMissing) {
         console.warn(`Missing data for Application ID ${app._id}`);
